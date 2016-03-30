@@ -1,0 +1,92 @@
+<br/>
+<a href="" (click)="goToContentPage($event)" class="btn red darken-2 mdi-navigation-arrow-back" title="Back">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back
+</a>
+
+<div class="row">
+    <div class="col m12">
+        <div class="card">
+            <div class="card-panel" [ngClass]="operation.getMethodClass()">
+                <strong>{{operation.name}}</strong>&nbsp;- <span><a href="">{{operation.path}}</a></span>
+            </div>
+            <div class="card-content">
+                <p>{{operation.summary}}</p>
+                <p>{{operation.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<form name="apiDetailForm">
+    <div [hidden]="!operation.parameters || operation.parameters.length === 0">
+        <h4>Request url</h4>
+        <div>
+            <p><a href="">{{apiDoc.baseUrl}}{{operation.getRequestUrl()}}</a></p>
+        </div>
+        <div class="input-field col s6">
+            <h4>Response content type</h4>
+            <select class="browser-default form-control" [(ngModel)]="operation.produce">
+                <option *ngFor="#produce of operation.produces" value="{{produce}}">{{produce}}</option>
+            </select>
+        </div>
+        <div class="col s6"></div>
+        <div class="col s12">
+            <a href="" (click)="send($event,operation)" class="text-black btn right waves-effect waves-light"
+               [ngClass]="operation.getMethodClass()">Send <i class="mdi-content-send right"></i></a>
+            <h4>Parameters</h4>
+            <table class="bordered responsive-table">
+                <thead>
+                <th>Parameter</th>
+                <th>Description</th>
+                <th>Parameter type</th>
+                <th>Http parameter type</th>
+                </thead>
+                <tbody>
+                <tr *ngFor="#parameter of operation.parameters">
+                    <td *ngIf="!parameter.isBodyParam()">
+                        <div class="input-field">
+                            <input [attr.id]="parameter.name" name="parameter{{$index}}" type="text" [(ngModel)]="parameter.value" ng-required="parameter.required" />
+                            <label [attr.for]="parameter.name">{{parameter.name}}</label>
+                        </div>
+                    </td>
+                    <td *ngIf="parameter.isBodyParam()">
+                        <textarea class="materialize-textarea" placeholder="{{parameter.name}}" [(ngModel)]="operation.dataJson" required rows="10"></textarea><br/>
+                        <button type="button" (click)="generateJSON($event,parameter)" class="text-black btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" >Generate JSON</button>
+                    </td>
+                    <td>{{parameter.description}}</td>
+                    <td>{{parameter.getParameterType()}}</td>
+                    <td>{{parameter.in}}</td>
+                </tr>
+                <tr *ngIf="operation.isPatchMethod()">
+                    <td>
+                        <textarea class="materialize-textarea" placeholder="dto" ([ngModel])="operation.patchJson" required rows="10"></textarea><br/>
+                        <button type="button" (click)="generateJSON($event)" class="text-black btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" >Generate JSON</button>
+                    </td>
+                    <td>Patch dto</td>
+                    <td>body</td>
+                    <td>{{parameter}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="bodyModal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="card-panel">
+                <h4>{{apiResult.operation.summary}}</h4>
+                <p>{{apiResult.operation.description}}</p>
+                <p><a href="{{apiDoc.baseUrl}}{{apiResult.operation.getRequestUrl()}}" target="_blank">{{apiDoc.baseUrl}}{{apiResult.operation.getRequestUrl()}}</a></p>
+                <p>Date: {{apiResult.date | date:'short'}}</p>
+                <a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{operation.name}}</a>&nbsp;
+                <a ng-if="apiDetail.status" class="waves-effect waves-light btn" [ngClass]="apiResult.getStatusClass()">{{apiResult.status}}</a>
+                <a class="waves-effect waves-light btn light-blue accent-1">{{operation.produce}}</a>
+            </div>
+            <div class="card-panel">
+                <pre *ngIf="operation.isJson()" lang="json"><code class="json"></code></pre>
+                <pre *ngIf="!operation.isJson()" lang="xml"><code class="xml"></code></pre>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="" (click)="onCloseModal($event)" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+</form>

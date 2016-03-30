@@ -1,6 +1,9 @@
-src/main/webapp/node_modules/
+node_modules/
 target/
 .idea/
+dist/
+typings/
 *.iml
-/src/main/webapp/app/**/*.js
-src/main/webapp/**/*.js.map
+src/**/*.js
+src/**/*.js.map
+*.log
