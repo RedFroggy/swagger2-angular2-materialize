@@ -32,7 +32,10 @@ import 'lodash/lodash';
 import 'materialize-css/dist/css/materialize.css';
 import 'materialize-css/dist/js/materialize.js';
 
+// Highlight
+import 'highlight.js/styles/default.css';
 var hljs = require('highlight.js/lib/highlight');
-hljs.initHighlightingOnLoad();
+require('highlight.js/lib/index');
+window.hljs = hljs;
 
 window.vkbeautify = require('vkbeautify');

@@ -11,14 +11,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = require('angular2/core');
-var pipes_1 = require('../../pipes/pipes');
 var apidoc_service_1 = require('../apidoc.service');
 var apidoc_1 = require('../../model/apidoc');
 var left_menu_1 = require('../left-menu/left-menu');
 var api_main_1 = require('../main/api.main');
 var apidoc_2 = require('../../model/apidoc');
-///<reference path="../../../../typings/jquery/jquery.d.ts" />
-var TYPE_DEFINITION = '#/definitions/';
+var type_modal_1 = require('../modals/type.modal');
 var ApiDocList = (function () {
     function ApiDocList(apiDocService, apiMain) {
         var _this = this;
@@ -33,18 +31,6 @@ var ApiDocList = (function () {
     ApiDocList.prototype.hasStats = function (index) {
         return false;
     };
-    ApiDocList.prototype.onClickParameterType = function (event, entity) {
-        event.preventDefault();
-        if (entity) {
-            this.definition = this.apiDoc.getDefinitionByEntity(entity);
-            console.log(this.definition);
-        }
-        $('#typeObjectModal').openModal();
-    };
-    ApiDocList.prototype.onCloseModal = function (event) {
-        event.preventDefault();
-        $('#typeObjectModal').closeModal();
-    };
     ApiDocList.prototype.goToDetailPage = function (event, operation) {
         event.preventDefault();
         this.apiMain.selectDetailMode(operation);
@@ -53,8 +39,7 @@ var ApiDocList = (function () {
         core_1.Component({
             selector: 'doc-list',
             template: require('./list.html'),
-            pipes: [pipes_1.ValuesPipe],
-            directives: [left_menu_1.LeftMenu]
+            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal]
         }),
         __param(1, core_1.Inject(core_1.forwardRef(function () { return api_main_1.ApiMain; }))), 
         __metadata('design:paramtypes', [apidoc_service_1.ApiDocService, api_main_1.ApiMain])

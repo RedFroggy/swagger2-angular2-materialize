@@ -28,6 +28,7 @@ var ApiDocService = (function () {
                 return observer.next(_this.apiDoc);
             });
         }
+        //TODO config
         return this.http.get(EnvConfig.SERVER_ROOT_URL + '/v2/swagger.json').map(function (res) {
             _this.apiDoc = new apidoc_1.ApiDefinition(res.json());
             console.log(_this.apiDoc);

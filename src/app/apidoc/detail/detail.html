@@ -24,13 +24,13 @@
         </div>
         <div class="input-field col s6">
             <h4>Response content type</h4>
-            <select class="browser-default form-control" [(ngModel)]="operation.produce">
+            <select class="browser-default form-control" [(ngModel)]="operation.produce" materialize-select>
                 <option *ngFor="#produce of operation.produces" value="{{produce}}">{{produce}}</option>
             </select>
         </div>
         <div class="col s6"></div>
         <div class="col s12">
-            <a href="" (click)="send($event,operation)" class="text-black btn right waves-effect waves-light"
+            <a href="" (click)="bodyModal.tryApi($event)" class="text-black btn right waves-effect waves-light"
                [ngClass]="operation.getMethodClass()">Send <i class="mdi-content-send right"></i></a>
             <h4>Parameters</h4>
             <table class="bordered responsive-table">
@@ -39,6 +39,7 @@
                 <th>Description</th>
                 <th>Parameter type</th>
                 <th>Http parameter type</th>
+                <th>Data type</th>
                 </thead>
                 <tbody>
                 <tr *ngFor="#parameter of operation.parameters">
@@ -55,38 +56,36 @@
                     <td>{{parameter.description}}</td>
                     <td>{{parameter.getParameterType()}}</td>
                     <td>{{parameter.in}}</td>
+                    <td>
+                        <a href="" *ngIf="apiDoc.isOperationDtoType(operation)"
+                           (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}
+                        </a>
+                        <span *ngIf="!apiDoc.isOperationDtoType(operation) && apiDoc.isTypeArray(operation)">
+                            [<a href="" (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}</a>]
+                        </span>
+                    </td>
                 </tr>
                 <tr *ngIf="operation.isPatchMethod()">
                     <td>
                         <textarea class="materialize-textarea" placeholder="dto" ([ngModel])="operation.patchJson" required rows="10"></textarea><br/>
-                        <button type="button" (click)="generateJSON($event)" class="text-black btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" >Generate JSON</button>
+                        <button type="button" (click)="generateJSON($event)" class="text-black btn waves-effect waves-light"
+                                [ngClass]="operation.getMethodClass()" >Generate JSON</button>
                     </td>
                     <td>Patch dto</td>
                     <td>body</td>
                     <td>{{parameter}}</td>
+                    <td>
+                        <a href="" *ngIf="apiDoc.isOperationDtoType(operation)"
+                           (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}</a>
+                        <span *ngIf="!apiDoc.isOperationDtoType(operation) && apiDoc.isTypeArray(operation)">
+                            [<a href="" (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}</a>]
+                        </span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <div id="bodyModal" class="modal modal-fixed-footer">
-        <div class="modal-content">
-            <div class="card-panel">
-                <h4>{{apiResult.operation.summary}}</h4>
-                <p>{{apiResult.operation.description}}</p>
-                <p><a href="{{apiDoc.baseUrl}}{{apiResult.operation.getRequestUrl()}}" target="_blank">{{apiDoc.baseUrl}}{{apiResult.operation.getRequestUrl()}}</a></p>
-                <p>Date: {{apiResult.date | date:'short'}}</p>
-                <a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{operation.name}}</a>&nbsp;
-                <a ng-if="apiDetail.status" class="waves-effect waves-light btn" [ngClass]="apiResult.getStatusClass()">{{apiResult.status}}</a>
-                <a class="waves-effect waves-light btn light-blue accent-1">{{operation.produce}}</a>
-            </div>
-            <div class="card-panel">
-                <pre *ngIf="operation.isJson()" lang="json"><code class="json"></code></pre>
-                <pre *ngIf="!operation.isJson()" lang="xml"><code class="xml"></code></pre>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a href="" (click)="onCloseModal($event)" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-    </div>
+    <type-modal #typeModal></type-modal>
+    <body-modal [operation]="operation" #bodyModal></body-modal>
 </form>

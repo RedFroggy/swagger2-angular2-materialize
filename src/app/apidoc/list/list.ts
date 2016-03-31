@@ -1,6 +1,5 @@
 
 import {Component,DynamicComponentLoader, Injector,Inject,forwardRef} from 'angular2/core';
-import {ValuesPipe} from '../../pipes/pipes';
 import {ApiDocService} from '../apidoc.service';
 import {ApiDefinition} from '../../model/apidoc';
 import {ApiDocDetail} from '../detail/detail';
@@ -9,16 +8,12 @@ import {Router} from 'angular2/router';
 import {LeftMenu} from '../left-menu/left-menu';
 import {ApiMain} from '../main/api.main';
 import {PathsObject, OperationObject, DefinitionsObject} from '../../model/apidoc';
-
-///<reference path="../../../../typings/jquery/jquery.d.ts" />
-
-const TYPE_DEFINITION:string = '#/definitions/';
+import {TypeModal} from '../modals/type.modal';
 
 @Component({
     selector:'doc-list',
     template:require('./list.html'),
-    pipes:[ValuesPipe],
-    directives:[LeftMenu]
+    directives:[LeftMenu,TypeModal]
 })
 export class ApiDocList {
     private apiPath:PathsObject;
@@ -35,18 +30,6 @@ export class ApiDocList {
     }
     hasStats(index:number):boolean {
         return false;
-    }
-    onClickParameterType(event:Event,entity:string): void {
-        event.preventDefault();
-        if(entity) {
-            this.definition = this.apiDoc.getDefinitionByEntity(entity);
-            console.log(this.definition);
-        }
-        $('#typeObjectModal').openModal();
-    }
-    onCloseModal(event:Event):void {
-        event.preventDefault();
-        $('#typeObjectModal').closeModal();
     }
     goToDetailPage(event:Event,operation:OperationObject):void {
         event.preventDefault();

@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {ApiDefinition} from '../model/apidoc';
 import {Observer} from 'rxjs/Observer';
 import {Subject} from 'rxjs/Subject';
-import {PathsObject,OperationObject,ApiResult} from '../model/apidoc';
+import {PathsObject,OperationObject,ApiResult,DefinitionsObject} from '../model/apidoc';
 
 @Injectable()
 export class ApiDocService {
@@ -23,6 +23,7 @@ export class ApiDocService {
                 return observer.next(this.apiDoc);
             });
         }
+        //TODO config
         return this.http.get(EnvConfig.SERVER_ROOT_URL + '/v2/swagger.json').map((res:Response) => {
             this.apiDoc = new ApiDefinition(res.json());
             console.log(this.apiDoc);
@@ -67,5 +68,4 @@ export class ApiDocService {
             return apiResult;
         });
     }
-
 }

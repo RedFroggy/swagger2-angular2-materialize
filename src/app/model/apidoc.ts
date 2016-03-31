@@ -78,6 +78,7 @@ export class ApiDefinition {
         if(_apiDoc) {
             Object.assign(this, _apiDoc);
 
+            //TODO config
             this.baseUrl = 'http://'+this.host;
             if(this.basePath) {
                 this.baseUrl +=  this.basePath;
@@ -115,11 +116,14 @@ export class ApiDefinition {
             return definition.name === entity;
         });
     }
-    isDtoType(entityName:string):boolean {
+    isDtoType(entityName:string,toEntityName:boolean = false):boolean {
+        if(toEntityName) {
+            entityName = this.getEntityName(entityName);
+        }
         let definition:DefinitionsObject = this.getDefinitionByEntity(entityName);
         return definition && definition.schema.type === TYPE_OBJECT;
     }
-    toEntityName(name:string):string {
+    getEntityName(name:string):string {
         if(name) {
             return name.replace(TYPE_DEFINITION, '');
         }
@@ -583,10 +587,11 @@ export class SchemaObject implements IJsonSchema {
     type:string;
     required: string[];
     properties: {
-        [name: string]: IJsonSchema
+        [name: string]: IJsonSchema;
     };
     constructor(_schemaObj?:any) {
         this.required = [];
+        this.properties = {};
         if(_schemaObj) {
             Object.assign(this,_schemaObj);
             if(_schemaObj.xml) {

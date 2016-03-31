@@ -1,0 +1,19 @@
+<div class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <div class="card-panel">
+            <h4>{{apiResult.operation.summary}}</h4>
+            <p>{{apiResult.operation.description}}</p>
+            <p><a href="{{apiDoc.baseUrl}}{{apiResult.operation.getRequestUrl()}}" target="_blank">{{apiDoc.baseUrl}}{{apiResult.operation.getRequestUrl()}}</a></p>
+            <p>Date: {{apiResult.date | date:'short'}}</p>
+            <a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{operation.name}}</a>&nbsp;
+            <a ng-if="apiDetail.status" class="waves-effect waves-light btn" [ngClass]="apiResult.getStatusClass()">{{apiResult.status}}</a>
+            <a class="waves-effect waves-light btn light-blue accent-1">{{operation.produce}}</a>
+        </div>
+        <div class="card-panel">
+            <pre><code></code></pre>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="" (click)="closeModal($event)" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>

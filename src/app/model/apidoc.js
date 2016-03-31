@@ -57,6 +57,7 @@ var ApiDefinition = (function () {
         this.tags = [];
         if (_apiDoc) {
             Object.assign(this, _apiDoc);
+            //TODO config
             this.baseUrl = 'http://' + this.host;
             if (this.basePath) {
                 this.baseUrl += this.basePath;
@@ -92,11 +93,15 @@ var ApiDefinition = (function () {
             return definition.name === entity;
         });
     };
-    ApiDefinition.prototype.isDtoType = function (entityName) {
+    ApiDefinition.prototype.isDtoType = function (entityName, toEntityName) {
+        if (toEntityName === void 0) { toEntityName = false; }
+        if (toEntityName) {
+            entityName = this.getEntityName(entityName);
+        }
         var definition = this.getDefinitionByEntity(entityName);
         return definition && definition.schema.type === TYPE_OBJECT;
     };
-    ApiDefinition.prototype.toEntityName = function (name) {
+    ApiDefinition.prototype.getEntityName = function (name) {
         if (name) {
             return name.replace(TYPE_DEFINITION, '');
         }
@@ -458,6 +463,7 @@ exports.ExternalDocumentationObject = ExternalDocumentationObject;
 var SchemaObject = (function () {
     function SchemaObject(_schemaObj) {
         this.required = [];
+        this.properties = {};
         if (_schemaObj) {
             Object.assign(this, _schemaObj);
             if (_schemaObj.xml) {

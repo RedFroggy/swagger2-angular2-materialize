@@ -17,10 +17,10 @@
                 </p><br/>
                 <p>Type:
                     <a href="" *ngIf="apiDoc.isOperationDtoType(operation)"
-                       (click)="onClickParameterType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}
+                       (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}
                     </a>
                         <span *ngIf="!apiDoc.isOperationDtoType(operation) && apiDoc.isTypeArray(operation)">
-                            [<a href="" (click)="onClickParameterType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}
+                            [<a href="" (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}
                         </a>]
                         </span>
                 </p>
@@ -45,45 +45,5 @@
                class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
         </div>
     </div>
-    <div id="typeObjectModal" class="modal modal-fixed-footer">
-        <div class="modal-content">
-            <h4>{{definition.name}}</h4>
-            <table class="responsive-table">
-                <thead>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Required</th>
-                </thead>
-                <tbody>
-                <tr class="collection" *ngFor="#property of definition.schema.properties | values">
-                    <td class="title">{{property.key}}</td>
-                    <td>
-                        <span *ngIf="!definition.schema.isPropertyTypeArray(property.value) && !apiDoc.isDtoType(property.value.type)">{{property.value.type}}</span>
-
-                            <span *ngIf="!definition.schema.isPropertyTypeArray(property.value) && apiDoc.isDtoType(property.value.type)"><a
-                                    href="" (click)="onClickParameterType($event,property.value.type)">{{property.value.type}}</a></span>
-
-                            <span *ngIf="definition.schema.isPropertyTypeArray(property.value) && apiDoc.isDtoType(apiDoc.toEntityName(property.value.items.$ref))">
-                                    [<a href="" (click)="onClickParameterType($event,apiDoc.toEntityName(property.value.items.$ref))">{{apiDoc.toEntityName(property.value.items.$ref)}}</a>]</span>
-
-                            <span *ngIf="definition.schema.isPropertyTypeArray(property.value) && !apiDoc.isDtoType(apiDoc.toEntityName(property.value.items.type))">
-                                    [<span class="red-text">{{apiDoc.toEntityName(property.value.items.type)}}</span>]
-                                </span>
-                    </td>
-                    <td>{{definition.schema.getPropertyByName(property.key)}}</td>
-                    <td>
-                        <input title="Field required" [attr.id]="property.key" type="checkbox"
-                               [checked]="definition.isRequired(property.key)" class="filled-in" disabled/>
-                        <label [attr.for]="property.key"></label>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <a href="" (click)="onCloseModal($event)"
-               class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-    </div>
+    <type-modal #typeModal></type-modal>
 </div>

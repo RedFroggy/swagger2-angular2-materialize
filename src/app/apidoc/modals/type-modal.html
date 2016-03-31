@@ -1,0 +1,40 @@
+<div id="typeObjectModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>{{definition.name}}</h4>
+        <table class="responsive-table">
+            <thead>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+            </thead>
+            <tbody>
+                <tr class="collection" *ngFor="#property of definition.schema.properties | values">
+                    <td class="title">{{property.key}}</td>
+                    <td>
+                        <span *ngIf="isSimpleType(property)">{{property.value.type}}</span>
+                        <span *ngIf="isDtoType(property)">
+                            <a href="" (click)="selectType($event,property)">{{property.value.type}}</a>
+                        </span>
+                        <span *ngIf="isArrayDtoType(property)">
+                            [<a href="" (click)="selectType($event,property)">{{apiDoc.getEntityName(property.value.items.$ref)}}</a>]
+                        </span>
+                        <span *ngIf="isArraySimpleType(property)">
+                            [<span class="red-text">{{apiDoc.getEntityName(property.value.items.type)}}</span>]
+                        </span>
+                    </td>
+                    <td>{{definition.schema.getPropertyByName(property.key)}}</td>
+                    <td>
+                        <input title="Field required" [attr.id]="property.key" type="checkbox"
+                               [checked]="definition.isRequired(property.key)" class="filled-in" disabled/>
+                        <label [attr.for]="property.key"></label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <a href="" (click)="closeModal($event)"
+           class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
