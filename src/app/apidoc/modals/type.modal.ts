@@ -21,21 +21,27 @@ export class TypeModal extends MaterializeModal {
         if(_.isString(property)) {
             entity = property;
         } else {
-            entity =  this.isArrayDtoType(property) ? this.apiDoc.getEntityName(property.value.items.$ref) : property.value.type;
+            entity =  this.isArrayDtoType(property) ? this.apiDoc.getEntityName(property.value.items.$ref) : this.apiDoc.getEntityName(property.value.$ref);
         }
         this.definition = this.apiDoc.getDefinitionByEntity(entity);
         this.openModal(event);
     }
     isSimpleType(property:any):boolean {
-        return !this.definition.schema.isPropertyTypeArray(property.value) && !this.apiDoc.isDtoType(property.value.type);
+        return !this.definition.schema.isPropertyTypeArray(property.value)
+            && !_.isUndefined(property.value.type)
+            && !this.apiDoc.isDtoType(property.value.type);
     }
     isDtoType(property:any):boolean {
-        return !this.definition.schema.isPropertyTypeArray(property.value) && this.apiDoc.isDtoType(property.value.type);
+        return !this.definition.schema.isPropertyTypeArray(property.value)
+            && this.apiDoc.isDtoType(property.value.$ref,true);
     }
     isArrayDtoType(property:any):boolean {
-        return this.definition.schema.isPropertyTypeArray(property.value) && this.apiDoc.isDtoType(property.value.items.$ref,true);
+        return this.definition.schema.isPropertyTypeArray(property.value)
+            && this.apiDoc.isDtoType(property.value.items.$ref,true);
     }
     isArraySimpleType(property:any):boolean {
-        return this.definition.schema.isPropertyTypeArray(property.value) && !this.apiDoc.isDtoType(property.value.items.type,true);
+        return this.definition.schema.isPropertyTypeArray(property.value)
+            && !_.isUndefined(property.value.items.type)
+            && !this.apiDoc.isDtoType(property.value.items.type);
     }
 }

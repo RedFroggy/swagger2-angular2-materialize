@@ -30,12 +30,6 @@ export class ApiResult {
         this.date = new Date();
         this.operation = new OperationObject();
     }
-    getStatusClass():string {
-        if(this.status >= 200 && this.status < 300) {
-            return 'green lighten-2';
-        }
-        return 'red lighten-2';
-    }
     getHighLightClass():string {
         if(this.operation.isJson()) {
             return 'json';
@@ -116,11 +110,14 @@ export class ApiDefinition {
             return definition.name === entity;
         });
     }
-    isDtoType(entityName:string,toEntityName:boolean = false):boolean {
+    isDtoType(type:string,toEntityName:boolean = false):boolean {
         if(toEntityName) {
-            entityName = this.getEntityName(entityName);
+            type = this.getEntityName(type);
         }
-        let definition:DefinitionsObject = this.getDefinitionByEntity(entityName);
+        if(!type) {
+            return false;
+        }
+        let definition:DefinitionsObject = this.getDefinitionByEntity(type);
         return definition && definition.schema.type === TYPE_OBJECT;
     }
     getEntityName(name:string):string {
@@ -149,6 +146,12 @@ export class ApiDefinition {
             return resp.schema.type === TYPE_ARRAY;
         }
         return false;
+    }
+    getStatusClass(status:number):string {
+        if(status >= 200 && status < 300) {
+            return 'green lighten-2';
+        }
+        return 'red lighten-2';
     }
 }
 
@@ -240,14 +243,14 @@ export class OperationObject {
     security: SecurityRequirementObject[];
     dataJson:string;
     patchJson:string;
-    produce:string;
+    produce:{value:string};
     constructor(path?:string,method?:string,_opObj?:any) {
         this.responses = [];
         this.parameters = [];
         this.produces = [];
         this.consumes = [];
         this.path = path;
-        this.produce = 'application/json';
+        this.produce = {selected:'application/json'};
         if(method) {
             this.name = method.toUpperCase();
         }
@@ -269,7 +272,7 @@ export class OperationObject {
                 });
             }
             if(_opObj.produces) {
-                this.produce = this.produces[0];
+                this.produce = {selected:this.produces[0]};
             }
         }
     }
@@ -292,10 +295,12 @@ export class OperationObject {
 
         if(this.parameters.length > 0) {
             this.parameters.forEach((param:ParameterObject) => {
-                if (param.isPathParam()) {
-                    url = url.replace(new RegExp('{' + param.name + '}'), param.value);
-                } else if (param.isQueryParam()) {
-                    url += url.indexOf('?') === -1 ? '?' + param.name + '=' + param.value : '&' + param.name + '=' + param.value;
+                if(param.value && param.value.selected) {
+                    if (param.isPathParam()) {
+                        url = url.replace(new RegExp('{' + param.name + '}'), param.value.selected);
+                    } else if (param.isQueryParam()) {
+                        url += url.indexOf('?') === -1 ? '?' + param.name + '=' + param.value.selected : '&' + param.name + '=' + param.value.selected;
+                    }
                 }
             });
         }
@@ -311,7 +316,10 @@ export class OperationObject {
         return this.name === HTTP_METHOD_PUT;
     }
     isJson():boolean {
-        return this.produce && this.produce.indexOf('json') !== -1;
+        return this.produce && this.produce.value && this.produce.value.indexOf('json') !== -1;
+    }
+    getMapProduces():[{value:string}] {
+        return this.produces.map((mimeType:string) => {return {value:mimeType} ;});
     }
 }
 
@@ -466,13 +474,14 @@ export class ParameterObject {
     'in': string;
     description: string;
     required: boolean;
-    value:any;
+    value:{selected:string};
     schema:ReferenceObject;
     collectionFormat:string;
     items:ItemsObject;
     type:string;
     constructor(_paramObj?:any) {
         this.items = new ItemsObject();
+        this.value = {};
         if(_paramObj) {
             Object.assign(this,_paramObj);
             if(_paramObj.schema) {
@@ -495,15 +504,21 @@ export class ParameterObject {
     isTypeArray():boolean {
         return this.type === TYPE_ARRAY;
     }
+    isTypeEnum():boolean {
+        return this.items.enum;
+    }
     getParameterType():string {
         if(this.isBodyParam()) {
             return this.schema.entity;
         } else if(!this.isTypeArray()) {
             return this.type;
-        } else if (this.items.enum && this.items.enum.length > 0) {
+        } else if (this.isTypeEnum() && this.items.enum.length > 0) {
             return 'Enum ['+this.items.enum.join(',')+']';
         }
         return '['+this.items.type+']';
+    }
+    getEnumMap():[{value:string}] {
+        return this.items.enum.map((enumVal:string) => {return {value:enumVal} ;});
     }
 }
 

@@ -6,11 +6,12 @@ import {OperationObject,ParameterObject,ApiDefinition} from '../../model/apidoc'
 import {Response} from 'angular2/http';
 import {TypeModal} from '../modals/type.modal';
 import {BodyModal} from '../modals/body-modal';
+import {MaterializeSelect} from '../../components/materialize-select';
 
 @Component({
     selector:'doc-detail',
     template:require('./detail.html'),
-    directives:[LeftMenu,TypeModal,BodyModal]
+    directives:[LeftMenu,TypeModal,BodyModal,MaterializeSelect]
 })
 export class ApiDocDetail {
     operation:OperationObject;
@@ -19,8 +20,12 @@ export class ApiDocDetail {
         this.operation = new OperationObject();
         this.apiDoc = new ApiDefinition();
 
-        apiDocService.selectedDetailApi.subscribe((operation:OperationObject) => this.operation = operation);
+        apiDocService.selectedDetailApi.subscribe((operation:OperationObject) => {
+            this.operation = operation;
+            console.log(operation);
+        });
         apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
+
     }
     goToContentPage(event:Event):void {
         event.preventDefault();

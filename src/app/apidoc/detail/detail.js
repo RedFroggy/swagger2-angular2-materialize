@@ -14,6 +14,7 @@ var apidoc_service_1 = require('../apidoc.service');
 var apidoc_1 = require('../../model/apidoc');
 var type_modal_1 = require('../modals/type.modal');
 var body_modal_1 = require('../modals/body-modal');
+var materialize_select_1 = require('../../components/materialize-select');
 var ApiDocDetail = (function () {
     function ApiDocDetail(apiDocService, router) {
         var _this = this;
@@ -21,7 +22,10 @@ var ApiDocDetail = (function () {
         this.router = router;
         this.operation = new apidoc_1.OperationObject();
         this.apiDoc = new apidoc_1.ApiDefinition();
-        apiDocService.selectedDetailApi.subscribe(function (operation) { return _this.operation = operation; });
+        apiDocService.selectedDetailApi.subscribe(function (operation) {
+            _this.operation = operation;
+            console.log(operation);
+        });
         apiDocService.getApi().subscribe(function (apiDoc) { return _this.apiDoc = apiDoc; });
     }
     ApiDocDetail.prototype.goToContentPage = function (event) {
@@ -35,7 +39,7 @@ var ApiDocDetail = (function () {
         core_1.Component({
             selector: 'doc-detail',
             template: require('./detail.html'),
-            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal, body_modal_1.BodyModal]
+            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal, body_modal_1.BodyModal, materialize_select_1.MaterializeSelect]
         }), 
         __metadata('design:paramtypes', [apidoc_service_1.ApiDocService, router_1.Router])
     ], ApiDocDetail);

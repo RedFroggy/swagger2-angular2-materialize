@@ -26,7 +26,6 @@ export class ApiDocService {
         //TODO config
         return this.http.get(EnvConfig.SERVER_ROOT_URL + '/v2/swagger.json').map((res:Response) => {
             this.apiDoc = new ApiDefinition(res.json());
-            console.log(this.apiDoc);
             return this.apiDoc;
         });
     }
@@ -44,8 +43,8 @@ export class ApiDocService {
         reqOptions.url = this.apiDoc.baseUrl+operation.getRequestUrl(false);
 
         let headers:Headers = new Headers();
-        headers.set('Content-Type',operation.produce);
-        headers.set('Accept',operation.produce);
+        headers.set('Content-Type',operation.produce.selected);
+        headers.set('Accept',operation.produce.selected);
         reqOptions.headers = headers;
 
         if(operation.isPostMethod() || operation.isPutMethod()) {

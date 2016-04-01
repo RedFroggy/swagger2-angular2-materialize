@@ -3,11 +3,11 @@
         <div class="card-panel">
             <h4>{{apiResult.operation.summary}}</h4>
             <p>{{apiResult.operation.description}}</p>
-            <p><a href="{{apiDoc.baseUrl}}{{apiResult.operation.getRequestUrl()}}" target="_blank">{{apiDoc.baseUrl}}{{apiResult.operation.getRequestUrl()}}</a></p>
+            <p><a href="{{getFullUrl()}}" target="_blank">{{getFullUrl()}}</a></p>
             <p>Date: {{apiResult.date | date:'short'}}</p>
             <a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{operation.name}}</a>&nbsp;
-            <a ng-if="apiDetail.status" class="waves-effect waves-light btn" [ngClass]="apiResult.getStatusClass()">{{apiResult.status}}</a>
-            <a class="waves-effect waves-light btn light-blue accent-1">{{operation.produce}}</a>
+            <a *ngIf="apiResult.status" class="waves-effect waves-light btn" [ngClass]="apiDoc.getStatusClass(apiResult.status)">{{apiResult.status}}</a>
+            <a class="waves-effect waves-light btn light-blue accent-1">{{operation.produce.selected}}</a>
         </div>
         <div class="card-panel">
             <pre><code></code></pre>

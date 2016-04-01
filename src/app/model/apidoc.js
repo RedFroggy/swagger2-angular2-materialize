@@ -25,12 +25,6 @@ var ApiResult = (function () {
         this.date = new Date();
         this.operation = new OperationObject();
     }
-    ApiResult.prototype.getStatusClass = function () {
-        if (this.status >= 200 && this.status < 300) {
-            return 'green lighten-2';
-        }
-        return 'red lighten-2';
-    };
     ApiResult.prototype.getHighLightClass = function () {
         if (this.operation.isJson()) {
             return 'json';
@@ -93,12 +87,15 @@ var ApiDefinition = (function () {
             return definition.name === entity;
         });
     };
-    ApiDefinition.prototype.isDtoType = function (entityName, toEntityName) {
+    ApiDefinition.prototype.isDtoType = function (type, toEntityName) {
         if (toEntityName === void 0) { toEntityName = false; }
         if (toEntityName) {
-            entityName = this.getEntityName(entityName);
+            type = this.getEntityName(type);
         }
-        var definition = this.getDefinitionByEntity(entityName);
+        if (!type) {
+            return false;
+        }
+        var definition = this.getDefinitionByEntity(type);
         return definition && definition.schema.type === TYPE_OBJECT;
     };
     ApiDefinition.prototype.getEntityName = function (name) {
@@ -127,6 +124,12 @@ var ApiDefinition = (function () {
             return resp.schema.type === TYPE_ARRAY;
         }
         return false;
+    };
+    ApiDefinition.prototype.getStatusClass = function (status) {
+        if (status >= 200 && status < 300) {
+            return 'green lighten-2';
+        }
+        return 'red lighten-2';
     };
     return ApiDefinition;
 })();
@@ -199,7 +202,7 @@ var OperationObject = (function () {
         this.produces = [];
         this.consumes = [];
         this.path = path;
-        this.produce = 'application/json';
+        this.produce = { selected: 'application/json' };
         if (method) {
             this.name = method.toUpperCase();
         }
@@ -221,7 +224,7 @@ var OperationObject = (function () {
                 });
             }
             if (_opObj.produces) {
-                this.produce = this.produces[0];
+                this.produce = { selected: this.produces[0] };
             }
         }
     }
@@ -242,11 +245,13 @@ var OperationObject = (function () {
         var url = !onlyParameters ? this.path : '';
         if (this.parameters.length > 0) {
             this.parameters.forEach(function (param) {
-                if (param.isPathParam()) {
-                    url = url.replace(new RegExp('{' + param.name + '}'), param.value);
-                }
-                else if (param.isQueryParam()) {
-                    url += url.indexOf('?') === -1 ? '?' + param.name + '=' + param.value : '&' + param.name + '=' + param.value;
+                if (param.value && param.value.selected) {
+                    if (param.isPathParam()) {
+                        url = url.replace(new RegExp('{' + param.name + '}'), param.value.selected);
+                    }
+                    else if (param.isQueryParam()) {
+                        url += url.indexOf('?') === -1 ? '?' + param.name + '=' + param.value.selected : '&' + param.name + '=' + param.value.selected;
+                    }
                 }
             });
         }
@@ -262,7 +267,10 @@ var OperationObject = (function () {
         return this.name === HTTP_METHOD_PUT;
     };
     OperationObject.prototype.isJson = function () {
-        return this.produce && this.produce.indexOf('json') !== -1;
+        return this.produce && this.produce.value && this.produce.value.indexOf('json') !== -1;
+    };
+    OperationObject.prototype.getMapProduces = function () {
+        return this.produces.map(function (mimeType) { return { value: mimeType }; });
     };
     return OperationObject;
 })();
@@ -402,6 +410,7 @@ exports.ParametersDefinitionsObject = ParametersDefinitionsObject;
 var ParameterObject = (function () {
     function ParameterObject(_paramObj) {
         this.items = new ItemsObject();
+        this.value = {};
         if (_paramObj) {
             Object.assign(this, _paramObj);
             if (_paramObj.schema) {
@@ -424,6 +433,9 @@ var ParameterObject = (function () {
     ParameterObject.prototype.isTypeArray = function () {
         return this.type === TYPE_ARRAY;
     };
+    ParameterObject.prototype.isTypeEnum = function () {
+        return this.items.enum;
+    };
     ParameterObject.prototype.getParameterType = function () {
         if (this.isBodyParam()) {
             return this.schema.entity;
@@ -431,10 +443,13 @@ var ParameterObject = (function () {
         else if (!this.isTypeArray()) {
             return this.type;
         }
-        else if (this.items.enum && this.items.enum.length > 0) {
+        else if (this.isTypeEnum() && this.items.enum.length > 0) {
             return 'Enum [' + this.items.enum.join(',') + ']';
         }
         return '[' + this.items.type + ']';
+    };
+    ParameterObject.prototype.getEnumMap = function () {
+        return this.items.enum.map(function (enumVal) { return { value: enumVal }; });
     };
     return ParameterObject;
 })();

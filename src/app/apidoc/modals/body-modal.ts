@@ -41,4 +41,7 @@ export class BodyModal extends MaterializeModal {
             }
         });
     }
+    getFullUrl():string {
+        return this.apiDoc.baseUrl+this.apiResult.operation.getRequestUrl();
+    }
 }

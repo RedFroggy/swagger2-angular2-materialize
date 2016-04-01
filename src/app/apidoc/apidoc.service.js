@@ -31,7 +31,6 @@ var ApiDocService = (function () {
         //TODO config
         return this.http.get(EnvConfig.SERVER_ROOT_URL + '/v2/swagger.json').map(function (res) {
             _this.apiDoc = new apidoc_1.ApiDefinition(res.json());
-            console.log(_this.apiDoc);
             return _this.apiDoc;
         });
     };
@@ -47,8 +46,8 @@ var ApiDocService = (function () {
         reqOptions.method = operation.name;
         reqOptions.url = this.apiDoc.baseUrl + operation.getRequestUrl(false);
         var headers = new http_1.Headers();
-        headers.set('Content-Type', operation.produce);
-        headers.set('Accept', operation.produce);
+        headers.set('Content-Type', operation.produce.selected);
+        headers.set('Accept', operation.produce.selected);
         reqOptions.headers = headers;
         if (operation.isPostMethod() || operation.isPutMethod()) {
             reqOptions.body = operation.dataJson;
