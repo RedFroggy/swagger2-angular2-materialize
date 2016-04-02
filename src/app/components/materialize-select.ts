@@ -1,41 +1,32 @@
 
-import {Component,ElementRef,Input,EventEmitter,Output,AfterViewInit} from 'angular2/core';
+import {ElementRef,Input,EventEmitter,Output,AfterViewInit} from 'angular2/core';
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 
-@Component({
-    selector:'materialize-select',
-    template:require('./materialize-select.html')
-})
-export class MaterializeSelect implements AfterViewInit {
-    @Input() model:any;
-    @Input() options:[{label:string,value:string}];
-    @Input() multiple:boolean = false;
-    @Input() selected:string;
-    @Output() selectValueChange: EventEmitter<any> =  new EventEmitter();
+export abstract class MaterializeSelect implements AfterViewInit {
+    model:any;
+    selectValueChange: EventEmitter<any>;
     private selectInput:any;
-    constructor(private el: ElementRef) {}
+    private multiple:boolean;
+    constructor(el: ElementRef,selectValueChange: EventEmitter<any>,multiple:boolean = false) {
+        this.multiple = multiple;
+        this.selectValueChange = selectValueChange;
+    }
     ngAfterViewInit():void {
         this.selectInput = $(DOM.querySelector(this.el.nativeElement,'select'));
-        this.selectInput.material_select();
 
         let divParent:any = $(DOM.querySelector(this.el.nativeElement,'.input-field'));
         divParent.on('change', 'select', () => {
-            this.model.selected = this.selectInput.val();
-            this.selectValueChange.emit(this.model);
+            console.log('input changed',this.selectInput.val());
+            this.onChangeValue();
+            this.updateValue(this.selectInput.val());
         });
     }
+    updateValue(value:string):void {
+        this.model.selected = value;
+        this.selectValueChange.emit(this.model);
+    }
     isSelected(value:string):boolean {
-        return value === this.selected;
+        return false;
     }
-    ngOnChanges(changes):void {
-
-        let dropDownSelect:any = DOM.querySelector(this.el.nativeElement,'ul.select-dropdown');
-        let options:any = $(dropDownSelect).find('li');
-
-        if(this.selectInput && !_.isEmpty(changes.options.currentValue) && _.isEmpty(options)) {
-            this.model.selected = this.selected;
-            this.selectValueChange.emit(this.model);
-            this.selectInput.material_select();
-        }
-    }
+    abstract onChangeValue():void;
 }

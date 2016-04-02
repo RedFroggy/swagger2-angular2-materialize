@@ -6,12 +6,13 @@ import {OperationObject,ParameterObject,ApiDefinition} from '../../model/apidoc'
 import {Response} from 'angular2/http';
 import {TypeModal} from '../modals/type.modal';
 import {BodyModal} from '../modals/body-modal';
-import {MaterializeSelect} from '../../components/materialize-select';
+import {SimpleMaterializeSelect} from '../../components/simple-materialize-select';
+import {MultipleMaterializeSelect} from '../../components/multiple-materialize-select';
 
 @Component({
     selector:'doc-detail',
     template:require('./detail.html'),
-    directives:[LeftMenu,TypeModal,BodyModal,MaterializeSelect]
+    directives:[LeftMenu,TypeModal,BodyModal,SimpleMaterializeSelect,MultipleMaterializeSelect]
 })
 export class ApiDocDetail {
     operation:OperationObject;

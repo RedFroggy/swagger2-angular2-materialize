@@ -48,7 +48,7 @@
             <div class="divider"></div>
             <div class="section">
                 <h5>Response content type</h5>
-                <materialize-select [options]="operation.getMapProduces()" [(model)]="operation.produce" selected="application/json"></materialize-select>
+                <materialize-select-simple [options]="operation.getMapProduces()" [(model)]="operation.produce" [selected]="'application/json'"></materialize-select-simple>
                 {{operation.produce | json}}
             </div>
             <div class="divider"></div>
@@ -71,7 +71,7 @@
                                     <label [attr.for]="parameter.name">{{parameter.name}}</label>
                                 </div>
                                 <div class="input-field" *ngIf="parameter.isTypeEnum()">
-                                    <materialize-select [multiple]="true" [options]="parameter.getEnumMap()" [(model)]="parameter.value"></materialize-select>
+                                    <materialize-select-multiple [multiple]="true" [options]="parameter.getEnumMap()" [(model)]="parameter.value" [selected]="parameter.items.default"></materialize-select-multiple>
                                     {{parameter.value | json}}
                                 </div>
                             </td>

@@ -14,7 +14,8 @@ var apidoc_service_1 = require('../apidoc.service');
 var apidoc_1 = require('../../model/apidoc');
 var type_modal_1 = require('../modals/type.modal');
 var body_modal_1 = require('../modals/body-modal');
-var materialize_select_1 = require('../../components/materialize-select');
+var simple_materialize_select_1 = require('../../components/simple-materialize-select');
+var multiple_materialize_select_1 = require('../../components/multiple-materialize-select');
 var ApiDocDetail = (function () {
     function ApiDocDetail(apiDocService, router) {
         var _this = this;
@@ -39,7 +40,7 @@ var ApiDocDetail = (function () {
         core_1.Component({
             selector: 'doc-detail',
             template: require('./detail.html'),
-            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal, body_modal_1.BodyModal, materialize_select_1.MaterializeSelect]
+            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal, body_modal_1.BodyModal, simple_materialize_select_1.SimpleMaterializeSelect, multiple_materialize_select_1.MultipleMaterializeSelect]
         }), 
         __metadata('design:paramtypes', [apidoc_service_1.ApiDocService, router_1.Router])
     ], ApiDocDetail);
