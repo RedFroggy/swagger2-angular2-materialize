@@ -24,7 +24,7 @@ var AppComponent = (function () {
         }),
         router_1.RouteConfig([
             new router_1.Route({ path: '/home', component: home_1.Home, name: 'Home', useAsDefault: true }),
-            new router_1.Route({ path: '/apis', component: api_main_1.ApiMain, name: 'Apis' })
+            new router_1.Route({ path: '/apis/...', component: api_main_1.ApiMain, name: 'Apis' })
         ]), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

@@ -3,6 +3,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var common_1 = require('angular2/common');
 var TYPE_DEFINITION = '#/definitions/';
 var TYPE_ARRAY = 'array';
 var TYPE_OBJECT = 'object';
@@ -12,8 +13,9 @@ var BODY_PARAM = 'body';
 var HTTP_METHOD_PATCH = 'PATCH';
 var HTTP_METHOD_POST = 'POST';
 var HTTP_METHOD_PUT = 'PUT';
+var HTTP_METHOD_GET = 'GET';
 var METHOD_CLASS = {
-    GET: 'grey lighten-2',
+    GET: 'grey lighten-1',
     POST: 'teal lighten-2',
     PUT: 'yellow lighten-2',
     DELETE: 'red lighten-2',
@@ -25,11 +27,17 @@ var ApiResult = (function () {
         this.date = new Date();
         this.operation = new OperationObject();
     }
+    //TODO const
     ApiResult.prototype.getHighLightClass = function () {
         if (this.operation.isJson()) {
             return 'json';
         }
         return 'xml';
+    };
+    ApiResult.prototype.getRequestTime = function () {
+        if (this.date && this.endDate) {
+            return this.endDate.getTime() - this.date.getTime();
+        }
     };
     return ApiResult;
 })();
@@ -103,12 +111,12 @@ var ApiDefinition = (function () {
             return name.replace(TYPE_DEFINITION, '');
         }
     };
-    ApiDefinition.prototype.isOperationDtoType = function (operation) {
-        var resp = operation.getOkResponse();
+    ApiDefinition.prototype.isOperationDtoType = function (operation, code) {
+        var resp = operation.getResponseByCode(code);
         return resp && resp.schema && resp.schema.$ref && this.isDtoType(resp.schema.entity);
     };
-    ApiDefinition.prototype.getDtoType = function (operation) {
-        var resp = operation.getOkResponse();
+    ApiDefinition.prototype.getDtoType = function (operation, code) {
+        var resp = operation.getResponseByCode(code);
         if (resp && resp.schema) {
             if (resp.schema.entity) {
                 return resp.schema.entity;
@@ -118,8 +126,8 @@ var ApiDefinition = (function () {
             }
         }
     };
-    ApiDefinition.prototype.isTypeArray = function (operation) {
-        var resp = operation.getOkResponse();
+    ApiDefinition.prototype.isTypeArray = function (operation, code) {
+        var resp = operation.getResponseByCode(code);
         if (resp && resp.schema) {
             return resp.schema.type === TYPE_ARRAY;
         }
@@ -127,9 +135,9 @@ var ApiDefinition = (function () {
     };
     ApiDefinition.prototype.getStatusClass = function (status) {
         if (status >= 200 && status < 300) {
-            return 'green lighten-2';
+            return 'green darken-2';
         }
-        return 'red lighten-2';
+        return ' red darken-2';
     };
     return ApiDefinition;
 })();
@@ -233,15 +241,16 @@ var OperationObject = (function () {
             return METHOD_CLASS[this.name];
         }
     };
-    OperationObject.prototype.getOkResponse = function () {
+    OperationObject.prototype.getResponseByCode = function (code) {
         var respObj = this.responses.find(function (resp) {
-            return resp.code === '200';
+            return resp.code === code;
         });
         if (respObj) {
             return respObj.response;
         }
     };
     OperationObject.prototype.getRequestUrl = function (onlyParameters) {
+        if (onlyParameters === void 0) { onlyParameters = false; }
         var url = !onlyParameters ? this.path : '';
         if (this.parameters.length > 0) {
             this.parameters.forEach(function (param) {
@@ -266,8 +275,11 @@ var OperationObject = (function () {
     OperationObject.prototype.isPutMethod = function () {
         return this.name === HTTP_METHOD_PUT;
     };
+    OperationObject.prototype.isGetMethod = function () {
+        return this.name === HTTP_METHOD_GET;
+    };
     OperationObject.prototype.isJson = function () {
-        return this.produce && this.produce.value && this.produce.value.indexOf('json') !== -1;
+        return this.produce && this.produce.selected && this.produce.selected.indexOf('json') !== -1;
     };
     OperationObject.prototype.getMapProduces = function () {
         return this.produces.map(function (mimeType) { return { value: mimeType }; });
@@ -411,6 +423,7 @@ var ParameterObject = (function () {
     function ParameterObject(_paramObj) {
         this.items = new ItemsObject();
         this.value = {};
+        this.control = new common_1.Control();
         if (_paramObj) {
             Object.assign(this, _paramObj);
             if (_paramObj.schema) {
@@ -419,6 +432,7 @@ var ParameterObject = (function () {
             if (_paramObj.items) {
                 this.items = new ItemsObject(_paramObj.items);
             }
+            this.createControl();
         }
     }
     ParameterObject.prototype.isPathParam = function () {
@@ -434,7 +448,7 @@ var ParameterObject = (function () {
         return this.type === TYPE_ARRAY;
     };
     ParameterObject.prototype.isTypeEnum = function () {
-        return this.items.enum;
+        return this.items.enum && !_.isEmpty(this.items.enum);
     };
     ParameterObject.prototype.getParameterType = function () {
         if (this.isBodyParam()) {
@@ -450,6 +464,11 @@ var ParameterObject = (function () {
     };
     ParameterObject.prototype.getEnumMap = function () {
         return this.items.enum.map(function (enumVal) { return { value: enumVal }; });
+    };
+    ParameterObject.prototype.createControl = function () {
+        if (this.required) {
+            this.control = new common_1.Control(this.name, common_1.Validators.required);
+        }
     };
     return ParameterObject;
 })();

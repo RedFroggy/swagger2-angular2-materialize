@@ -1,6 +1,7 @@
 import {Component,ElementRef,Input,Output,EventEmitter} from 'angular2/core';
 import {MaterializeSelect} from './materialize-select';
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
+import {Control} from 'angular2/common';
 
 @Component({
     selector:'materialize-select-simple',
@@ -12,6 +13,7 @@ export class SimpleMaterializeSelect extends MaterializeSelect {
     @Input() selected:string;
     @Output() selectValueChange: EventEmitter<any> =  new EventEmitter();
     constructor(private el: ElementRef) {
+        this.control = new Control();
         super(el,this.selectValueChange,false);
     }
     ngOnChanges(changes):void {
@@ -23,6 +25,7 @@ export class SimpleMaterializeSelect extends MaterializeSelect {
             this.selectInput.material_select();
         }
     }
+    onChangeValue():void {}
     isSelected(value:string):boolean {
         return value === this.selected;
     }

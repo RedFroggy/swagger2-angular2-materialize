@@ -8,8 +8,9 @@ import {Router} from 'angular2/router';
 })
 export class Header {
     constructor(private router:Router) {}
-    goToPage($event:Event,pageName:string):void {
+    goToPage($event:Event,...apis):void {
         $event.preventDefault();
-        this.router.navigate([pageName]);
+        apis.push({path:1});
+        this.router.navigate(apis);
     }
 }

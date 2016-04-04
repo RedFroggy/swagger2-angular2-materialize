@@ -15,7 +15,7 @@ export class TypeModal extends MaterializeModal {
         super(apiDocService,el);
         this.definition = new DefinitionsObject();
     }
-    selectType(event:Event,property:any): void {
+    selectType(event:Event,property:any,openModal:boolean = true): void {
         event.preventDefault();
         let entity:string;
         if(_.isString(property)) {
@@ -24,7 +24,9 @@ export class TypeModal extends MaterializeModal {
             entity =  this.isArrayDtoType(property) ? this.apiDoc.getEntityName(property.value.items.$ref) : this.apiDoc.getEntityName(property.value.$ref);
         }
         this.definition = this.apiDoc.getDefinitionByEntity(entity);
-        this.openModal(event);
+        if(openModal) {
+            this.openModal(event);
+        }
     }
     isSimpleType(property:any):boolean {
         return !this.definition.schema.isPropertyTypeArray(property.value)

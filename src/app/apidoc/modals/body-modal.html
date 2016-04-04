@@ -1,13 +1,26 @@
 <div class="modal modal-fixed-footer">
     <div class="modal-content">
         <div class="card-panel">
-            <h4>{{apiResult.operation.summary}}</h4>
-            <p>{{apiResult.operation.description}}</p>
-            <p><a href="{{getFullUrl()}}" target="_blank">{{getFullUrl()}}</a></p>
-            <p>Date: {{apiResult.date | date:'short'}}</p>
-            <a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{operation.name}}</a>&nbsp;
-            <a *ngIf="apiResult.status" class="waves-effect waves-light btn" [ngClass]="apiDoc.getStatusClass(apiResult.status)">{{apiResult.status}}</a>
-            <a class="waves-effect waves-light btn light-blue accent-1">{{operation.produce.selected}}</a>
+            <div class="row">
+                <div class="col s8">
+                    <h4>{{apiResult.operation.summary}}</h4>
+                    <p>{{apiResult.operation.description}}</p>
+                    <p><a href="{{getFullUrl()}}" target="_blank">{{getFullUrl()}}</a></p>
+                    <p>Date: {{apiResult.date | date:'short'}}</p>
+                </div>
+                <div class="col s4">
+                    <p>
+                        <a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{operation.name}}</a>&nbsp;
+                        <a *ngIf="apiResult.status" class="waves-effect waves-light btn" [ngClass]="apiDoc.getStatusClass(apiResult.status)">{{apiResult.status}}</a>
+                    </p>
+                    <p>
+                        <a class="waves-effect waves-light btn light-blue accent-1" *ngIf="apiResult.operation.isGetMethod()">{{operation.produce.selected}}</a>
+                    </p>
+                    <p>
+                        <a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{apiResult.getRequestTime()}} ms</a>
+                    </p>
+                </div>
+            </div>
         </div>
         <div class="card-panel">
             <pre><code></code></pre>

@@ -5,7 +5,7 @@ import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 export abstract class MaterializeSelect implements AfterViewInit {
     model:any;
     selectValueChange: EventEmitter<any>;
-    private selectInput:any;
+    protected selectInput:any;
     private multiple:boolean;
     constructor(el: ElementRef,selectValueChange: EventEmitter<any>,multiple:boolean = false) {
         this.multiple = multiple;
@@ -16,7 +16,6 @@ export abstract class MaterializeSelect implements AfterViewInit {
 
         let divParent:any = $(DOM.querySelector(this.el.nativeElement,'.input-field'));
         divParent.on('change', 'select', () => {
-            console.log('input changed',this.selectInput.val());
             this.onChangeValue();
             this.updateValue(this.selectInput.val());
         });

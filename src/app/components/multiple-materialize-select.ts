@@ -1,6 +1,9 @@
 import {Component,ElementRef,Input,Output,EventEmitter} from 'angular2/core';
 import {MaterializeSelect} from './materialize-select';
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
+import {Control} from 'angular2/common';
+
+/// <reference path="../../../typings/main/ambient/jquery/index.d.ts" />
 
 @Component({
     selector:'materialize-select-multiple',
@@ -29,7 +32,6 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
         ul.children('li').toArray().forEach((li, i) => {
             $(li).removeClass('active');
             let value:string = this.selectInput.children('option').toArray()[i].value;
-            console.log(value,this.selected);
             if(value === this.selected) {
                 $(li).addClass('active');
                 this.selectInput.val([this.selected]);

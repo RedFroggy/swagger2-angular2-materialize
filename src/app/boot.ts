@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import {ApiDocService} from './apidoc/apidoc.service';
 import '../assets/styles/styles.css';
 
-export function main(initialState = {}) {
+export function main() {
     return bootstrap(AppComponent, [
         HTTP_PROVIDERS,
         ROUTER_PROVIDERS,

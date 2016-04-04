@@ -12,14 +12,10 @@ var http_1 = require('angular2/http');
 var EnvConfig = require('../utils/env.config');
 var Observable_1 = require('rxjs/Observable');
 var apidoc_1 = require('../model/apidoc');
-var Subject_1 = require('rxjs/Subject');
 var apidoc_2 = require('../model/apidoc');
 var ApiDocService = (function () {
     function ApiDocService(http) {
         this.http = http;
-        this.selectedApi = new Subject_1.Subject();
-        this.selectedDetailApi = new Subject_1.Subject();
-        console.log('ApiDocService constructor');
     }
     ApiDocService.prototype.getApi = function () {
         var _this = this;
@@ -34,21 +30,17 @@ var ApiDocService = (function () {
             return _this.apiDoc;
         });
     };
-    ApiDocService.prototype.selectApiList = function (apiPath) {
-        this.selectedApi.next(apiPath);
-    };
-    ApiDocService.prototype.selectDetailApi = function (operation) {
-        this.selectedDetailApi.next(operation);
-    };
     ApiDocService.prototype.sendRequest = function (operation) {
         var apiResult = new apidoc_2.ApiResult();
         var reqOptions = new http_1.RequestOptions();
         reqOptions.method = operation.name;
         reqOptions.url = this.apiDoc.baseUrl + operation.getRequestUrl(false);
-        var headers = new http_1.Headers();
-        headers.set('Content-Type', operation.produce.selected);
-        headers.set('Accept', operation.produce.selected);
-        reqOptions.headers = headers;
+        if (operation.isGetMethod()) {
+            var headers = new http_1.Headers();
+            headers.set('Content-Type', operation.produce.selected);
+            headers.set('Accept', operation.produce.selected);
+            reqOptions.headers = headers;
+        }
         if (operation.isPostMethod() || operation.isPutMethod()) {
             reqOptions.body = operation.dataJson;
         }
@@ -58,7 +50,7 @@ var ApiDocService = (function () {
         console.log('Calling api with options', reqOptions);
         return this.http.request(new http_1.Request(reqOptions)).map(function (res) {
             apiResult.operation = operation;
-            apiResult.date = new Date();
+            apiResult.endDate = new Date();
             if (operation.isJson()) {
                 apiResult.message = res.json();
             }

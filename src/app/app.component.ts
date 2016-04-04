@@ -13,7 +13,7 @@ import {ApiMain} from './apidoc/main/api.main';
 })
 @RouteConfig([
     new Route({path: '/home', component: Home, name: 'Home',useAsDefault: true}),
-    new Route({path: '/apis', component: ApiMain, name: 'Apis'})
+    new Route({path: '/apis/...', component: ApiMain, name: 'Apis'})
 ])
 export class AppComponent {
  constructor() {

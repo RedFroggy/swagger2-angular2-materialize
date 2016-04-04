@@ -4,28 +4,19 @@ import {ApiDocList} from '../list/list';
 import {ApiDocDetail} from '../detail/detail';
 import {ApiDocService} from '../apidoc.service';
 import {PathsObject,OperationObject} from '../../model/apidoc';
+import {RouteConfig,Route,ROUTER_DIRECTIVES} from 'angular2/router';
 
 @Component({
     selector:'doc-main',
-    directives:[LeftMenu,ApiDocList,ApiDocDetail],
+    directives:[LeftMenu,ROUTER_DIRECTIVES],
     template:`
     <div class="row">
         <left-menu></left-menu>
-        <div class="col s9">
-            <doc-list [hidden]="!listMode"></doc-list>
-            <doc-detail [hidden]="listMode"></doc-detail>
-        </div>
+        <router-outlet></router-outlet>
     </div>`
 })
-export class ApiMain {
-    private listMode:boolean = false;
-    constructor(private apiDocService:ApiDocService) {}
-    selectListMode(apiPath:PathsObject):void {
-        this.listMode = true;
-        this.apiDocService.selectApiList(apiPath);
-    }
-    selectDetailMode(operation:OperationObject):void {
-        this.apiDocService.selectDetailApi(operation);
-        this.listMode = false;
-    }
-}
+@RouteConfig([
+    new Route({path: '/:path', component: ApiDocList, name: 'ApiDocList', useAsDefault: true}),
+    new Route({path: '/:path/detail/:operation', component: ApiDocDetail, name: 'ApiDocDetail',})
+])
+export class ApiMain {}

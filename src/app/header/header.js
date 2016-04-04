@@ -13,9 +13,14 @@ var Header = (function () {
     function Header(router) {
         this.router = router;
     }
-    Header.prototype.goToPage = function ($event, pageName) {
+    Header.prototype.goToPage = function ($event) {
+        var apis = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            apis[_i - 1] = arguments[_i];
+        }
         $event.preventDefault();
-        this.router.navigate([pageName]);
+        apis.push({ path: 1 });
+        this.router.navigate(apis);
     };
     Header = __decorate([
         core_1.Component({

@@ -1,103 +1,98 @@
-<br/>
-<a href="" (click)="goToContentPage($event)" class="btn red darken-2 mdi-navigation-arrow-back" title="Back">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back
-</a>
-
-<div class="card">
-    <div class="card-panel" [ngClass]="operation.getMethodClass()">
-        <strong>{{operation.name}}</strong>&nbsp;- <span><a href="">{{operation.path}}</a></span>
+<div class="col s9">
+    <div class="row">
+        <a href="" (click)="goToListPage($event)" class="btn red darken-2 mdi-navigation-arrow-back" title="Back">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back
+        </a>
+    <div class="row">
+        <div>
+            <h5>{{operation.summary}}</h5>
+            <a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{operation.name}}</a>
+            <p>{{operation.description}}</p>
+            <a href="{{apiDoc.baseUrl}}{{operation.getRequestUrl()}}" target="_blank">{{apiDoc.baseUrl}}{{operation.getRequestUrl()}}</a>
+        </div>
     </div>
-    <div class="card-content">
-        <p>{{operation.summary}}</p>
-        <p>{{operation.description}}</p>
-    </div>
-</div>
-<div>
-    <form name="apiDetailForm">
-        <div [hidden]="!operation.parameters || operation.parameters.length === 0">
-            <div class="section">
-                <h5>Response messages</h5>
-                <table class="bordered responsive-table">
-                    <thead>
+    <div class="row">
+        <form class="form" [ngFormModel]="apiDetailForm">
+            <div [hidden]="!operation.parameters || operation.parameters.length === 0">
+                <div class="section" [hidden]="!operation.isGetMethod()">
+                    <h5>Response content type</h5>
+                    <materialize-select-simple [options]="operation.getMapProduces()"  [(model)]="operation.produce" [selected]="'application/json'"></materialize-select-simple>
+                    {{operation.produce | json}}
+                </div>
+                <div class="section">
+                    <button  (click)="bodyModal.tryApi($event)" class="text-black btn right waves-effect waves-light"
+                       [ngClass]="operation.getMethodClass()" [disabled]="!apiDetailForm.valid">Send <i class="mdi-content-send right"></i></button>
+                    <h5>Parameters</h5>
+                    <table class="bordered responsive-table">
+                        <thead>
+                        <th>Parameter</th>
+                        <th>Description</th>
+                        <th>Parameter type</th>
+                        <th>Data type</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="#parameter of operation.parameters">
+                                <td *ngIf="!parameter.isBodyParam()">
+                                    <div class="input-field" *ngIf="!parameter.isTypeEnum()">
+                                        <input [attr.id]="parameter.name" [ngFormControl]="parameter.control" type="text" [(ngModel)]="parameter.value.selected"/>
+                                        <label [attr.for]="parameter.name">{{parameter.name}}</label>
+                                    </div>
+                                    <div class="input-field" *ngIf="parameter.isTypeEnum()">
+                                        <materialize-select-multiple [options]="parameter.getEnumMap()" [(model)]="parameter.value"
+                                                                     [selected]="parameter.items.default"></materialize-select-multiple>
+                                        {{parameter.value | json}}
+                                    </div>
+                                </td>
+                                <td *ngIf="parameter.isBodyParam()">
+                                    <textarea [attr.id]="parameter.name" class="materialize-textarea" [ngFormControl]="parameter.control" placeholder="{{parameter.name}}" [(ngModel)]="operation.dataJson" required rows="10"></textarea><br/>
+                                    <button type="button" (click)="generateJSON($event,parameter)" class="text-black btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" >Generate JSON</button>
+                                </td>
+                                <td>{{parameter.description}}</td>
+                                <td>{{parameter.in}}</td>
+                                <td>{{parameter.getParameterType()}}</td>
+                            </tr>
+                            <tr *ngIf="operation.isPatchMethod()">
+                                <td>
+                                    <textarea [attr.id]="parameter.name" [ngFormControl]="parameter.control" class="materialize-textarea" placeholder="dto" [required]="parameter.required" ([ngModel])="operation.patchJson" required rows="10"></textarea><br/>
+                                    <button type="button" (click)="generateJSON($event)" class="text-black btn waves-effect waves-light"
+                                            [ngClass]="operation.getMethodClass()" >Generate JSON</button>
+                                </td>
+                                <td>Patch dto</td>
+                                <td>body</td>
+                                <td>{{parameter}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section">
+                    <h5>Response messages</h5>
+                    <table class="bordered responsive-table">
+                        <thead>
                         <th>Http status code</th>
                         <th>Reason</th>
                         <th>Response Model</th>
                         <th>Headers</th>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr *ngFor="#response of operation.responses">
                             <td><a class="waves-effect waves-light btn" [ngClass]="apiDoc.getStatusClass(response.code)">{{response.code}}</a></td>
                             <td>{{response.response.description}}</td>
                             <td>
-                                <a href="" *ngIf="apiDoc.isOperationDtoType(operation)"
-                                   (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}</a>
-                                <span *ngIf="!apiDoc.isOperationDtoType(operation) && apiDoc.isTypeArray(operation)">
-                                    [<a href="" (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}</a>]
-                                </span>
+                                <a href="" *ngIf="apiDoc.isOperationDtoType(operation,response.code)"
+                                   (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation,response.code)}}</a>
+                                    <span *ngIf="!apiDoc.isOperationDtoType(operation,response.code) && apiDoc.isTypeArray(operation,response.code)">
+                                        [<a href="" (click)="typeModal.selectType($event,apiDoc.getDtoType(operation,response.code))">{{apiDoc.getDtoType(operation,response.code)}}</a>]
+                                    </span>
                             </td>
-                            <td>???</td>
+                            <td></td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="divider"></div>
-            <div class="section">
-                <h5>Request url</h5>
-                <p><a href="">{{apiDoc.baseUrl}}{{operation.getRequestUrl()}}</a></p>
-            </div>
-            <div class="divider"></div>
-            <div class="section">
-                <h5>Response content type</h5>
-                <materialize-select-simple [options]="operation.getMapProduces()" [(model)]="operation.produce" [selected]="'application/json'"></materialize-select-simple>
-                {{operation.produce | json}}
-            </div>
-            <div class="divider"></div>
-            <div class="section">
-                <a href="" (click)="bodyModal.tryApi($event)" class="text-black btn right waves-effect waves-light"
-                   [ngClass]="operation.getMethodClass()">Send <i class="mdi-content-send right"></i></a>
-                <h5>Parameters</h5>
-                <table class="bordered responsive-table">
-                    <thead>
-                    <th>Parameter</th>
-                    <th>Description</th>
-                    <th>Parameter type</th>
-                    <th>Data type</th>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="#parameter of operation.parameters">
-                            <td *ngIf="!parameter.isBodyParam()">
-                                <div class="input-field" *ngIf="!parameter.isTypeEnum()">
-                                    <input [attr.id]="parameter.name" name="parameter{{$index}}" type="text" [(ngModel)]="parameter.value" [required]="parameter.required" />
-                                    <label [attr.for]="parameter.name">{{parameter.name}}</label>
-                                </div>
-                                <div class="input-field" *ngIf="parameter.isTypeEnum()">
-                                    <materialize-select-multiple [multiple]="true" [options]="parameter.getEnumMap()" [(model)]="parameter.value" [selected]="parameter.items.default"></materialize-select-multiple>
-                                    {{parameter.value | json}}
-                                </div>
-                            </td>
-                            <td *ngIf="parameter.isBodyParam()">
-                                <textarea class="materialize-textarea" [required]="parameter.required" placeholder="{{parameter.name}}" [(ngModel)]="operation.dataJson" required rows="10"></textarea><br/>
-                                <button type="button" (click)="generateJSON($event,parameter)" class="text-black btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" >Generate JSON</button>
-                            </td>
-                            <td>{{parameter.description}}</td>
-                            <td>{{parameter.in}}</td>
-                            <td>{{parameter.getParameterType()}}</td>
-                        </tr>
-                        <tr *ngIf="operation.isPatchMethod()">
-                            <td>
-                                <textarea class="materialize-textarea" placeholder="dto" [required]="parameter.required" ([ngModel])="operation.patchJson" required rows="10"></textarea><br/>
-                                <button type="button" (click)="generateJSON($event)" class="text-black btn waves-effect waves-light"
-                                        [ngClass]="operation.getMethodClass()" >Generate JSON</button>
-                            </td>
-                            <td>Patch dto</td>
-                            <td>body</td>
-                            <td>{{parameter}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <type-modal #typeModal></type-modal>
-        <body-modal [operation]="operation" #bodyModal></body-modal>
-    </form>
+            <type-modal #typeModal></type-modal>
+            <body-modal [operation]="operation" #bodyModal></body-modal>
+        </form>
+    </div>
+    </div>
 </div>

@@ -11,27 +11,21 @@ var core_1 = require('angular2/core');
 var left_menu_1 = require('../left-menu/left-menu');
 var list_1 = require('../list/list');
 var detail_1 = require('../detail/detail');
-var apidoc_service_1 = require('../apidoc.service');
+var router_1 = require('angular2/router');
 var ApiMain = (function () {
-    function ApiMain(apiDocService) {
-        this.apiDocService = apiDocService;
-        this.listMode = false;
+    function ApiMain() {
     }
-    ApiMain.prototype.selectListMode = function (apiPath) {
-        this.listMode = true;
-        this.apiDocService.selectApiList(apiPath);
-    };
-    ApiMain.prototype.selectDetailMode = function (operation) {
-        this.apiDocService.selectDetailApi(operation);
-        this.listMode = false;
-    };
     ApiMain = __decorate([
         core_1.Component({
             selector: 'doc-main',
-            directives: [left_menu_1.LeftMenu, list_1.ApiDocList, detail_1.ApiDocDetail],
-            template: "\n    <div class=\"row\">\n        <left-menu></left-menu>\n        <div class=\"col s9\">\n            <doc-list [hidden]=\"!listMode\"></doc-list>\n            <doc-detail [hidden]=\"listMode\"></doc-detail>\n        </div>\n    </div>"
-        }), 
-        __metadata('design:paramtypes', [apidoc_service_1.ApiDocService])
+            directives: [left_menu_1.LeftMenu, router_1.ROUTER_DIRECTIVES],
+            template: "\n    <div class=\"row\">\n        <left-menu></left-menu>\n        <router-outlet></router-outlet>\n    </div>"
+        }),
+        router_1.RouteConfig([
+            new router_1.Route({ path: '/:path', component: list_1.ApiDocList, name: 'ApiDocList', useAsDefault: true }),
+            new router_1.Route({ path: '/:path/detail/:operation', component: detail_1.ApiDocDetail, name: 'ApiDocDetail', })
+        ]), 
+        __metadata('design:paramtypes', [])
     ], ApiMain);
     return ApiMain;
 })();

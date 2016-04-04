@@ -19,8 +19,17 @@ export class BodyModal extends MaterializeModal {
     }
     tryApi(event:Event):void {
         event.preventDefault();
+        this.apiResult.date = new Date();
         this.apiDocService.sendRequest(this.operation).subscribe((apiResult:ApiResult) => {
             this.apiResult = apiResult;
+            this.beautifyResponse(event);
+        },(err:Response) => {
+            console.log('Request error',err);
+            let body:string = err.text();
+            this.apiResult.operation = this.operation;
+            this.apiResult.endDate = new Date();
+            this.apiResult.status = err.status;
+            this.apiResult.message = _.isEmpty(body) ? body : err.json();
             this.beautifyResponse(event);
         });
     }
@@ -32,7 +41,7 @@ export class BodyModal extends MaterializeModal {
                 this.zone.run(() => {
                     if (!_.isEmpty(this.apiResult.message)) {
                         if (this.operation.isJson()) {
-                            codeElement.html(hljs.highlight('json', JSON.stringify(this.apiResult.message, null, 4)).value);
+                            codeElement.html(hljs.highlight('json', JSON.stringify(this.apiResult.message,null,4)).value);
                         } else {
                             codeElement.text(vkbeautify.xml(this.apiResult.message));
                         }

@@ -1,3 +1,6 @@
+import {Control,Validators} from 'angular2/common';
+
+///<reference path="../../../typings/browser/ambient/node/index.d.ts" />
 
 type MimeTypes = string[];
 type Parameters = (ParameterObject)[];
@@ -11,9 +14,10 @@ const BODY_PARAM:string = 'body';
 const HTTP_METHOD_PATCH:string = 'PATCH';
 const HTTP_METHOD_POST:string = 'POST';
 const HTTP_METHOD_PUT:string = 'PUT';
+const HTTP_METHOD_GET:string = 'GET';
 
 const METHOD_CLASS:Object = {
-    GET:'grey lighten-2',
+    GET:'grey lighten-1',
     POST:'teal lighten-2',
     PUT:'yellow lighten-2',
     DELETE:'red lighten-2',
@@ -25,16 +29,23 @@ export class ApiResult {
     message:string;
     status:number;
     date:Date;
+    endDate:Date;
     operation:OperationObject;
     constructor() {
         this.date = new Date();
         this.operation = new OperationObject();
     }
+    //TODO const
     getHighLightClass():string {
         if(this.operation.isJson()) {
             return 'json';
         }
         return 'xml';
+    }
+    getRequestTime():number {
+        if(this.date && this.endDate) {
+            return this.endDate.getTime() - this.date.getTime();
+        }
     }
 }
 
@@ -125,12 +136,12 @@ export class ApiDefinition {
             return name.replace(TYPE_DEFINITION, '');
         }
     }
-    isOperationDtoType(operation:OperationObject):boolean {
-        let resp:ResponseObject = operation.getOkResponse();
+    isOperationDtoType(operation:OperationObject,code:string):boolean {
+        let resp:ResponseObject = operation.getResponseByCode(code);
         return resp && resp.schema && resp.schema.$ref && this.isDtoType(resp.schema.entity);
     }
-    getDtoType(operation:OperationObject):string {
-        let resp:ResponseObject = operation.getOkResponse();
+    getDtoType(operation:OperationObject,code:string):string {
+        let resp:ResponseObject = operation.getResponseByCode(code);
         if(resp && resp.schema) {
             if (resp.schema.entity) {
                 return resp.schema.entity;
@@ -140,8 +151,8 @@ export class ApiDefinition {
             }
         }
     }
-    isTypeArray(operation:OperationObject):boolean {
-        let resp:ResponseObject = operation.getOkResponse();
+    isTypeArray(operation:OperationObject,code:string):boolean {
+        let resp:ResponseObject = operation.getResponseByCode(code);
         if(resp && resp.schema) {
             return resp.schema.type === TYPE_ARRAY;
         }
@@ -149,9 +160,9 @@ export class ApiDefinition {
     }
     getStatusClass(status:number):string {
         if(status >= 200 && status < 300) {
-            return 'green lighten-2';
+            return 'green darken-2';
         }
-        return 'red lighten-2';
+        return ' red darken-2';
     }
 }
 
@@ -243,7 +254,7 @@ export class OperationObject {
     security: SecurityRequirementObject[];
     dataJson:string;
     patchJson:string;
-    produce:{value:string};
+    produce:{value?:string,selected:string};
     constructor(path?:string,method?:string,_opObj?:any) {
         this.responses = [];
         this.parameters = [];
@@ -281,16 +292,16 @@ export class OperationObject {
             return METHOD_CLASS[this.name];
         }
     }
-    getOkResponse():ResponseObject {
+    getResponseByCode(code:string):ResponseObject {
         let respObj:ResponsesObject = this.responses.find((resp:ResponsesObject) => {
-            return resp.code === '200';
+            return resp.code === code;
         });
 
         if(respObj) {
             return respObj.response;
         }
     }
-    getRequestUrl(onlyParameters:boolean):string {
+    getRequestUrl(onlyParameters:boolean = false):string {
         let url :string = !onlyParameters ? this.path : '';
 
         if(this.parameters.length > 0) {
@@ -315,8 +326,11 @@ export class OperationObject {
     isPutMethod():boolean {
         return this.name === HTTP_METHOD_PUT;
     }
+    isGetMethod():boolean {
+        return this.name === HTTP_METHOD_GET;
+    }
     isJson():boolean {
-        return this.produce && this.produce.value && this.produce.value.indexOf('json') !== -1;
+        return this.produce && this.produce.selected && this.produce.selected.indexOf('json') !== -1;
     }
     getMapProduces():[{value:string}] {
         return this.produces.map((mimeType:string) => {return {value:mimeType} ;});
@@ -479,9 +493,11 @@ export class ParameterObject {
     collectionFormat:string;
     items:ItemsObject;
     type:string;
+    control:Control;
     constructor(_paramObj?:any) {
         this.items = new ItemsObject();
         this.value = {};
+        this.control = new Control();
         if(_paramObj) {
             Object.assign(this,_paramObj);
             if(_paramObj.schema) {
@@ -490,6 +506,7 @@ export class ParameterObject {
             if(_paramObj.items) {
                 this.items = new ItemsObject(_paramObj.items);
             }
+            this.createControl();
         }
     }
     isPathParam():boolean {
@@ -505,7 +522,7 @@ export class ParameterObject {
         return this.type === TYPE_ARRAY;
     }
     isTypeEnum():boolean {
-        return this.items.enum;
+        return this.items.enum && !_.isEmpty(this.items.enum);
     }
     getParameterType():string {
         if(this.isBodyParam()) {
@@ -519,6 +536,11 @@ export class ParameterObject {
     }
     getEnumMap():[{value:string}] {
         return this.items.enum.map((enumVal:string) => {return {value:enumVal} ;});
+    }
+    createControl():void {
+        if(this.required) {
+            this.control = new Control(this.name,Validators.required);
+        }
     }
 }
 

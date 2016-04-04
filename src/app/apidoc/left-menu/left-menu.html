@@ -9,9 +9,9 @@
             </div>
 
         </li>
-        <li class="collection-item"  *ngFor="#apiPath of apiDoc.paths">
+        <li class="collection-item"  *ngFor="#apiPath of apiDoc.paths; #i=index">
             <div>{{apiPath.name}} <div class="chip">{{apiPath.path.operations | count}} apis</div>
-                <a href="" (click)="onSelectApi($event,apiPath)" class="secondary-content"><i class="mdi-action-description"></i></a>
+                <a href="" (click)="onSelectApi($event,i)" class="secondary-content"><i class="mdi-action-description"></i></a>
             </div>
         </li>
     </ul>

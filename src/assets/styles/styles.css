@@ -11,3 +11,12 @@ body {
     font-size: 21px;
     padding: 14px 24px;
 }
+/* invalid color */
+.input-field input[type=text].ng-invalid {
+    border-bottom: 1px solid #E57373;
+    box-shadow: 0 1px 0 0 #E57373;
+}
+
+a.text-lowercase {
+    text-transform: none;
+}

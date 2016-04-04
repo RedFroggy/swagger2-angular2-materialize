@@ -6,8 +6,7 @@ var core_1 = require('angular2/core');
 require('rxjs/add/operator/map');
 var apidoc_service_1 = require('./apidoc/apidoc.service');
 require('../assets/styles/styles.css');
-function main(initialState) {
-    if (initialState === void 0) { initialState = {}; }
+function main() {
     return browser_1.bootstrap(app_component_1.AppComponent, [
         http_1.HTTP_PROVIDERS,
         router_1.ROUTER_PROVIDERS,

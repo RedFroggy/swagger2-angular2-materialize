@@ -1,8 +1,8 @@
-<div class="row">
+<div class="row col s9">
     <div class="card-panel">
         <h4>{{apiPath.name}}</h4>
     </div>
-    <div class="col s12 m6" *ngFor="#operation of apiPath.path.operations">
+    <div class="col s12 m6" *ngFor="#operation of apiPath.path.operations;#i=index">
         <div class="card">
             <div class="card-panel" [ngClass]="operation.getMethodClass()">
                 <strong>{{operation.name}}</strong> {{operation.summary}}<br/>
@@ -12,7 +12,7 @@
                 <p>{{operation.summary}} <span class="badge text-white" [hidden]="!operation.parameters">{{operation.parameters.length}} parameter(s)</span>
                 </p><br/>
                 <p>
-                    <input type="checkbox" disabled="disabled" class="filled-in" id="filled-in-box" ng-checked="true"/>
+                    <input type="checkbox" disabled="disabled" class="filled-in" id="filled-in-box" [checked]="operation.deprecated"/>
                     <label for="filled-in-box">Deprecated</label>
                 </p><br/>
                 <p>Type:
@@ -26,7 +26,7 @@
                 </p>
             </div>
             <div class="card-action">
-                <a (click)="goToDetailPage($event,operation)" href=""
+                <a (click)="goToDetailPage($event,i)" href=""
                    class="waves-effect black-text waves-light btn" [ngClass]="operation.getMethodClass()"><i class="mdi-action-swap-vert"></i>Try api</a>
 
                 <a href="" (click)="onClickStatBtn(operation)" class="waves-effect black-text waves-light btn"

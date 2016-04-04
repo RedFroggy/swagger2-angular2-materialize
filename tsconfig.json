@@ -6,6 +6,9 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
+  "files":[
+    "src/app/boot.ts"
+  ],
   "exclude": [
     "node_modules",
     "typings/main.d.ts",

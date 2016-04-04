@@ -7,41 +7,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var core_1 = require('angular2/core');
 var apidoc_service_1 = require('../apidoc.service');
 var apidoc_1 = require('../../model/apidoc');
 var pipes_1 = require('../../pipes/pipes');
-var api_main_1 = require('../main/api.main');
+var router_1 = require('angular2/router');
 var LeftMenu = (function () {
-    function LeftMenu(apiDocService, apiMain) {
+    function LeftMenu(apiDocService, router) {
         this.apiDocService = apiDocService;
-        this.apiMain = apiMain;
+        this.router = router;
         this.apiDoc = new apidoc_1.ApiDefinition();
     }
     LeftMenu.prototype.ngOnInit = function () {
         var _this = this;
-        this.apiDocService.getApi().subscribe(function (apiDoc) {
-            _this.apiDoc = apiDoc;
-            _this.onSelectApi(null, apiDoc.paths[0]);
-        });
+        this.apiDocService.getApi().subscribe(function (apiDoc) { return _this.apiDoc = apiDoc; });
     };
-    LeftMenu.prototype.onSelectApi = function (event, apiPath) {
-        if (event) {
-            event.preventDefault();
-        }
-        this.apiMain.selectListMode(apiPath);
+    LeftMenu.prototype.onSelectApi = function (event, index) {
+        event.preventDefault();
+        this.router.navigate(['ApiDocList', { path: index + 1 }]);
     };
     LeftMenu = __decorate([
         core_1.Component({
             selector: 'left-menu',
             template: require('./left-menu.html'),
             pipes: [pipes_1.ValuesPipe, pipes_1.CountPipe]
-        }),
-        __param(1, core_1.Inject(core_1.forwardRef(function () { return api_main_1.ApiMain; }))), 
-        __metadata('design:paramtypes', [apidoc_service_1.ApiDocService, api_main_1.ApiMain])
+        }), 
+        __metadata('design:paramtypes', [apidoc_service_1.ApiDocService, router_1.Router])
     ], LeftMenu);
     return LeftMenu;
 })();
