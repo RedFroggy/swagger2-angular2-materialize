@@ -16,13 +16,13 @@
                     <label for="filled-in-box">Deprecated</label>
                 </p><br/>
                 <p>Type:
-                    <a href="" *ngIf="apiDoc.isOperationDtoType(operation)"
+                    <!--<a href="" *ngIf="apiDoc.isOperationDtoType(operation)"
                        (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}
                     </a>
                         <span *ngIf="!apiDoc.isOperationDtoType(operation) && apiDoc.isTypeArray(operation)">
                             [<a href="" (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation)}}
                         </a>]
-                        </span>
+                        </span>-->
                 </p>
             </div>
             <div class="card-action">

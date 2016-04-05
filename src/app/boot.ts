@@ -6,6 +6,8 @@ import {provide} from 'angular2/core';
 
 import 'rxjs/add/operator/map';
 import {ApiDocService} from './apidoc/apidoc.service';
+
+//Styles css
 import '../assets/styles/styles.css';
 
 export function main() {
@@ -13,7 +15,7 @@ export function main() {
         HTTP_PROVIDERS,
         ROUTER_PROVIDERS,
         ApiDocService,
-        provide(LocationStrategy, {useClass: HashLocationStrategy})
+        provide(LocationStrategy, {useClass: HashLocationStrategy}),
     ]);
 }
 

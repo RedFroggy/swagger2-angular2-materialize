@@ -3,17 +3,16 @@ import {ApiDocService} from '../apidoc/apidoc.service';
 import {Response} from 'angular2/http';
 import {ApiDefinition} from '../model/apidoc';
 
+///<reference path="../../../typings/main/ambient/node/index.d.ts" />
+
 @Component({
     selector:'home',
-    template:require('./home.html'),
-    providers:[ApiDocService]
+    template:require('./home.html')
 })
 export class Home {
-    apiDoc:ApiDefinition;
-    constructor(private apiDocService:ApiDocService) {
+    private apiDoc:ApiDefinition;
+    constructor(apiDocService:ApiDocService) {
         this.apiDoc = new ApiDefinition();
-    }
-    ngOnInit():void {
-        this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
+        apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
     }
 }

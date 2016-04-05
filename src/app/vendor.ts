@@ -40,3 +40,5 @@ require('highlight.js/lib/index');
 window.hljs = hljs;
 
 window.vkbeautify = require('vkbeautify');
+
+/// <reference path="..\..\typings\main\ambient\jquery\index.d.ts" />

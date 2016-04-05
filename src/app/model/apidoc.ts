@@ -11,10 +11,16 @@ const TYPE_OBJECT:string = 'object';
 const PATH_PARAM:string = 'path';
 const QUERY_PARAM:string = 'query';
 const BODY_PARAM:string = 'body';
+const FORM_PARAM:string = 'formData';
 const HTTP_METHOD_PATCH:string = 'PATCH';
 const HTTP_METHOD_POST:string = 'POST';
 const HTTP_METHOD_PUT:string = 'PUT';
 const HTTP_METHOD_GET:string = 'GET';
+const HTTP_METHOD_DELETE:string = 'DELETE';
+
+const APPLICATION_FORM_URL_ENCODED:string = 'application/x-www-form-urlencoded';
+const APPLICATION_JSON:string = 'application/json';
+const APPLICATION_XML:string = 'application/xml';
 
 const METHOD_CLASS:Object = {
     GET:'grey lighten-1',
@@ -121,7 +127,7 @@ export class ApiDefinition {
             return definition.name === entity;
         });
     }
-    isDtoType(type:string,toEntityName:boolean = false):boolean {
+    hasDefinition(type:string,toEntityName:boolean = false):boolean {
         if(toEntityName) {
             type = this.getEntityName(type);
         }
@@ -129,32 +135,38 @@ export class ApiDefinition {
             return false;
         }
         let definition:DefinitionsObject = this.getDefinitionByEntity(type);
-        return definition && definition.schema.type === TYPE_OBJECT;
+        return definition && this.isObject(definition.schema.type);
     }
     getEntityName(name:string):string {
         if(name) {
             return name.replace(TYPE_DEFINITION, '');
         }
     }
-    isOperationDtoType(operation:OperationObject,code:string):boolean {
-        let resp:ResponseObject = operation.getResponseByCode(code);
-        return resp && resp.schema && resp.schema.$ref && this.isDtoType(resp.schema.entity);
+    isDtoType(item:ResponseObject|ParameterObject):boolean {
+        return item && item.schema && this.hasRef(item.schema) && this.hasDefinition(item.schema.entity);
     }
-    getDtoType(operation:OperationObject,code:string):string {
-        let resp:ResponseObject = operation.getResponseByCode(code);
-        if(resp && resp.schema) {
-            if (resp.schema.entity) {
-                return resp.schema.entity;
+    getDtoType(item:ResponseObject|ParameterObject):string {
+        if(item && item.schema) {
+            if (item.schema.entity) {
+                return item.schema.entity;
             }
-            if(resp.schema.items && resp.schema.items.entity) {
-                return resp.schema.items.entity;
+            if(item.schema.items && item.schema.items.entity) {
+                return item.schema.items.entity;
             }
         }
     }
-    isTypeArray(operation:OperationObject,code:string):boolean {
-        let resp:ResponseObject = operation.getResponseByCode(code);
-        if(resp && resp.schema) {
-            return resp.schema.type === TYPE_ARRAY;
+    isObject(type:string):boolean {
+        return type === TYPE_OBJECT;
+    }
+    isArray(type:string):boolean {
+        return type === TYPE_ARRAY;
+    }
+    hasRef(obj:any):boolean {
+        return !!obj.$ref;
+    }
+    isTypeArray(item:ResponseObject|ParameterObject):boolean {
+        if(item && item.schema) {
+            return this.isArray(item.schema.type);
         }
         return false;
     }
@@ -163,6 +175,36 @@ export class ApiDefinition {
             return 'green darken-2';
         }
         return ' red darken-2';
+    }
+    getBodyDescription(entityName:string):any {
+        let definition:DefinitionsObject = this.getDefinitionByEntity(entityName);
+        console.log(definition);
+        let body:any = {};
+        if(definition) {
+            Object.keys(definition.schema.properties).forEach((name:string) => {
+                let property:IJsonSchema = definition.schema.properties[name];
+                let bodyValue:any;
+                if(!this.isArray(property.type) && !this.isObject(property.type)) {
+                    if(property.type === 'integer') {
+                        bodyValue = 0;
+                    } else if(property.enum && !_.isEmpty(property.enum)) {
+                        bodyValue = property.enum[0];
+                    } else if(property.type === 'string') {
+                        bodyValue = property.example ? property.example : 'string';
+                    } else if(property.$ref) {
+                        bodyValue = this.getBodyDescription(this.getEntityName(property.$ref));
+                    }
+                } else if (this.isArray(property.type)) {
+                    if(property.items.type === 'string') {
+                        bodyValue = ['string'];
+                    } else if(property.items.$ref) {
+                        bodyValue = [this.getBodyDescription(this.getEntityName(property.items.$ref))];
+                    }
+                }
+                body[name] = bodyValue;
+            });
+        }
+        return body;
     }
 }
 
@@ -252,8 +294,10 @@ export class OperationObject {
     schemes: string[];
     deprecated: boolean;
     security: SecurityRequirementObject[];
+    originalData:any;
     dataJson:string;
     patchJson:string;
+    consume:{value?:string,selected:string};
     produce:{value?:string,selected:string};
     constructor(path?:string,method?:string,_opObj?:any) {
         this.responses = [];
@@ -261,7 +305,8 @@ export class OperationObject {
         this.produces = [];
         this.consumes = [];
         this.path = path;
-        this.produce = {selected:'application/json'};
+        this.produce = {selected:null};
+        this.consume = {selected:null};
         if(method) {
             this.name = method.toUpperCase();
         }
@@ -284,6 +329,9 @@ export class OperationObject {
             }
             if(_opObj.produces) {
                 this.produce = {selected:this.produces[0]};
+            }
+            if(_opObj.consumes) {
+                this.consume = {selected:this.consumes[0]};
             }
         }
     }
@@ -326,11 +374,32 @@ export class OperationObject {
     isPutMethod():boolean {
         return this.name === HTTP_METHOD_PUT;
     }
+    isWriteMethod():boolean {
+        return this.isPatchMethod() || this.isPostMethod() || this.isPutMethod();
+    }
     isGetMethod():boolean {
         return this.name === HTTP_METHOD_GET;
     }
-    isJson():boolean {
-        return this.produce && this.produce.selected && this.produce.selected.indexOf('json') !== -1;
+    isDeleteMethod():boolean {
+        return this.name === HTTP_METHOD_DELETE;
+    }
+    isType(item:{selected:string},type):boolean {
+        return item && item.selected && item.selected === type;
+    }
+    isProduceJson():boolean {
+        return this.isType(this.produce,APPLICATION_JSON);
+    }
+    isProduceXml():boolean {
+        return this.isType(this.produce,APPLICATION_XML);
+    }
+    isConsumeJson():boolean {
+        return this.isType(this.consume,APPLICATION_JSON);
+    }
+    isConsumeXml():boolean {
+        return this.isType(this.consume,APPLICATION_XML);
+    }
+    isConsumeFormData():boolean {
+        return this.isType(this.consume,APPLICATION_FORM_URL_ENCODED);
     }
     getMapProduces():[{value:string}] {
         return this.produces.map((mimeType:string) => {return {value:mimeType} ;});
@@ -496,7 +565,7 @@ export class ParameterObject {
     control:Control;
     constructor(_paramObj?:any) {
         this.items = new ItemsObject();
-        this.value = {};
+        this.value = {selected:''};
         this.control = new Control();
         if(_paramObj) {
             Object.assign(this,_paramObj);
@@ -517,6 +586,9 @@ export class ParameterObject {
     }
     isBodyParam():boolean {
         return this.in === BODY_PARAM;
+    }
+    isFormParam():boolean {
+        return this.in === FORM_PARAM;
     }
     isTypeArray():boolean {
         return this.type === TYPE_ARRAY;
@@ -570,6 +642,7 @@ export class ExternalDocumentationObject {
 
 export interface IJsonSchema {
     id?: string;
+    example?: string;
     $schema?: string;
     $ref?:string;
     title?: string;
@@ -583,7 +656,7 @@ export interface IJsonSchema {
     minLength?: number;
     pattern?: string;
     additionalItems?: boolean | IJsonSchema;
-    items?: IJsonSchema | IJsonSchema[];
+    items?: IJsonSchema;
     maxItems?: number;
     minItems?: number;
     uniqueItems?: boolean;
@@ -604,7 +677,7 @@ export interface IJsonSchema {
         [name: string]: IJsonSchema | string[]
     };
     'enum'?: any[];
-    type?: string | string[];
+    type?: string;
     allOf?: IJsonSchema[];
     anyOf?: IJsonSchema[];
     oneOf?: IJsonSchema[];

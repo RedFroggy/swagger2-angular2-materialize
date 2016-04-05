@@ -11,19 +11,26 @@ import {MaterializeModal} from './materialize-modal';
 })
 export class TypeModal extends MaterializeModal {
     definition:DefinitionsObject;
-    constructor(private apiDocService:ApiDocService,private el: ElementRef) {
-        super(apiDocService,el);
+    constructor(private apiDocService:ApiDocService,el: ElementRef) {
+        super(el);
         this.definition = new DefinitionsObject();
     }
+    onSelectType(eventData:Event) {
+        this.selectType(null,eventData);
+    }
     selectType(event:Event,property:any,openModal:boolean = true): void {
-        event.preventDefault();
+        if(event) {
+            event.preventDefault();
+        }
         let entity:string;
         if(_.isString(property)) {
             entity = property;
         } else {
-            entity =  this.isArrayDtoType(property) ? this.apiDoc.getEntityName(property.value.items.$ref) : this.apiDoc.getEntityName(property.value.$ref);
+            entity =  this.isArrayDtoType(property)
+                ? this.apiDocService.apiDoc.getEntityName(property.value.items.$ref)
+                : this.apiDocService.apiDoc.getEntityName(property.value.$ref);
         }
-        this.definition = this.apiDoc.getDefinitionByEntity(entity);
+        this.definition = this.apiDocService.apiDoc.getDefinitionByEntity(entity);
         if(openModal) {
             this.openModal(event);
         }
@@ -31,19 +38,19 @@ export class TypeModal extends MaterializeModal {
     isSimpleType(property:any):boolean {
         return !this.definition.schema.isPropertyTypeArray(property.value)
             && !_.isUndefined(property.value.type)
-            && !this.apiDoc.isDtoType(property.value.type);
+            && !this.apiDocService.apiDoc.hasDefinition(property.value.type);
     }
-    isDtoType(property:any):boolean {
+    hasDefinition(property:any):boolean {
         return !this.definition.schema.isPropertyTypeArray(property.value)
-            && this.apiDoc.isDtoType(property.value.$ref,true);
+            && this.apiDocService.apiDoc.hasDefinition(property.value.$ref,true);
     }
     isArrayDtoType(property:any):boolean {
         return this.definition.schema.isPropertyTypeArray(property.value)
-            && this.apiDoc.isDtoType(property.value.items.$ref,true);
+            && this.apiDocService.apiDoc.hasDefinition(property.value.items.$ref,true);
     }
     isArraySimpleType(property:any):boolean {
         return this.definition.schema.isPropertyTypeArray(property.value)
             && !_.isUndefined(property.value.items.type)
-            && !this.apiDoc.isDtoType(property.value.items.type);
+            && !this.apiDocService.apiDoc.hasDefinition(property.value.items.type);
     }
 }

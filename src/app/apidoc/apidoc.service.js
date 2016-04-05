@@ -20,6 +20,7 @@ var ApiDocService = (function () {
     ApiDocService.prototype.getApi = function () {
         var _this = this;
         if (this.apiDoc) {
+            console.log('Getting doc definition from cache');
             return Observable_1.Observable.create(function (observer) {
                 return observer.next(_this.apiDoc);
             });
@@ -27,35 +28,67 @@ var ApiDocService = (function () {
         //TODO config
         return this.http.get(EnvConfig.SERVER_ROOT_URL + '/v2/swagger.json').map(function (res) {
             _this.apiDoc = new apidoc_1.ApiDefinition(res.json());
+            console.log('Getting doc definition from server');
             return _this.apiDoc;
         });
     };
     ApiDocService.prototype.sendRequest = function (operation) {
         var apiResult = new apidoc_2.ApiResult();
+        console.log(operation);
         var reqOptions = new http_1.RequestOptions();
         reqOptions.method = operation.name;
         reqOptions.url = this.apiDoc.baseUrl + operation.getRequestUrl(false);
-        if (operation.isGetMethod()) {
-            var headers = new http_1.Headers();
-            headers.set('Content-Type', operation.produce.selected);
-            headers.set('Accept', operation.produce.selected);
-            reqOptions.headers = headers;
+        var headers = new http_1.Headers();
+        if (operation.consumes && !_.isEmpty(operation.consumes)) {
+            if (operation.consumes.length === 1 || !operation.consume.selected) {
+                headers.set('Content-Type', operation.consumes[0]);
+            }
+            else {
+                headers.set('Content-Type', operation.consume.selected);
+            }
         }
-        if (operation.isPostMethod() || operation.isPutMethod()) {
-            reqOptions.body = operation.dataJson;
+        if (!operation.isDeleteMethod() && operation.produces && !_.isEmpty(operation.produces)) {
+            if (operation.produces.length === 1 || !operation.produce.selected) {
+                headers.set('Accept', operation.produces[0]);
+            }
+            else {
+                headers.set('Accept', operation.produce.selected);
+            }
         }
-        else if (operation.isPatchMethod()) {
-            reqOptions.body = operation.patchJson;
+        reqOptions.headers = headers;
+        if (operation.isWriteMethod()) {
+            if (operation.isConsumeJson()) {
+                reqOptions.body = JSON.stringify(operation.originalData);
+            }
+            if (operation.isConsumeXml()) {
+            }
+            if (operation.isConsumeFormData()) {
+                var formBody = '';
+                operation.parameters.forEach(function (param) {
+                    if (param.isFormParam()) {
+                        if (formBody !== '') {
+                            formBody += '&';
+                        }
+                        formBody += param.name + '=' + param.value.selected;
+                    }
+                });
+                reqOptions.body = formBody;
+            }
         }
         console.log('Calling api with options', reqOptions);
         return this.http.request(new http_1.Request(reqOptions)).map(function (res) {
             apiResult.operation = operation;
             apiResult.endDate = new Date();
-            if (operation.isJson()) {
-                apiResult.message = res.json();
+            try {
+                if (operation.isProduceJson()) {
+                    apiResult.message = res.json();
+                }
+                else {
+                    apiResult.message = res.text();
+                }
             }
-            else {
-                apiResult.message = res.text();
+            catch (error) {
+                apiResult.message = 'no content';
             }
             apiResult.status = res.status;
             return apiResult;

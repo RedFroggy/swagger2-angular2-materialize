@@ -23,10 +23,10 @@ var ApiDocList = (function () {
         this.apiPath = new apidoc_2.PathsObject();
         this.definition = new apidoc_2.DefinitionsObject();
         this.apiDoc = new apidoc_1.ApiDefinition();
-        apiDocService.getApi().subscribe(function (apiDoc) {
+        this.apiDocService.getApi().subscribe(function (apiDoc) {
             _this.apiDoc = apiDoc;
             _this.pathId = parseInt(routeParams.get('path'));
-            _this.apiPath = apiDoc.paths[_this.pathId - 1];
+            _this.apiPath = _this.apiDocService.apiDoc.paths[_this.pathId - 1];
             if (!_this.apiPath) {
                 _this.router.navigate(['ApiDocList', { path: 1 }]);
             }

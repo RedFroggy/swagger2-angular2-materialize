@@ -11,13 +11,11 @@ import {Router} from 'angular2/router';
     template:require('./left-menu.html'),
     pipes:[ValuesPipe,CountPipe]
 })
-export class LeftMenu implements OnInit {
-    apiDoc:ApiDefinition;
+export class LeftMenu {
+    private apiDoc:ApiDefinition;
     constructor(private apiDocService:ApiDocService, private router:Router) {
         this.apiDoc = new ApiDefinition();
-    }
-    ngOnInit():void {
-        this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
+        apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
     }
     onSelectApi(event:Event,index:number):void {
         event.preventDefault();

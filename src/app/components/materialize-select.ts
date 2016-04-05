@@ -7,9 +7,8 @@ export abstract class MaterializeSelect implements AfterViewInit {
     selectValueChange: EventEmitter<any>;
     protected selectInput:any;
     private multiple:boolean;
-    constructor(el: ElementRef,selectValueChange: EventEmitter<any>,multiple:boolean = false) {
+    constructor(public el: ElementRef,multiple:boolean = false) {
         this.multiple = multiple;
-        this.selectValueChange = selectValueChange;
     }
     ngAfterViewInit():void {
         this.selectInput = $(DOM.querySelector(this.el.nativeElement,'select'));
@@ -20,7 +19,7 @@ export abstract class MaterializeSelect implements AfterViewInit {
             this.updateValue(this.selectInput.val());
         });
     }
-    updateValue(value:string):void {
+    updateValue(value:string|Array<string>):void {
         this.model.selected = value;
         this.selectValueChange.emit(this.model);
     }

@@ -1,9 +1,12 @@
 import {Component,Input,ElementRef} from 'angular2/core';
-import {ApiResult,OperationObject} from '../../model/apidoc';
+import {ApiResult,OperationObject,ApiDefinition} from '../../model/apidoc';
 import {ApiDocService} from '../apidoc.service';
 import {MaterializeModal} from './materialize-modal';
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {NgZone} from 'angular2/core';
+import {Response} from 'angular2/http';
+
+///<reference path="../../../../typings/main/ambient/node/index.d.ts" />
 
 @Component({
     selector:'body-modal',
@@ -12,14 +15,18 @@ import {NgZone} from 'angular2/core';
 export class BodyModal extends MaterializeModal {
     @Input() operation:OperationObject;
     private apiResult:ApiResult;
-    constructor(private apiDocService:ApiDocService,private el: ElementRef, private zone:NgZone) {
-        super(apiDocService,el);
+    private apiDoc:ApiDefinition;
+    constructor(private apiDocService:ApiDocService,el: ElementRef, private zone:NgZone) {
+        super(el);
         this.apiResult = new ApiResult();
         this.operation = new OperationObject();
+        this.apiDoc = new ApiDefinition();
+        this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
     }
     tryApi(event:Event):void {
         event.preventDefault();
         this.apiResult.date = new Date();
+
         this.apiDocService.sendRequest(this.operation).subscribe((apiResult:ApiResult) => {
             this.apiResult = apiResult;
             this.beautifyResponse(event);
@@ -40,10 +47,12 @@ export class BodyModal extends MaterializeModal {
             ready: () => {
                 this.zone.run(() => {
                     if (!_.isEmpty(this.apiResult.message)) {
-                        if (this.operation.isJson()) {
+                        if (this.operation.isProduceJson()) {
                             codeElement.html(hljs.highlight('json', JSON.stringify(this.apiResult.message,null,4)).value);
-                        } else {
+                        } else if(this.operation.isProduceXml()){
                             codeElement.text(vkbeautify.xml(this.apiResult.message));
+                        } else {
+                            codeElement.text(this.apiResult.message);
                         }
                     }
                 });
@@ -51,6 +60,7 @@ export class BodyModal extends MaterializeModal {
         });
     }
     getFullUrl():string {
-        return this.apiDoc.baseUrl+this.apiResult.operation.getRequestUrl();
+        return this.apiDoc.baseUrl
+            + this.apiResult.operation.getRequestUrl();
     }
 }

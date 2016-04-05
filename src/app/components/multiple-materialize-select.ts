@@ -3,7 +3,7 @@ import {MaterializeSelect} from './materialize-select';
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {Control} from 'angular2/common';
 
-/// <reference path="../../../typings/main/ambient/jquery/index.d.ts" />
+/// <reference path="..\..\..\typings\main\ambient\jquery\index.d.ts" />
 
 @Component({
     selector:'materialize-select-multiple',
@@ -14,8 +14,8 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
     @Input() options:[{label:string,value:string}];
     @Input() selected:string;
     @Output() selectValueChange: EventEmitter<any> =  new EventEmitter();
-    constructor(private el: ElementRef) {
-        super(el,this.selectValueChange,true);
+    constructor(el: ElementRef) {
+        super(el,true);
     }
     ngAfterViewInit():void {
         super.ngAfterViewInit();

@@ -1,37 +1,47 @@
-<div class="col s9">
+<div class="col s9 api-detail">
     <div class="row">
         <a href="" (click)="goToListPage($event)" class="btn red darken-2 mdi-navigation-arrow-back" title="Back">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back
         </a>
     <div class="row">
-        <div>
-            <h5>{{operation.summary}}</h5>
-            <a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{operation.name}}</a>
-            <p>{{operation.description}}</p>
-            <a href="{{apiDoc.baseUrl}}{{operation.getRequestUrl()}}" target="_blank">{{apiDoc.baseUrl}}{{operation.getRequestUrl()}}</a>
-        </div>
-    </div>
-    <div class="row">
         <form class="form" [ngFormModel]="apiDetailForm">
-            <div [hidden]="!operation.parameters || operation.parameters.length === 0">
-                <div class="section" [hidden]="!operation.isGetMethod()">
+            <div>
+                <div class="section">
+                    <h5>General information</h5>
+                    <table class="bordered responsive-table">
+                        <thead>
+                            <th>Summary</th>
+                            <th>Description</th>
+                            <th>Method</th>
+                            <th>Url</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{operation.summary}}</td>
+                                <td>{{operation.description}}</td>
+                                <td><a class="waves-effect waves-light btn" [ngClass]="operation.getMethodClass()">{{operation.name}}</a></td>
+                                <td><a href="{{apiDoc.baseUrl}}{{operation.getRequestUrl()}}" target="_blank">{{apiDoc.baseUrl}}{{operation.getRequestUrl()}}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section" [hidden]="!operation.produces">
                     <h5>Response content type</h5>
-                    <materialize-select-simple [options]="operation.getMapProduces()"  [(model)]="operation.produce" [selected]="'application/json'"></materialize-select-simple>
-                    {{operation.produce | json}}
+                    <materialize-select-simple [options]="operation.getMapProduces()" [(model)]="operation.produce" [selected]="'application/json'"></materialize-select-simple>
                 </div>
                 <div class="section">
                     <button  (click)="bodyModal.tryApi($event)" class="text-black btn right waves-effect waves-light"
                        [ngClass]="operation.getMethodClass()" [disabled]="!apiDetailForm.valid">Send <i class="mdi-content-send right"></i></button>
-                    <h5>Parameters</h5>
-                    <table class="bordered responsive-table">
+                    <h5 [hidden]="!operation.parameters || operation.parameters.length === 0">Parameters</h5>
+                    <table class="bordered responsive-table" [hidden]="!operation.parameters || operation.parameters.length === 0">
                         <thead>
-                        <th>Parameter</th>
-                        <th>Description</th>
-                        <th>Parameter type</th>
-                        <th>Data type</th>
+                            <th>Parameter</th>
+                            <th>Description</th>
+                            <th>Parameter type</th>
+                            <th>Data type</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="#parameter of operation.parameters">
+                            <tr *ngFor="#parameter of operation.parameters" >
                                 <td *ngIf="!parameter.isBodyParam()">
                                     <div class="input-field" *ngIf="!parameter.isTypeEnum()">
                                         <input [attr.id]="parameter.name" [ngFormControl]="parameter.control" type="text" [(ngModel)]="parameter.value.selected"/>
@@ -40,7 +50,6 @@
                                     <div class="input-field" *ngIf="parameter.isTypeEnum()">
                                         <materialize-select-multiple [options]="parameter.getEnumMap()" [(model)]="parameter.value"
                                                                      [selected]="parameter.items.default"></materialize-select-multiple>
-                                        {{parameter.value | json}}
                                     </div>
                                 </td>
                                 <td *ngIf="parameter.isBodyParam()">
@@ -49,7 +58,9 @@
                                 </td>
                                 <td>{{parameter.description}}</td>
                                 <td>{{parameter.in}}</td>
-                                <td>{{parameter.getParameterType()}}</td>
+                                <td>
+                                    <data-type-link [data]="parameter" (select-type)="typeModal.onSelectType($event)"></data-type-link>
+                                </td>
                             </tr>
                             <tr *ngIf="operation.isPatchMethod()">
                                 <td>
@@ -78,11 +89,7 @@
                             <td><a class="waves-effect waves-light btn" [ngClass]="apiDoc.getStatusClass(response.code)">{{response.code}}</a></td>
                             <td>{{response.response.description}}</td>
                             <td>
-                                <a href="" *ngIf="apiDoc.isOperationDtoType(operation,response.code)"
-                                   (click)="typeModal.selectType($event,apiDoc.getDtoType(operation))">{{apiDoc.getDtoType(operation,response.code)}}</a>
-                                    <span *ngIf="!apiDoc.isOperationDtoType(operation,response.code) && apiDoc.isTypeArray(operation,response.code)">
-                                        [<a href="" (click)="typeModal.selectType($event,apiDoc.getDtoType(operation,response.code))">{{apiDoc.getDtoType(operation,response.code)}}</a>]
-                                    </span>
+                                <data-type-link [data]="response.response" (select-type)="typeModal.onSelectType($event)"></data-type-link>
                             </td>
                             <td></td>
                         </tr>

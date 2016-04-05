@@ -20,3 +20,7 @@ body {
 a.text-lowercase {
     text-transform: none;
 }
+
+div.api-detail {
+    margin-top:8px;
+}

@@ -14,14 +14,12 @@ var pipes_1 = require('../../pipes/pipes');
 var router_1 = require('angular2/router');
 var LeftMenu = (function () {
     function LeftMenu(apiDocService, router) {
+        var _this = this;
         this.apiDocService = apiDocService;
         this.router = router;
         this.apiDoc = new apidoc_1.ApiDefinition();
+        apiDocService.getApi().subscribe(function (apiDoc) { return _this.apiDoc = apiDoc; });
     }
-    LeftMenu.prototype.ngOnInit = function () {
-        var _this = this;
-        this.apiDocService.getApi().subscribe(function (apiDoc) { return _this.apiDoc = apiDoc; });
-    };
     LeftMenu.prototype.onSelectApi = function (event, index) {
         event.preventDefault();
         this.router.navigate(['ApiDocList', { path: index + 1 }]);

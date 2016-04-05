@@ -17,28 +17,31 @@ var body_modal_1 = require('../modals/body-modal');
 var simple_materialize_select_1 = require('../../components/simple-materialize-select');
 var multiple_materialize_select_1 = require('../../components/multiple-materialize-select');
 var common_1 = require('angular2/common');
+var data_type_link_1 = require('../../components/data-type-link');
 ///<reference path="../../../../typings/main/ambient/node/index.d.ts" />
 var ApiDocDetail = (function () {
     function ApiDocDetail(apiDocService, formBuilder, router, routeParams) {
-        var _this = this;
         this.apiDocService = apiDocService;
         this.router = router;
         this.routeParams = routeParams;
         this.operation = new apidoc_1.OperationObject();
-        this.apiDoc = new apidoc_1.ApiDefinition();
         this.apiDetailForm = formBuilder.group({});
-        apiDocService.getApi().subscribe(function (apiDoc) {
+        this.apiDoc = new apidoc_1.ApiDefinition();
+        this.init();
+    }
+    ApiDocDetail.prototype.init = function () {
+        var _this = this;
+        this.pathId = parseInt(this.routeParams.get('path'));
+        var operationId = parseInt(this.routeParams.get('operation'));
+        this.apiDocService.getApi().subscribe(function (apiDoc) {
             _this.apiDoc = apiDoc;
-            _this.pathId = parseInt(routeParams.get('path'));
-            var operationId = parseInt(routeParams.get('operation'));
-            var path = apiDoc.paths[_this.pathId - 1];
+            var path = _this.apiDocService.apiDoc.paths[_this.pathId - 1];
             if (path) {
                 _this.operation = path.path.operations[operationId - 1];
                 console.log(_this.operation);
                 setTimeout(function () {
                     _this.operation.parameters.forEach(function (parameter) { return _this.apiDetailForm.addControl(parameter.name, parameter.control); });
                 }, 0);
-                console.log(_this.apiDetailForm);
                 if (!_this.operation) {
                     _this.router.navigate(['ApiDocList', { path: _this.pathId }]);
                 }
@@ -47,19 +50,24 @@ var ApiDocDetail = (function () {
                 _this.router.navigate(['ApiDocList', { path: _this.pathId }]);
             }
         });
-    }
+    };
     ApiDocDetail.prototype.goToListPage = function (event) {
         event.preventDefault();
         this.router.navigate(['ApiDocList', { path: this.pathId }]);
     };
     ApiDocDetail.prototype.generateJSON = function (event, parameter) {
         event.preventDefault();
+        this.operation.originalData = this.apiDoc.getBodyDescription(parameter.getParameterType());
+        this.operation.dataJson = JSON.stringify(this.operation.originalData, null, 4);
+        setTimeout(function () {
+            $('textarea').trigger('autoresize');
+        }, 0);
     };
     ApiDocDetail = __decorate([
         core_1.Component({
             selector: 'doc-detail',
             template: require('./detail.html'),
-            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal, body_modal_1.BodyModal, simple_materialize_select_1.SimpleMaterializeSelect, multiple_materialize_select_1.MultipleMaterializeSelect]
+            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal, body_modal_1.BodyModal, simple_materialize_select_1.SimpleMaterializeSelect, multiple_materialize_select_1.MultipleMaterializeSelect, data_type_link_1.DataTypeLink]
         }), 
         __metadata('design:paramtypes', [apidoc_service_1.ApiDocService, common_1.FormBuilder, router_1.Router, router_1.RouteParams])
     ], ApiDocDetail);

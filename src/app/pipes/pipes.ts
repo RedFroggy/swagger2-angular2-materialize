@@ -1,6 +1,6 @@
 import {PipeTransform,Pipe} from 'angular2/core';
 
-///<reference path="../../../../../typings/lodash/lodash.d.ts" />
+///<reference path="../../../typings/browser/ambient/lodash/index.d.ts" />
 
 @Pipe({ name: 'values',  pure: false })
 export class ValuesPipe implements PipeTransform {

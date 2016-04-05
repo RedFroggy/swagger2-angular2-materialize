@@ -12,9 +12,8 @@ export class SimpleMaterializeSelect extends MaterializeSelect {
     @Input() options:[{label:string,value:string}];
     @Input() selected:string;
     @Output() selectValueChange: EventEmitter<any> =  new EventEmitter();
-    constructor(private el: ElementRef) {
-        this.control = new Control();
-        super(el,this.selectValueChange,false);
+    constructor(el: ElementRef) {
+        super(el,false);
     }
     ngOnChanges(changes):void {
         let dropDownSelect:any = DOM.querySelector(this.el.nativeElement,'ul.select-dropdown');
