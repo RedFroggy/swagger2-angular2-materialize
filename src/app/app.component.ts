@@ -1,6 +1,6 @@
 
 import {Component} from 'angular2/core';
-import {ROUTER_DIRECTIVES,RouteConfig,Route} from 'angular2/router';
+import {ROUTER_DIRECTIVES,RouteConfig,Route,Router} from 'angular2/router';
 import {Header} from './header/header';
 import {Home} from './home/home';
 import {ApiDocDetail} from './apidoc/detail/detail';
@@ -16,7 +16,7 @@ import {ApiMain} from './apidoc/main/api.main';
     new Route({path: '/apis/...', component: ApiMain, name: 'Apis'})
 ])
 export class AppComponent {
- constructor() {
-     console.log('Application initializing');
- }
+    constructor() {
+        console.log('Application initializing');
+    }
 }

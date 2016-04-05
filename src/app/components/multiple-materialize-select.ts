@@ -10,6 +10,8 @@ import {Control} from 'angular2/common';
     template:require('./materialize-select.html')
 })
 export class MultipleMaterializeSelect extends MaterializeSelect {
+    @Input() name:string;
+    @Input() label:string;
     @Input() model:any;
     @Input() options:[{label:string,value:string}];
     @Input() selected:string;

@@ -1,5 +1,6 @@
 <div class="input-field">
-    <select [multiple]="multiple">
+    <select [multiple]="multiple" [attr.id]="name">
         <option *ngFor="#option of options" value="{{option.value}}" [attr.selected]="isSelected(option.value)">{{option.value}}</option>
     </select>
+    <label [attr.for]="name">{{label}}</label>
 </div>

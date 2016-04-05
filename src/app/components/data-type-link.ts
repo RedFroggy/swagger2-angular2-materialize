@@ -4,19 +4,15 @@ import {ApiDocService} from '../apidoc/apidoc.service';
 
 @Component({
     selector:'data-type-link',
-    template:
-        `<span><a href="" *ngIf="isDtoType()" (click)="onSelectType($event)">{{getDtoType()}}</a>
-         <span *ngIf="!isDtoType() && isTypeArray()">
-         [<a href="" (click)="onSelectType($event)">{{getDtoType()}}</a>]
-         </span></span>
-        `
+    template:require('./data-type-link.html')
 })
 export class DataTypeLink {
     @Input() data:ResponseObject|ParameterObject;
     @Output('select-type') selectType:EventEmitter<string> = new EventEmitter();
     private apiDoc:ApiDefinition;
     constructor(apiDocService:ApiDocService) {
-        apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
+        this.apiDoc = new ApiDefinition();
+        apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => {this.apiDoc = apiDoc});
     }
     isDtoType():boolean {
         return this.apiDoc.isDtoType(this.data);

@@ -1,15 +1,15 @@
 <div>
     <nav class="grey darken-4">
-        <div class="nav-wrapper" active-on-click>
-            <ul id="slide-out" class="side-nav">
-                <li><a href="#/intro" ui-sref=".home" class="active"><i class="mdi-action-home left"></i>Home</a></li>
-                <li><a href="#!"><i class="mdi-av-play-circle-fill left"></i>Getting started</a></li>
-                <li><a href="" (click)="goToPage($event,'Apis','ApiDocList')"><i class="mdi-social-public left"></i>Apis</a></li>
+        <div class="nav-wrapper">
+            <ul id="slide-out" class="side-nav" materialize-header>
+                <li><a href="" id="mobileHomeLink" (click)="goToPage($event,'Home')"><i class="mdi-action-home left"></i>Home</a></li>
+                <li><a href="" id="mobileStartedLink"><i class="mdi-av-play-circle-fill left"></i>Getting started</a></li>
+                <li><a href="" id="mobileApiLink" (click)="goToPage($event,'Apis','ApiDocList')"><i class="mdi-social-public left"></i>Apis</a></li>
             </ul>
-            <ul class="left hide-on-med-and-down">
-                <li><a href="#/intro" ui-sref=".home" class="active red darken-4"><i class="mdi-action-home left"></i>Home</a></li>
-                <li><a href="#!"><i class="mdi-av-play-circle-fill left"></i>Getting started</a></li>
-                <li><a href="" (click)="goToPage($event,'Apis','ApiDocList')"><i class="mdi-social-public left"></i>Apis</a></li>
+            <ul class="left hide-on-med-and-down" materialize-header>
+                <li><a href="" id="homeLink" (click)="goToPage($event,'Home')"><i class="mdi-action-home left"></i>Home</a></li>
+                <li><a href="" id="startedLink"><i class="mdi-av-play-circle-fill left"></i>Getting started</a></li>
+                <li><a href="" id="apiLink" (click)="goToPage($event,'Apis','ApiDocList')"><i class="mdi-social-public left"></i>Apis</a></li>
             </ul>
             <ul class="right hide-on-med-and-down">
                 <li>
@@ -17,9 +17,7 @@
                     <a href="" class="right" ng-click="onClickLogout()" ng-if="authenticated"><i class="mdi-action-exit-to-app left"></i>Logout</a>
                 </li>
             </ul>
-            <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+            <a href="#" data-activates="slide-out" class="button-collapse" materialize-collapse-button><i class="mdi-navigation-menu"></i></a>
         </div>
     </nav>
-    <!--<div ng-include="'views/modal/login-modal.html'"></div>
-    <div ng-include="'views/modal/alert-modal.html'"></div>-->
 </div>

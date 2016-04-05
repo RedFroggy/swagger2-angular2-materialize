@@ -1,10 +1,12 @@
 
 import {Component} from 'angular2/core';
 import {Router} from 'angular2/router';
+import {MaterializeHeader,MaterializeCollapseButton} from '../directive/materialize-header';
 
 @Component({
     selector:'header',
-    template:require('./header.html')
+    template:require('./header.html'),
+    directives:[MaterializeHeader,MaterializeCollapseButton]
 })
 export class Header {
     constructor(private router:Router) {}

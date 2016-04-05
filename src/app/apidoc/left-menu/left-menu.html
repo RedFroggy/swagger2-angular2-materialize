@@ -1,6 +1,6 @@
 <div class="col s3">
     <ul class="collection with-header" id="apiList">
-        <li class="collection-header"><h4>{{apiDoc.info.title}}</h4></li>
+        <li class="collection-header"><h5>{{apiDoc.info.title}}</h5></li>
         <li>
             <div class="input-field">
                 <i class="mdi-action-search prefix"></i>
@@ -9,10 +9,19 @@
             </div>
 
         </li>
-        <li class="collection-item"  *ngFor="#apiPath of apiDoc.paths; #i=index">
-            <div>{{apiPath.name}} <div class="chip">{{apiPath.path.operations | count}} apis</div>
-                <a href="" (click)="onSelectApi($event,i)" class="secondary-content"><i class="mdi-action-description"></i></a>
-            </div>
-        </li>
+        <ul class="collapsible popout" id="apiCollapsible" data-collapsible="accordion" materialize-collapsible>
+            <li *ngFor="#tag of apiDoc.tags">
+                <div class="collapsible-header grey darken-4 white-text truncate"><i class="material-icons">language</i>{{tag.description}}</div>
+                <div class="collapsible-body">
+                    <ul class="collection" materialize-collection>
+                        <li class="collection-item"  *ngFor="#apiPath of apiDoc.paths | tagFiler:tag.name;#i=index" [ngClass]="{'active':i === 0}">
+                            <a href="" (click)="onSelectApi($event,apiPath)">
+                                <div class="black-text">{{apiPath.name}} <div class="chip red darken-4 white-text">{{apiPath.path.operations | count}}</div></div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
     </ul>
 </div>

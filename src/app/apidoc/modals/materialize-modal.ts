@@ -7,7 +7,10 @@ import {AfterViewInit} from 'angular2/core';
 
 export abstract class MaterializeModal implements AfterViewInit {
     modal:any;
-    constructor(public el: ElementRef) {}
+    protected apiDoc:ApiDefinition;
+    constructor(public el: ElementRef) {
+        this.apiDoc = new ApiDefinition();
+    }
     ngAfterViewInit():void {
         this.modal = $(DOM.querySelector(this.el.nativeElement,'div.modal'));
     }

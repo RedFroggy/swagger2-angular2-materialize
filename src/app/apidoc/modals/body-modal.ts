@@ -15,12 +15,10 @@ import {Response} from 'angular2/http';
 export class BodyModal extends MaterializeModal {
     @Input() operation:OperationObject;
     private apiResult:ApiResult;
-    private apiDoc:ApiDefinition;
     constructor(private apiDocService:ApiDocService,el: ElementRef, private zone:NgZone) {
         super(el);
         this.apiResult = new ApiResult();
         this.operation = new OperationObject();
-        this.apiDoc = new ApiDefinition();
         this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
     }
     tryApi(event:Event):void {

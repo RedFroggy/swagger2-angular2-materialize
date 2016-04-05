@@ -25,52 +25,47 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="section" [hidden]="!operation.produces">
+                <div class="section" [hidden]="!operation.produces || operation.produces.length === 0">
                     <h5>Response content type</h5>
-                    <materialize-select-simple [options]="operation.getMapProduces()" [(model)]="operation.produce" [selected]="'application/json'"></materialize-select-simple>
+                    <materialize-select-simple [options]="operation.getMapProduces()" label="Accept header" name="produceSelect" [(model)]="operation.produce" [selected]="'application/json'"></materialize-select-simple>
                 </div>
                 <div class="section">
                     <button  (click)="bodyModal.tryApi($event)" class="text-black btn right waves-effect waves-light"
                        [ngClass]="operation.getMethodClass()" [disabled]="!apiDetailForm.valid">Send <i class="mdi-content-send right"></i></button>
                     <h5 [hidden]="!operation.parameters || operation.parameters.length === 0">Parameters</h5>
+                    <div [hidden]="!operation.consumes || operation.consumes.length === 0">
+                        <materialize-select-simple label="Content-Type header" name="consumeSelect" [options]="operation.getMapConsumes()" [(model)]="operation.consume" [selected]="'application/json'"></materialize-select-simple>
+                    </div>
                     <table class="bordered responsive-table" [hidden]="!operation.parameters || operation.parameters.length === 0">
                         <thead>
-                            <th>Parameter</th>
+                            <th>Parameter name</th>
+                            <th>Parameter value</th>
                             <th>Description</th>
-                            <th>Parameter type</th>
                             <th>Data type</th>
+                            <th>Parameter type</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="#parameter of operation.parameters" >
+                            <tr *ngFor="#parameter of operation.parameters;#i=index" >
+                                <td>{{parameter.name}}</td>
                                 <td *ngIf="!parameter.isBodyParam()">
                                     <div class="input-field" *ngIf="!parameter.isTypeEnum()">
                                         <input [attr.id]="parameter.name" [ngFormControl]="parameter.control" type="text" [(ngModel)]="parameter.value.selected"/>
                                         <label [attr.for]="parameter.name">{{parameter.name}}</label>
                                     </div>
                                     <div class="input-field" *ngIf="parameter.isTypeEnum()">
-                                        <materialize-select-multiple [options]="parameter.getEnumMap()" [(model)]="parameter.value"
+                                        <materialize-select-multiple label="{{parameter.name}} values" name="enumParam{{i}}" [options]="parameter.getEnumMap()" [(model)]="parameter.value"
                                                                      [selected]="parameter.items.default"></materialize-select-multiple>
                                     </div>
                                 </td>
-                                <td *ngIf="parameter.isBodyParam()">
+                                <td *ngIf="parameter.isBodyParam() || operation.isPatchMethod()">
                                     <textarea [attr.id]="parameter.name" class="materialize-textarea" [ngFormControl]="parameter.control" placeholder="{{parameter.name}}" [(ngModel)]="operation.dataJson" required rows="10"></textarea><br/>
-                                    <button type="button" (click)="generateJSON($event,parameter)" class="text-black btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" >Generate JSON</button>
+                                    <button type="button" (click)="generate($event,parameter)" class="text-black btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" >Generate</button>
                                 </td>
                                 <td>{{parameter.description}}</td>
-                                <td>{{parameter.in}}</td>
                                 <td>
                                     <data-type-link [data]="parameter" (select-type)="typeModal.onSelectType($event)"></data-type-link>
                                 </td>
-                            </tr>
-                            <tr *ngIf="operation.isPatchMethod()">
-                                <td>
-                                    <textarea [attr.id]="parameter.name" [ngFormControl]="parameter.control" class="materialize-textarea" placeholder="dto" [required]="parameter.required" ([ngModel])="operation.patchJson" required rows="10"></textarea><br/>
-                                    <button type="button" (click)="generateJSON($event)" class="text-black btn waves-effect waves-light"
-                                            [ngClass]="operation.getMethodClass()" >Generate JSON</button>
-                                </td>
-                                <td>Patch dto</td>
-                                <td>body</td>
-                                <td>{{parameter}}</td>
+                                <td>{{parameter.in}}</td>
                             </tr>
                         </tbody>
                     </table>

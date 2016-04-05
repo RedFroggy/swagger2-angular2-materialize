@@ -3,6 +3,8 @@ import {ElementRef,Input,EventEmitter,Output,AfterViewInit} from 'angular2/core'
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 
 export abstract class MaterializeSelect implements AfterViewInit {
+    name:string;
+    label:string;
     model:any;
     selectValueChange: EventEmitter<any>;
     protected selectInput:any;

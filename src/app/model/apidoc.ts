@@ -25,7 +25,7 @@ const APPLICATION_XML:string = 'application/xml';
 const METHOD_CLASS:Object = {
     GET:'grey lighten-1',
     POST:'teal lighten-2',
-    PUT:'yellow lighten-2',
+    PUT:'yellow darken-2',
     DELETE:'red lighten-2',
     PATCH:'light-blue lighten-2',
     HEAD:'pink lighten-2'
@@ -143,7 +143,12 @@ export class ApiDefinition {
         }
     }
     isDtoType(item:ResponseObject|ParameterObject):boolean {
-        return item && item.schema && this.hasRef(item.schema) && this.hasDefinition(item.schema.entity);
+        if(!this.isTypeArray(item)) {
+            return item && item.schema && this.hasRef(item.schema) && this.hasDefinition(item.schema.entity);
+        }
+        return item && item.schema && item.schema.items
+            && this.hasRef(item.schema.items)
+            && this.hasDefinition(item.schema.items.entity);
     }
     getDtoType(item:ResponseObject|ParameterObject):string {
         if(item && item.schema) {
@@ -153,6 +158,9 @@ export class ApiDefinition {
             if(item.schema.items && item.schema.items.entity) {
                 return item.schema.items.entity;
             }
+        }
+        if(item && item.items) {
+            return item.items.type;
         }
     }
     isObject(type:string):boolean {
@@ -167,6 +175,9 @@ export class ApiDefinition {
     isTypeArray(item:ResponseObject|ParameterObject):boolean {
         if(item && item.schema) {
             return this.isArray(item.schema.type);
+        }
+        if(item && item.type) {
+            return this.isArray(item.type);
         }
         return false;
     }
@@ -401,8 +412,11 @@ export class OperationObject {
     isConsumeFormData():boolean {
         return this.isType(this.consume,APPLICATION_FORM_URL_ENCODED);
     }
-    getMapProduces():[{value:string}] {
+    getMapProduces():{value:string}[] {
         return this.produces.map((mimeType:string) => {return {value:mimeType} ;});
+    }
+    getMapConsumes():{value:string}[] {
+        return this.consumes.map((mimeType:string) => {return {value:mimeType} ;});
     }
 }
 

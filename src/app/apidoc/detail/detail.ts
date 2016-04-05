@@ -57,7 +57,7 @@ export class ApiDocDetail {
         event.preventDefault();
         this.router.navigate(['ApiDocList', {path: this.pathId}]);
     }
-    generateJSON(event:Event,parameter:ParameterObject):void {
+    generate(event:Event,parameter:ParameterObject):void {
         event.preventDefault();
         this.operation.originalData = this.apiDoc.getBodyDescription(parameter.getParameterType());
         this.operation.dataJson = JSON.stringify(this.operation.originalData,null,4);

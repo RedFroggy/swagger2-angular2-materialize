@@ -24,3 +24,7 @@ a.text-lowercase {
 div.api-detail {
     margin-top:8px;
 }
+
+.collection .collection-item.active {
+    background-color: #e0e0e0;
+}

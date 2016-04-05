@@ -14,13 +14,13 @@
                     <td>
                         <span *ngIf="isSimpleType(property)">{{property.value.type}}</span>
                         <span *ngIf="hasDefinition(property)">
-                            <a href="" (click)="selectType($event,property,false)">{{apiDocService.apiDoc.getEntityName(property.value.$ref)}}</a>
+                            <a href="" (click)="selectType($event,property,false)">{{apiDoc.getEntityName(property.value.$ref)}}</a>
                         </span>
                         <span *ngIf="isArrayDtoType(property)">
-                            [<a href="" (click)="selectType($event,property,false)">{{apiDocService.apiDoc.getEntityName(property.value.items.$ref)}}</a>]
+                            [<a href="" (click)="selectType($event,property,false)">{{apiDoc.getEntityName(property.value.items.$ref)}}</a>]
                         </span>
                         <span *ngIf="isArraySimpleType(property)">
-                            [<span class="red-text">{{apiDocService.apiDoc.getEntityName(property.value.items.type)}}</span>]
+                            [<span class="red-text">{{apiDoc.getEntityName(property.value.items.type)}}</span>]
                         </span>
                     </td>
                     <td>{{definition.schema.getPropertyByName(property.key)}}</td>

@@ -1,0 +1,10 @@
+<span>
+    <span *ngIf="isDtoType() && !isTypeArray()">
+        <a href="" (click)="onSelectType($event)">{{getDtoType()}}</a>
+    </span>
+    <span *ngIf="isDtoType() && isTypeArray()">
+        [<a href="" (click)="onSelectType($event)">{{getDtoType()}}</a>]
+    </span>
+    <span *ngIf="!isDtoType() && isTypeArray()">[{{getDtoType()}}]</span>
+    <span *ngIf="!isDtoType() && !isTypeArray()">{{getDtoType()}}</span>
+</span>

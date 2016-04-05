@@ -6,6 +6,9 @@ import {ApiDefinition} from '../model/apidoc';
 import {Observer} from 'rxjs/Observer';
 import {PathsObject,OperationObject,ApiResult,DefinitionsObject,ParameterObject} from '../model/apidoc';
 
+const HEADER_CONTENT_TYPE:string = 'Content-Type';
+const HEADER_ACCEPT:string = 'Accept';
+
 @Injectable()
 export class ApiDocService {
     apiDoc:ApiDefinition;
@@ -35,16 +38,16 @@ export class ApiDocService {
         let headers:Headers = new Headers();
         if(operation.consumes && !_.isEmpty(operation.consumes)) {
             if(operation.consumes.length === 1 || !operation.consume.selected) {
-                headers.set('Content-Type', operation.consumes[0]);
+                headers.set(HEADER_CONTENT_TYPE, operation.consumes[0]);
             } else {
-                headers.set('Content-Type', operation.consume.selected);
+                headers.set(HEADER_CONTENT_TYPE, operation.consume.selected);
             }
         }
         if(!operation.isDeleteMethod() && operation.produces && !_.isEmpty(operation.produces)) {
             if(operation.produces.length === 1 || !operation.produce.selected) {
-                headers.set('Accept', operation.produces[0]);
+                headers.set(HEADER_ACCEPT, operation.produces[0]);
             } else {
-                headers.set('Accept', operation.produce.selected);
+                headers.set(HEADER_ACCEPT, operation.produce.selected);
             }
         }
         reqOptions.headers = headers;
