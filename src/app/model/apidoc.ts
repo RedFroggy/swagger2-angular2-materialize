@@ -8,6 +8,7 @@ type Parameters = (ParameterObject)[];
 const TYPE_DEFINITION:string = '#/definitions/';
 const TYPE_ARRAY:string = 'array';
 const TYPE_OBJECT:string = 'object';
+const TYPE_FILE:string = 'file';
 const PATH_PARAM:string = 'path';
 const QUERY_PARAM:string = 'query';
 const BODY_PARAM:string = 'body';
@@ -19,6 +20,7 @@ const HTTP_METHOD_GET:string = 'GET';
 const HTTP_METHOD_DELETE:string = 'DELETE';
 
 const APPLICATION_FORM_URL_ENCODED:string = 'application/x-www-form-urlencoded';
+const MULTIPART_FORM_DATA:string = 'multipart/form-data';
 const APPLICATION_JSON:string = 'application/json';
 const APPLICATION_XML:string = 'application/xml';
 
@@ -427,8 +429,11 @@ export class OperationObject {
     isConsumeXml():boolean {
         return this.isType(this.consume,APPLICATION_XML);
     }
-    isConsumeFormData():boolean {
+    isConsumeFormUrlEncoded():boolean {
         return this.isType(this.consume,APPLICATION_FORM_URL_ENCODED);
+    }
+    isConsumeMultipartFormData():boolean {
+        return this.isType(this.consume,MULTIPART_FORM_DATA);
     }
     getMapProduces():{value:string}[] {
         return this.produces.map((mimeType:string) => {return {value:mimeType} ;});
@@ -628,6 +633,9 @@ export class ParameterObject {
     }
     isTypeEnum():boolean {
         return this.items.enum && !_.isEmpty(this.items.enum);
+    }
+    isTypeFile():boolean {
+        return this.type === TYPE_FILE;
     }
     getParameterType():string {
         if(this.isBodyParam()) {

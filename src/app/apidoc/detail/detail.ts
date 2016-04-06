@@ -10,13 +10,16 @@ import {SimpleMaterializeSelect} from '../../components/simple-materialize-selec
 import {MultipleMaterializeSelect} from '../../components/multiple-materialize-select';
 import {ControlGroup,Control,FormBuilder,Validators} from 'angular2/common';
 import {DataTypeLink} from '../../components/data-type-link';
+import {MaterializeInputFile} from '../../components/materialize-input-file';
 
 ///<reference path="../../../../typings/main/ambient/node/index.d.ts" />
 
 @Component({
     selector:'doc-detail',
     template:require('./detail.html'),
-    directives:[LeftMenu,TypeModal,BodyModal,SimpleMaterializeSelect,MultipleMaterializeSelect,DataTypeLink]
+    directives:[LeftMenu,TypeModal,
+        BodyModal,SimpleMaterializeSelect,
+        MultipleMaterializeSelect,DataTypeLink,MaterializeInputFile]
 })
 export class ApiDocDetail {
     operation:OperationObject;
