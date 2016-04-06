@@ -20,7 +20,6 @@ export class TypeModal extends MaterializeModal {
         this.selectType(null,eventData);
     }
     selectType(event:Event,property:any,openModal:boolean = true): void {
-        console.log(event);
         if(event) {
             event.preventDefault();
         }

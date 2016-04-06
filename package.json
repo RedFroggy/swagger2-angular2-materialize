@@ -1,7 +1,7 @@
 {
   "name": "angular2-swagger2",
   "version": "1.0.0",
-  "description": "Visualize swagger 2 api documentation",
+  "description": "Swagger 2 api documentation with Angular 2 and MaterializeCSS",
   "author": "Michael DESIGAUD <michael.desigaud@redfroggy.fr>",
   "license": "MIT",
   "engines": {
@@ -46,17 +46,18 @@
     "typings": "^0.7.9",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14",
-    "webpack-merge": "^0.8.3"
+    "webpack-merge": "^0.8.3",
+    "x2js": "^2.0.0"
   },
   "dependencies": {
-    "angular2": "^2.0.0-beta.12",
-    "materialize-css": "^0.97.5",
+    "angular2": "^2.0.0-beta.13",
+    "materialize-css": "^0.97.6",
     "bootstrap": "3.3.6",
     "core-js": "^2.1.5",
     "font-awesome": "4.5.0",
     "highlight.js": "9.2.0",
     "lodash": "^4.3.0",
-    "rxjs": "5.0.0-beta.2",
+    "rxjs": "5.0.0-beta.4",
     "swagger.d.ts": "0.0.2",
     "underscore": "1.8.3",
     "vkbeautify": "0.99.1",

@@ -37,4 +37,26 @@ var CountPipe = (function () {
     return CountPipe;
 })();
 exports.CountPipe = CountPipe;
+var TagFilterPipe = (function () {
+    function TagFilterPipe() {
+    }
+    TagFilterPipe.prototype.transform = function (value, args) {
+        if (args === void 0) { args = null; }
+        if (!args || _.isEmpty(args)) {
+            return value;
+        }
+        return value.filter(function (path) {
+            var data = path.path.operations.filter(function (operation) {
+                return operation.tags && operation.tags.indexOf(args[0]) !== -1;
+            });
+            return data && !_.isEmpty(data);
+        });
+    };
+    TagFilterPipe = __decorate([
+        core_1.Pipe({ name: 'tagFiler', pure: false }), 
+        __metadata('design:paramtypes', [])
+    ], TagFilterPipe);
+    return TagFilterPipe;
+})();
+exports.TagFilterPipe = TagFilterPipe;
 //# sourceMappingURL=pipes.js.map

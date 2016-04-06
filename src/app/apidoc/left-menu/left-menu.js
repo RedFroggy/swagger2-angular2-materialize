@@ -12,23 +12,34 @@ var apidoc_service_1 = require('../apidoc.service');
 var apidoc_1 = require('../../model/apidoc');
 var pipes_1 = require('../../pipes/pipes');
 var router_1 = require('angular2/router');
+var materialize_collapsible_1 = require('../../directive/materialize-collapsible');
+var materialize_collection_1 = require('../../directive/materialize-collection');
 var LeftMenu = (function () {
     function LeftMenu(apiDocService, router) {
         var _this = this;
         this.apiDocService = apiDocService;
         this.router = router;
         this.apiDoc = new apidoc_1.ApiDefinition();
-        apiDocService.getApi().subscribe(function (apiDoc) { return _this.apiDoc = apiDoc; });
+        apiDocService.getApi().subscribe(function (apiDoc) {
+            _this.apiDoc = apiDoc;
+        });
     }
-    LeftMenu.prototype.onSelectApi = function (event, index) {
+    LeftMenu.prototype.onSelectApi = function (event, apiPath) {
         event.preventDefault();
+        var index = 0;
+        this.apiDoc.paths.forEach(function (path, idx) {
+            if (path.name === apiPath.name) {
+                index = idx;
+            }
+        });
         this.router.navigate(['ApiDocList', { path: index + 1 }]);
     };
     LeftMenu = __decorate([
         core_1.Component({
             selector: 'left-menu',
             template: require('./left-menu.html'),
-            pipes: [pipes_1.ValuesPipe, pipes_1.CountPipe]
+            pipes: [pipes_1.ValuesPipe, pipes_1.CountPipe, pipes_1.TagFilterPipe],
+            directives: [materialize_collapsible_1.MaterializeCollapsible, materialize_collection_1.MaterializeCollection]
         }), 
         __metadata('design:paramtypes', [apidoc_service_1.ApiDocService, router_1.Router])
     ], LeftMenu);

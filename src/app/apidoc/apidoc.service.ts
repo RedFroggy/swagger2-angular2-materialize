@@ -42,6 +42,8 @@ export class ApiDocService {
             } else {
                 headers.set(HEADER_CONTENT_TYPE, operation.consume.selected);
             }
+        } else if(operation.consume.selected) {
+            headers.set(HEADER_CONTENT_TYPE, operation.consume.selected);
         }
         if(!operation.isDeleteMethod() && operation.produces && !_.isEmpty(operation.produces)) {
             if(operation.produces.length === 1 || !operation.produce.selected) {
@@ -49,6 +51,8 @@ export class ApiDocService {
             } else {
                 headers.set(HEADER_ACCEPT, operation.produce.selected);
             }
+        } else if(operation.produce.selected) {
+            headers.set(HEADER_ACCEPT, operation.produce.selected);
         }
         reqOptions.headers = headers;
 
@@ -57,7 +61,7 @@ export class ApiDocService {
                 reqOptions.body = JSON.stringify(operation.originalData);
             }
             if(operation.isConsumeXml()) {
-                //TODO
+                reqOptions.body = x2js.js2xml(operation.originalData);
             }
             if(operation.isConsumeFormData()) {
                 let formBody:string = '';
@@ -77,7 +81,6 @@ export class ApiDocService {
         return this.http.request(new Request(reqOptions)).map((res:Response) => {
             apiResult.operation = operation;
             apiResult.endDate = new Date();
-
             try {
                 if (operation.isProduceJson()) {
                     apiResult.message = res.json();
@@ -85,7 +88,10 @@ export class ApiDocService {
                     apiResult.message = res.text();
                 }
             } catch(error) {
-                apiResult.message = 'no content';
+                apiResult.message = res.text();
+                if(_.isEmpty(apiResult.message.trim())) {
+                    apiResult.message = 'No content';
+                }
             }
             apiResult.status = res.status;
 

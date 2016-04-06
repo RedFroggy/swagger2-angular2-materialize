@@ -22,7 +22,7 @@ var APPLICATION_XML = 'application/xml';
 var METHOD_CLASS = {
     GET: 'grey lighten-1',
     POST: 'teal lighten-2',
-    PUT: 'yellow lighten-2',
+    PUT: 'yellow darken-2',
     DELETE: 'red lighten-2',
     PATCH: 'light-blue lighten-2',
     HEAD: 'pink lighten-2'
@@ -117,7 +117,12 @@ var ApiDefinition = (function () {
         }
     };
     ApiDefinition.prototype.isDtoType = function (item) {
-        return item && item.schema && this.hasRef(item.schema) && this.hasDefinition(item.schema.entity);
+        if (!this.isTypeArray(item)) {
+            return item && item.schema && this.hasRef(item.schema) && this.hasDefinition(item.schema.entity);
+        }
+        return item && item.schema && item.schema.items
+            && this.hasRef(item.schema.items)
+            && this.hasDefinition(item.schema.items.entity);
     };
     ApiDefinition.prototype.getDtoType = function (item) {
         if (item && item.schema) {
@@ -127,6 +132,9 @@ var ApiDefinition = (function () {
             if (item.schema.items && item.schema.items.entity) {
                 return item.schema.items.entity;
             }
+        }
+        if (item && item.items) {
+            return item.items.type;
         }
     };
     ApiDefinition.prototype.isObject = function (type) {
@@ -142,6 +150,9 @@ var ApiDefinition = (function () {
         if (item && item.schema) {
             return this.isArray(item.schema.type);
         }
+        if (item && item.type) {
+            return this.isArray(item.type);
+        }
         return false;
     };
     ApiDefinition.prototype.getStatusClass = function (status) {
@@ -150,10 +161,10 @@ var ApiDefinition = (function () {
         }
         return ' red darken-2';
     };
-    ApiDefinition.prototype.getBodyDescription = function (entityName) {
+    ApiDefinition.prototype.getBodyDescription = function (entityName, isXml) {
         var _this = this;
         var definition = this.getDefinitionByEntity(entityName);
-        console.log(definition);
+        console.log(definition, entityName);
         var body = {};
         if (definition) {
             Object.keys(definition.schema.properties).forEach(function (name) {
@@ -167,10 +178,22 @@ var ApiDefinition = (function () {
                         bodyValue = property.enum[0];
                     }
                     else if (property.type === 'string') {
-                        bodyValue = property.example ? property.example : 'string';
+                        if (property.format === 'date-time') {
+                            bodyValue = new Date().toISOString();
+                        }
+                        else {
+                            bodyValue = property.example ? property.example : 'string';
+                        }
+                    }
+                    else if (property.type === 'boolean') {
+                        bodyValue = property.default ? property.default : true;
                     }
                     else if (property.$ref) {
-                        bodyValue = _this.getBodyDescription(_this.getEntityName(property.$ref));
+                        bodyValue = _this.getBodyDescription(_this.getEntityName(property.$ref), isXml);
+                        if (isXml) {
+                            name = Object.keys(bodyValue)[0];
+                            bodyValue = bodyValue[name];
+                        }
                     }
                 }
                 else if (_this.isArray(property.type)) {
@@ -178,11 +201,19 @@ var ApiDefinition = (function () {
                         bodyValue = ['string'];
                     }
                     else if (property.items.$ref) {
-                        bodyValue = [_this.getBodyDescription(_this.getEntityName(property.items.$ref))];
+                        bodyValue = [_this.getBodyDescription(_this.getEntityName(property.items.$ref), isXml)];
+                        if (isXml && property.xml.wrapped) {
+                            name = property.xml.name;
+                        }
                     }
                 }
                 body[name] = bodyValue;
             });
+            if (isXml && definition.schema.xml) {
+                var xmlBody = {};
+                xmlBody[definition.schema.xml.name] = body;
+                return xmlBody;
+            }
         }
         return body;
     };
@@ -257,8 +288,8 @@ var OperationObject = (function () {
         this.produces = [];
         this.consumes = [];
         this.path = path;
-        this.produce = { selected: null };
-        this.consume = { selected: null };
+        this.produce = { selected: APPLICATION_JSON };
+        this.consume = { selected: APPLICATION_JSON };
         if (method) {
             this.name = method.toUpperCase();
         }
@@ -279,10 +310,10 @@ var OperationObject = (function () {
                     _this.parameters.push(new ParameterObject(param));
                 });
             }
-            if (_opObj.produces) {
+            if (_opObj.produces && !_.isEmpty(this.produces)) {
                 this.produce = { selected: this.produces[0] };
             }
-            if (_opObj.consumes) {
+            if (_opObj.consumes && !_.isEmpty(this.consumes)) {
                 this.consume = { selected: this.consumes[0] };
             }
         }
@@ -355,6 +386,9 @@ var OperationObject = (function () {
     };
     OperationObject.prototype.getMapProduces = function () {
         return this.produces.map(function (mimeType) { return { value: mimeType }; });
+    };
+    OperationObject.prototype.getMapConsumes = function () {
+        return this.consumes.map(function (mimeType) { return { value: mimeType }; });
     };
     return OperationObject;
 })();
@@ -520,13 +554,17 @@ var ParameterObject = (function () {
         return this.in === FORM_PARAM;
     };
     ParameterObject.prototype.isTypeArray = function () {
-        return this.type === TYPE_ARRAY;
+        return (this.type && this.type === TYPE_ARRAY)
+            || (this.schema && this.schema.type && this.schema.type === TYPE_ARRAY);
     };
     ParameterObject.prototype.isTypeEnum = function () {
         return this.items.enum && !_.isEmpty(this.items.enum);
     };
     ParameterObject.prototype.getParameterType = function () {
         if (this.isBodyParam()) {
+            if (this.isTypeArray()) {
+                return this.schema.items.entity;
+            }
             return this.schema.entity;
         }
         else if (!this.isTypeArray()) {
@@ -554,6 +592,9 @@ var ReferenceObject = (function () {
             Object.assign(this, _refObj);
             if (this.$ref) {
                 this.entity = this.$ref.replace(TYPE_DEFINITION, '');
+            }
+            if (this.items && this.items.$ref) {
+                this.items.entity = this.items.$ref.replace(TYPE_DEFINITION, '');
             }
         }
     }

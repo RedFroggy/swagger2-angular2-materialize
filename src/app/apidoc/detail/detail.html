@@ -27,14 +27,14 @@
                 </div>
                 <div class="section" [hidden]="!operation.produces || operation.produces.length === 0">
                     <h5>Response content type</h5>
-                    <materialize-select-simple [options]="operation.getMapProduces()" label="Accept header" name="produceSelect" [(model)]="operation.produce" [selected]="'application/json'"></materialize-select-simple>
+                    <materialize-select-simple [options]="operation.getMapProduces()" name="produceSelect" [(model)]="operation.produce" [selected]="'application/json'"></materialize-select-simple>
                 </div>
                 <div class="section">
                     <button  (click)="bodyModal.tryApi($event)" class="text-black btn right waves-effect waves-light"
                        [ngClass]="operation.getMethodClass()" [disabled]="!apiDetailForm.valid">Send <i class="mdi-content-send right"></i></button>
                     <h5 [hidden]="!operation.parameters || operation.parameters.length === 0">Parameters</h5>
                     <div [hidden]="!operation.consumes || operation.consumes.length === 0">
-                        <materialize-select-simple label="Content-Type header" name="consumeSelect" [options]="operation.getMapConsumes()" [(model)]="operation.consume" [selected]="'application/json'"></materialize-select-simple>
+                        <materialize-select-simple name="consumeSelect" [options]="operation.getMapConsumes()" [(model)]="operation.consume" [selected]="'application/json'"></materialize-select-simple>
                     </div>
                     <table class="bordered responsive-table" [hidden]="!operation.parameters || operation.parameters.length === 0">
                         <thead>

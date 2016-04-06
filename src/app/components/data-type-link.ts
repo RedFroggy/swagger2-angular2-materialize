@@ -12,7 +12,7 @@ export class DataTypeLink {
     private apiDoc:ApiDefinition;
     constructor(apiDocService:ApiDocService) {
         this.apiDoc = new ApiDefinition();
-        apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => {this.apiDoc = apiDoc});
+        apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
     }
     isDtoType():boolean {
         return this.apiDoc.isDtoType(this.data);

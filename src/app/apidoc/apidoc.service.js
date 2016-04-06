@@ -13,6 +13,8 @@ var EnvConfig = require('../utils/env.config');
 var Observable_1 = require('rxjs/Observable');
 var apidoc_1 = require('../model/apidoc');
 var apidoc_2 = require('../model/apidoc');
+var HEADER_CONTENT_TYPE = 'Content-Type';
+var HEADER_ACCEPT = 'Accept';
 var ApiDocService = (function () {
     function ApiDocService(http) {
         this.http = http;
@@ -41,19 +43,25 @@ var ApiDocService = (function () {
         var headers = new http_1.Headers();
         if (operation.consumes && !_.isEmpty(operation.consumes)) {
             if (operation.consumes.length === 1 || !operation.consume.selected) {
-                headers.set('Content-Type', operation.consumes[0]);
+                headers.set(HEADER_CONTENT_TYPE, operation.consumes[0]);
             }
             else {
-                headers.set('Content-Type', operation.consume.selected);
+                headers.set(HEADER_CONTENT_TYPE, operation.consume.selected);
             }
+        }
+        else if (operation.consume.selected) {
+            headers.set(HEADER_CONTENT_TYPE, operation.consume.selected);
         }
         if (!operation.isDeleteMethod() && operation.produces && !_.isEmpty(operation.produces)) {
             if (operation.produces.length === 1 || !operation.produce.selected) {
-                headers.set('Accept', operation.produces[0]);
+                headers.set(HEADER_ACCEPT, operation.produces[0]);
             }
             else {
-                headers.set('Accept', operation.produce.selected);
+                headers.set(HEADER_ACCEPT, operation.produce.selected);
             }
+        }
+        else if (operation.produce.selected) {
+            headers.set(HEADER_ACCEPT, operation.produce.selected);
         }
         reqOptions.headers = headers;
         if (operation.isWriteMethod()) {
@@ -61,6 +69,7 @@ var ApiDocService = (function () {
                 reqOptions.body = JSON.stringify(operation.originalData);
             }
             if (operation.isConsumeXml()) {
+                reqOptions.body = x2js.js2xml(operation.originalData);
             }
             if (operation.isConsumeFormData()) {
                 var formBody = '';
@@ -88,7 +97,10 @@ var ApiDocService = (function () {
                 }
             }
             catch (error) {
-                apiResult.message = 'no content';
+                apiResult.message = res.text();
+                if (_.isEmpty(apiResult.message.trim())) {
+                    apiResult.message = 'No content';
+                }
             }
             apiResult.status = res.status;
             return apiResult;

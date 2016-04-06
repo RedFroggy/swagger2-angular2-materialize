@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var router_1 = require('angular2/router');
+var materialize_header_1 = require('../directive/materialize-header');
 var Header = (function () {
     function Header(router) {
         this.router = router;
@@ -25,7 +26,8 @@ var Header = (function () {
     Header = __decorate([
         core_1.Component({
             selector: 'header',
-            template: require('./header.html')
+            template: require('./header.html'),
+            directives: [materialize_header_1.MaterializeHeader, materialize_header_1.MaterializeCollapseButton]
         }), 
         __metadata('design:paramtypes', [router_1.Router])
     ], Header);

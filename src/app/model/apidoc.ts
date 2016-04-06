@@ -187,9 +187,9 @@ export class ApiDefinition {
         }
         return ' red darken-2';
     }
-    getBodyDescription(entityName:string):any {
+    getBodyDescription(entityName:string,isXml:boolean):any {
         let definition:DefinitionsObject = this.getDefinitionByEntity(entityName);
-        console.log(definition);
+        console.log(definition,entityName);
         let body:any = {};
         if(definition) {
             Object.keys(definition.schema.properties).forEach((name:string) => {
@@ -201,19 +201,37 @@ export class ApiDefinition {
                     } else if(property.enum && !_.isEmpty(property.enum)) {
                         bodyValue = property.enum[0];
                     } else if(property.type === 'string') {
-                        bodyValue = property.example ? property.example : 'string';
+                        if(property.format === 'date-time') {
+                            bodyValue = new Date().toISOString();
+                        } else {
+                            bodyValue = property.example ? property.example : 'string';
+                        }
+                    } else if(property.type === 'boolean') {
+                        bodyValue = property.default ? property.default : true;
                     } else if(property.$ref) {
-                        bodyValue = this.getBodyDescription(this.getEntityName(property.$ref));
+                        bodyValue = this.getBodyDescription(this.getEntityName(property.$ref),isXml);
+                        if(isXml) {
+                            name = Object.keys(bodyValue)[0];
+                            bodyValue = bodyValue[name];
+                        }
                     }
                 } else if (this.isArray(property.type)) {
                     if(property.items.type === 'string') {
                         bodyValue = ['string'];
                     } else if(property.items.$ref) {
-                        bodyValue = [this.getBodyDescription(this.getEntityName(property.items.$ref))];
+                        bodyValue = [this.getBodyDescription(this.getEntityName(property.items.$ref),isXml)];
+                        if(isXml && property.xml.wrapped) {
+                            name = property.xml.name;
+                        }
                     }
                 }
                 body[name] = bodyValue;
             });
+            if(isXml && definition.schema.xml) {
+                let xmlBody:any = {};
+                xmlBody[definition.schema.xml.name] = body;
+                return xmlBody;
+            }
         }
         return body;
     }
@@ -316,8 +334,8 @@ export class OperationObject {
         this.produces = [];
         this.consumes = [];
         this.path = path;
-        this.produce = {selected:null};
-        this.consume = {selected:null};
+        this.produce = {selected:APPLICATION_JSON};
+        this.consume = {selected:APPLICATION_JSON};
         if(method) {
             this.name = method.toUpperCase();
         }
@@ -338,10 +356,10 @@ export class OperationObject {
                     this.parameters.push(new ParameterObject(param));
                 });
             }
-            if(_opObj.produces) {
+            if(_opObj.produces && !_.isEmpty(this.produces)) {
                 this.produce = {selected:this.produces[0]};
             }
-            if(_opObj.consumes) {
+            if(_opObj.consumes && !_.isEmpty(this.consumes)) {
                 this.consume = {selected:this.consumes[0]};
             }
         }
@@ -605,13 +623,17 @@ export class ParameterObject {
         return this.in === FORM_PARAM;
     }
     isTypeArray():boolean {
-        return this.type === TYPE_ARRAY;
+        return (this.type && this.type === TYPE_ARRAY)
+            || (this.schema && this.schema.type && this.schema.type === TYPE_ARRAY);
     }
     isTypeEnum():boolean {
         return this.items.enum && !_.isEmpty(this.items.enum);
     }
     getParameterType():string {
         if(this.isBodyParam()) {
+            if(this.isTypeArray()) {
+                return this.schema.items.entity;
+            }
             return this.schema.entity;
         } else if(!this.isTypeArray()) {
             return this.type;
@@ -620,7 +642,7 @@ export class ParameterObject {
         }
         return '['+this.items.type+']';
     }
-    getEnumMap():[{value:string}] {
+    getEnumMap():{value:string}[] {
         return this.items.enum.map((enumVal:string) => {return {value:enumVal} ;});
     }
     createControl():void {
@@ -633,11 +655,16 @@ export class ParameterObject {
 export class ReferenceObject {
     $ref: string;
     entity:string;
+    items:{$ref:string,entity:string};
+    type:string;
     constructor(_refObj?:any) {
         if(_refObj) {
             Object.assign(this,_refObj);
             if(this.$ref) {
                 this.entity = this.$ref.replace(TYPE_DEFINITION, '');
+            }
+            if(this.items && this.items.$ref) {
+                this.items.entity = this.items.$ref.replace(TYPE_DEFINITION, '');
             }
         }
     }
@@ -692,10 +719,13 @@ export interface IJsonSchema {
     };
     'enum'?: any[];
     type?: string;
+    format?:string;
+    default?:boolean;
     allOf?: IJsonSchema[];
     anyOf?: IJsonSchema[];
     oneOf?: IJsonSchema[];
     not?: IJsonSchema;
+    xml?:{name:string,wrapped:boolean};
 }
 
 export class SchemaObject implements IJsonSchema {

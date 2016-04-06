@@ -59,8 +59,17 @@ export class ApiDocDetail {
     }
     generate(event:Event,parameter:ParameterObject):void {
         event.preventDefault();
-        this.operation.originalData = this.apiDoc.getBodyDescription(parameter.getParameterType());
-        this.operation.dataJson = JSON.stringify(this.operation.originalData,null,4);
+        console.log(parameter);
+        this.operation.originalData = this.apiDoc.getBodyDescription(parameter.getParameterType(),this.operation.isConsumeXml());
+        if(parameter.isTypeArray()) {
+            this.operation.originalData = [this.operation.originalData];
+        }
+
+        if(this.operation.isConsumeJson()) {
+            this.operation.dataJson = JSON.stringify(this.operation.originalData, null, 4);
+        } else if(this.operation.isConsumeXml()) {
+            this.operation.dataJson = vkbeautify.xml(x2js.js2xml(this.operation.originalData));
+        }
         setTimeout(() => {
             $('textarea').trigger('autoresize');
         },0);

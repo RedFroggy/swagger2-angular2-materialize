@@ -33,12 +33,15 @@ import 'lodash/lodash';
 import 'materialize-css/dist/css/materialize.css';
 import 'materialize-css/dist/js/materialize.js';
 
+// x2js
+var X2JS = require('x2js/x2js.js');
+window.x2js = new X2JS();
+
 // Highlight
 import 'highlight.js/styles/default.css';
 var hljs = require('highlight.js/lib/highlight');
 require('highlight.js/lib/index');
-window.hljs = hljs;
+//window.hljs = hljs;
 
 window.vkbeautify = require('vkbeautify');
 
-/// <reference path="..\..\typings\main\ambient\jquery\index.d.ts" />
