@@ -21,7 +21,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/of';
 
 // Twitter Bootstrap
-import 'bootstrap/dist/js/bootstrap';
+import 'bootstrap/dist/js/bootstrap.js';
 
 //TypeScript
 import 'typescript/lib/typescript';
@@ -32,6 +32,12 @@ import 'lodash/lodash';
 // Materialize css
 import 'materialize-css/dist/css/materialize.css';
 import 'materialize-css/dist/js/materialize.js';
+
+// Moment
+window.moment = require('moment/moment.js');
+
+// ChartJS
+window.Chart = require('chart.js/Chart.js');
 
 // x2js
 var X2JS = require('x2js/x2js.js');

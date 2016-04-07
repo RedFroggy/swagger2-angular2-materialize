@@ -1,0 +1,19 @@
+<div class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h5>{{currentOperation.summary}} - {{currentOperation.operationId}}</h5>
+        <div class="row">
+            <materialize-select-multiple #operationSelect (on-change)="onSelectOperation($event)" [options]="getOperationsMap()" [(model)]="selectedOperation" ></materialize-select-multiple>
+        </div>
+        <div class="row" id="chartCanvasWrapper">
+            <canvas id="chartCanvas" width="400"></canvas>
+        </div>
+        <div class="row chart-legend" id="legend">
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="" (click)="closeModal($event)" class="modal-action modal-close waves-effect waves-green btn-flat">
+            <i class="material-icons left">close</i> Close
+        </a>
+    </div>
+</div>

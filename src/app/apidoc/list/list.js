@@ -14,6 +14,7 @@ var router_1 = require('angular2/router');
 var left_menu_1 = require('../left-menu/left-menu');
 var apidoc_2 = require('../../model/apidoc');
 var type_modal_1 = require('../modals/type.modal');
+var chart_modal_1 = require('../modals/chart-modal');
 var ApiDocList = (function () {
     function ApiDocList(apiDocService, router, routeParams) {
         var _this = this;
@@ -32,7 +33,11 @@ var ApiDocList = (function () {
             }
         });
     }
-    ApiDocList.prototype.hasStats = function (index) {
+    ApiDocList.prototype.hasStats = function (operation) {
+        if (operation && localStorage.getItem(operation.slug) !== null) {
+            var requestTimes = JSON.parse(localStorage.getItem(operation.slug));
+            return requestTimes && !_.isEmpty(requestTimes);
+        }
         return false;
     };
     ApiDocList.prototype.goToDetailPage = function (event, index) {
@@ -43,7 +48,7 @@ var ApiDocList = (function () {
         core_1.Component({
             selector: 'doc-list',
             template: require('./list.html'),
-            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal]
+            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal, chart_modal_1.ChartModal]
         }), 
         __metadata('design:paramtypes', [apidoc_service_1.ApiDocService, router_1.Router, router_1.RouteParams])
     ], ApiDocList);

@@ -74,6 +74,7 @@ export class ApiDocService {
                 });
                 reqOptions.body = formBody;
             }
+            //TODO override HTTP class
             if(operation.isConsumeMultipartFormData()) {
                 let boundary:string = '------FormData' + Math.random();
                 let body:string = '';

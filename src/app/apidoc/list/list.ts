@@ -9,11 +9,12 @@ import {LeftMenu} from '../left-menu/left-menu';
 import {ApiMain} from '../main/api.main';
 import {PathsObject, OperationObject, DefinitionsObject} from '../../model/apidoc';
 import {TypeModal} from '../modals/type.modal';
+import {ChartModal} from '../modals/chart-modal';
 
 @Component({
     selector:'doc-list',
     template:require('./list.html'),
-    directives:[LeftMenu,TypeModal]
+    directives:[LeftMenu,TypeModal,ChartModal]
 })
 export class ApiDocList {
     private apiPath:PathsObject;
@@ -34,7 +35,11 @@ export class ApiDocList {
             }
         });
     }
-    hasStats(index:number):boolean {
+    hasStats(operation:OperationObject):boolean {
+        if(operation && localStorage.getItem(operation.slug) !== null) {
+            let requestTimes:{date:Date,time:number}[] = JSON.parse(localStorage.getItem(operation.slug));
+            return requestTimes && !_.isEmpty(requestTimes);
+        }
         return false;
     }
     goToDetailPage(event:Event,index:number):void {

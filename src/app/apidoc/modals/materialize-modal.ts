@@ -14,13 +14,13 @@ export abstract class MaterializeModal implements AfterViewInit {
     ngAfterViewInit():void {
         this.modal = $(DOM.querySelector(this.el.nativeElement,'div.modal'));
     }
-    openModal(event:Event,options?:any):void {
+    openModal(event?:Event,options?:any):void {
         if(event) {
             event.preventDefault();
         }
         this.modal.openModal(options);
     }
-    closeModal(event:Event):void {
+    closeModal(event?:Event):void {
         if(event) {
             event.preventDefault();
         }

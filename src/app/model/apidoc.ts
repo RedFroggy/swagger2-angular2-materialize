@@ -9,6 +9,7 @@ const TYPE_DEFINITION:string = '#/definitions/';
 const TYPE_ARRAY:string = 'array';
 const TYPE_OBJECT:string = 'object';
 const TYPE_FILE:string = 'file';
+const TYPE_DATE:string = 'date';
 const PATH_PARAM:string = 'path';
 const QUERY_PARAM:string = 'query';
 const BODY_PARAM:string = 'body';
@@ -237,6 +238,20 @@ export class ApiDefinition {
         }
         return body;
     }
+    getOperationsBySlug(slugs:Array<string>):Array<OperationObject> {
+        let operations:Array<OperationObject> = [];
+        if(slugs) {
+            this.paths.forEach((path:PathsObject) => {
+                let pathOperations:Array<OperationObject> = path.path.operations.filter((operation:OperationObject) => {
+                    return slugs.indexOf(operation.slug) !== -1;
+                });
+                if(!_.isEmpty(pathOperations)) {
+                    operations = operations.concat(pathOperations);
+                }
+            });
+        }
+        return operations;
+    }
 }
 
 export class InfoObject {
@@ -330,6 +345,7 @@ export class OperationObject {
     patchJson:string;
     consume:{value?:string,selected:string};
     produce:{value?:string,selected:string};
+    slug:string;
     constructor(path?:string,method?:string,_opObj?:any) {
         this.responses = [];
         this.parameters = [];
@@ -343,6 +359,7 @@ export class OperationObject {
         }
         if(_opObj) {
             Object.assign(this,_opObj);
+            this.slug = btoa(this.name+this.path+this.operationId);
             if(_opObj.externalDocs) {
                 this.externalDocs = new ExternalDocumentationObject(_opObj.externalDocs);
             }
@@ -436,10 +453,10 @@ export class OperationObject {
         return this.isType(this.consume,MULTIPART_FORM_DATA);
     }
     getMapProduces():{value:string}[] {
-        return this.produces.map((mimeType:string) => {return {value:mimeType} ;});
+        return this.produces.map((mimeType:string) => {return {value:mimeType,label:mimeType} ;});
     }
     getMapConsumes():{value:string}[] {
-        return this.consumes.map((mimeType:string) => {return {value:mimeType} ;});
+        return this.consumes.map((mimeType:string) => {return {value:mimeType,label:mimeType} ;});
     }
 }
 
@@ -637,6 +654,9 @@ export class ParameterObject {
     isTypeFile():boolean {
         return this.type === TYPE_FILE;
     }
+    isTypeDate():boolean {
+        return this.type === TYPE_DATE;
+    }
     getParameterType():string {
         if(this.isBodyParam()) {
             if(this.isTypeArray()) {
@@ -651,7 +671,7 @@ export class ParameterObject {
         return '['+this.items.type+']';
     }
     getEnumMap():{value:string}[] {
-        return this.items.enum.map((enumVal:string) => {return {value:enumVal} ;});
+        return this.items.enum.map((enumVal:string) => {return {value:enumVal,label:enumVal} ;});
     }
     createControl():void {
         if(this.required) {

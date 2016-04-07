@@ -63,7 +63,6 @@ var ApiDocService = (function () {
         else if (operation.produce.selected) {
             headers.set(HEADER_ACCEPT, operation.produce.selected);
         }
-        reqOptions.headers = headers;
         if (operation.isWriteMethod()) {
             if (operation.isConsumeJson()) {
                 reqOptions.body = JSON.stringify(operation.originalData);
@@ -71,7 +70,7 @@ var ApiDocService = (function () {
             if (operation.isConsumeXml()) {
                 reqOptions.body = x2js.js2xml(operation.originalData);
             }
-            if (operation.isConsumeFormData()) {
+            if (operation.isConsumeFormUrlEncoded()) {
                 var formBody = '';
                 operation.parameters.forEach(function (param) {
                     if (param.isFormParam()) {
@@ -83,7 +82,30 @@ var ApiDocService = (function () {
                 });
                 reqOptions.body = formBody;
             }
+            //TODO override HTTP class
+            if (operation.isConsumeMultipartFormData()) {
+                var boundary = '------FormData' + Math.random();
+                var body = '';
+                operation.parameters.forEach(function (parameter) {
+                    if (parameter.isFormParam()) {
+                        body += '--' + boundary + '\r\n';
+                        if (parameter.isTypeFile()) {
+                            var file = parameter.value.selected.file;
+                            body += 'Content-Disposition: form-data; name="' + parameter.name + '"; filename="' + file.name + '"\r\n';
+                            body += 'Content-Type: ' + file.type + '\r\n\r\n';
+                        }
+                        else {
+                            body += 'Content-Disposition: form-data; name="' + parameter.name + '";\r\n\r\n';
+                            body += parameter.value.selected + '\r\n';
+                        }
+                    }
+                });
+                body += '--' + boundary + '--';
+                headers.set(HEADER_CONTENT_TYPE, headers.get(HEADER_CONTENT_TYPE) + '; boundary=' + boundary);
+                reqOptions.body = body;
+            }
         }
+        reqOptions.headers = headers;
         console.log('Calling api with options', reqOptions);
         return this.http.request(new http_1.Request(reqOptions)).map(function (res) {
             apiResult.operation = operation;

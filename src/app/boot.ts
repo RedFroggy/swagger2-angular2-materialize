@@ -9,6 +9,7 @@ import {ApiDocService} from './apidoc/apidoc.service';
 
 //Styles css
 import '../assets/styles/styles.css';
+import '../assets/styles/chart.css';
 
 export function main() {
     return bootstrap(AppComponent, [

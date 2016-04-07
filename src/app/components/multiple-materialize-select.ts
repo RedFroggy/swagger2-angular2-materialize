@@ -15,13 +15,13 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
     @Input() model:any;
     @Input() options:[{label:string,value:string}];
     @Input() selected:string;
-    @Output() selectValueChange: EventEmitter<any> =  new EventEmitter();
+    @Output('on-change') selectValueChange: EventEmitter<any> =  new EventEmitter();
     constructor(el: ElementRef) {
         super(el,true);
     }
     ngAfterViewInit():void {
         super.ngAfterViewInit();
-        this.selectInput.material_select();
+        this.refresh();
         if(this.selected) {
             setTimeout(() => {
                 this.updateValue([this.selected]);
@@ -37,7 +37,7 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
             if(value === this.selected) {
                 $(li).addClass('active');
                 this.selectInput.val([this.selected]);
-                this.selectInput.material_select();
+                this.refresh();
             }
         });
     }
@@ -48,6 +48,9 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
                 newValuesArr.push(this.selectInput.children('option').toArray()[i].value);
             }
         });
+        if(newValuesArr.hasOwnProperty('selected')) {
+            this.selectValueChange.emit(newValuesArr);
+        }
         this.selectInput.val(newValuesArr);
     }
 }

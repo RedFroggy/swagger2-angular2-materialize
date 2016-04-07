@@ -18,6 +18,7 @@ var simple_materialize_select_1 = require('../../components/simple-materialize-s
 var multiple_materialize_select_1 = require('../../components/multiple-materialize-select');
 var common_1 = require('angular2/common');
 var data_type_link_1 = require('../../components/data-type-link');
+var materialize_input_file_1 = require('../../components/materialize-input-file');
 ///<reference path="../../../../typings/main/ambient/node/index.d.ts" />
 var ApiDocDetail = (function () {
     function ApiDocDetail(apiDocService, formBuilder, router, routeParams) {
@@ -38,7 +39,7 @@ var ApiDocDetail = (function () {
             var path = _this.apiDocService.apiDoc.paths[_this.pathId - 1];
             if (path) {
                 _this.operation = path.path.operations[operationId - 1];
-                console.log(_this.operation);
+                //this.operation.slug = 'op-'+ (this.pathId-1)+'-'+(operationId -1);
                 setTimeout(function () {
                     _this.operation.parameters.forEach(function (parameter) { return _this.apiDetailForm.addControl(parameter.name, parameter.control); });
                 }, 0);
@@ -76,7 +77,10 @@ var ApiDocDetail = (function () {
         core_1.Component({
             selector: 'doc-detail',
             template: require('./detail.html'),
-            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal, body_modal_1.BodyModal, simple_materialize_select_1.SimpleMaterializeSelect, multiple_materialize_select_1.MultipleMaterializeSelect, data_type_link_1.DataTypeLink]
+            directives: [left_menu_1.LeftMenu, type_modal_1.TypeModal,
+                body_modal_1.BodyModal, simple_materialize_select_1.SimpleMaterializeSelect,
+                multiple_materialize_select_1.MultipleMaterializeSelect, data_type_link_1.DataTypeLink,
+                materialize_input_file_1.MaterializeInputFile]
         }), 
         __metadata('design:paramtypes', [apidoc_service_1.ApiDocService, common_1.FormBuilder, router_1.Router, router_1.RouteParams])
     ], ApiDocDetail);

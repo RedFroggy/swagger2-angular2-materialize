@@ -7,6 +7,8 @@ var common_1 = require('angular2/common');
 var TYPE_DEFINITION = '#/definitions/';
 var TYPE_ARRAY = 'array';
 var TYPE_OBJECT = 'object';
+var TYPE_FILE = 'file';
+var TYPE_DATE = 'date';
 var PATH_PARAM = 'path';
 var QUERY_PARAM = 'query';
 var BODY_PARAM = 'body';
@@ -17,6 +19,7 @@ var HTTP_METHOD_PUT = 'PUT';
 var HTTP_METHOD_GET = 'GET';
 var HTTP_METHOD_DELETE = 'DELETE';
 var APPLICATION_FORM_URL_ENCODED = 'application/x-www-form-urlencoded';
+var MULTIPART_FORM_DATA = 'multipart/form-data';
 var APPLICATION_JSON = 'application/json';
 var APPLICATION_XML = 'application/xml';
 var METHOD_CLASS = {
@@ -217,6 +220,20 @@ var ApiDefinition = (function () {
         }
         return body;
     };
+    ApiDefinition.prototype.getOperationsBySlug = function (slugs) {
+        var operations = [];
+        if (slugs) {
+            this.paths.forEach(function (path) {
+                var pathOperations = path.path.operations.filter(function (operation) {
+                    return slugs.indexOf(operation.slug) !== -1;
+                });
+                if (!_.isEmpty(pathOperations)) {
+                    operations = operations.concat(pathOperations);
+                }
+            });
+        }
+        return operations;
+    };
     return ApiDefinition;
 })();
 exports.ApiDefinition = ApiDefinition;
@@ -295,6 +312,7 @@ var OperationObject = (function () {
         }
         if (_opObj) {
             Object.assign(this, _opObj);
+            this.slug = btoa(this.name + this.path + this.operationId);
             if (_opObj.externalDocs) {
                 this.externalDocs = new ExternalDocumentationObject(_opObj.externalDocs);
             }
@@ -381,14 +399,17 @@ var OperationObject = (function () {
     OperationObject.prototype.isConsumeXml = function () {
         return this.isType(this.consume, APPLICATION_XML);
     };
-    OperationObject.prototype.isConsumeFormData = function () {
+    OperationObject.prototype.isConsumeFormUrlEncoded = function () {
         return this.isType(this.consume, APPLICATION_FORM_URL_ENCODED);
     };
+    OperationObject.prototype.isConsumeMultipartFormData = function () {
+        return this.isType(this.consume, MULTIPART_FORM_DATA);
+    };
     OperationObject.prototype.getMapProduces = function () {
-        return this.produces.map(function (mimeType) { return { value: mimeType }; });
+        return this.produces.map(function (mimeType) { return { value: mimeType, label: mimeType }; });
     };
     OperationObject.prototype.getMapConsumes = function () {
-        return this.consumes.map(function (mimeType) { return { value: mimeType }; });
+        return this.consumes.map(function (mimeType) { return { value: mimeType, label: mimeType }; });
     };
     return OperationObject;
 })();
@@ -560,6 +581,12 @@ var ParameterObject = (function () {
     ParameterObject.prototype.isTypeEnum = function () {
         return this.items.enum && !_.isEmpty(this.items.enum);
     };
+    ParameterObject.prototype.isTypeFile = function () {
+        return this.type === TYPE_FILE;
+    };
+    ParameterObject.prototype.isTypeDate = function () {
+        return this.type === TYPE_DATE;
+    };
     ParameterObject.prototype.getParameterType = function () {
         if (this.isBodyParam()) {
             if (this.isTypeArray()) {
@@ -576,7 +603,7 @@ var ParameterObject = (function () {
         return '[' + this.items.type + ']';
     };
     ParameterObject.prototype.getEnumMap = function () {
-        return this.items.enum.map(function (enumVal) { return { value: enumVal }; });
+        return this.items.enum.map(function (enumVal) { return { value: enumVal, label: enumVal }; });
     };
     ParameterObject.prototype.createControl = function () {
         if (this.required) {

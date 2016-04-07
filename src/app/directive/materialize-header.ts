@@ -7,7 +7,7 @@ import {Router} from 'angular2/router';
 export class MaterializeHeader implements AfterViewInit {
     constructor(private el:ElementRef,private router:Router) {}
     ngAfterViewInit():void {
-        if(this.router.lastNavigationAttempt.indexOf('home') !== -1) {
+        if(_.isEmpty(this.router.lastNavigationAttempt) || this.router.lastNavigationAttempt.indexOf('home') !== -1) {
             $(this.el.nativeElement).find('#homeLink').addClass('active red darken-4');
             $(this.el.nativeElement).find('#mobileHomeLink').addClass('active red darken-4');
         }

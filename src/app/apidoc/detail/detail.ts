@@ -19,7 +19,8 @@ import {MaterializeInputFile} from '../../components/materialize-input-file';
     template:require('./detail.html'),
     directives:[LeftMenu,TypeModal,
         BodyModal,SimpleMaterializeSelect,
-        MultipleMaterializeSelect,DataTypeLink,MaterializeInputFile]
+        MultipleMaterializeSelect,DataTypeLink,
+        MaterializeInputFile]
 })
 export class ApiDocDetail {
     operation:OperationObject;
@@ -42,7 +43,7 @@ export class ApiDocDetail {
             let path:PathsObject = this.apiDocService.apiDoc.paths[this.pathId-1];
             if(path) {
                 this.operation = path.path.operations[operationId - 1];
-                console.log(this.operation);
+                //this.operation.slug = 'op-'+ (this.pathId-1)+'-'+(operationId -1);
 
                 setTimeout(()=> {
                     this.operation.parameters.forEach((parameter:ParameterObject) => this.apiDetailForm.addControl(parameter.name,parameter.control));

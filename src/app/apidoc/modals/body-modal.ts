@@ -28,6 +28,7 @@ export class BodyModal extends MaterializeModal {
         this.apiDocService.sendRequest(this.operation).subscribe((apiResult:ApiResult) => {
             this.apiResult = apiResult;
             this.beautifyResponse(event);
+            this.storeRequest();
         },(err:Response) => {
             console.log('Request error',err);
             let body:string = err.text();
@@ -37,6 +38,16 @@ export class BodyModal extends MaterializeModal {
             this.apiResult.message = _.isEmpty(body) ? body : err.json();
             this.beautifyResponse(event);
         });
+    }
+    storeRequest():void {
+        if(this.operation.slug) {
+            if(!localStorage.getItem(this.operation.slug)) {
+                localStorage.setItem(this.operation.slug,JSON.stringify([]));
+            }
+            let requestTimes:{date:Date,time:number}[] = JSON.parse(localStorage.getItem(this.operation.slug));
+            requestTimes.push({date:this.apiResult.date,time:this.apiResult.getRequestTime()});
+            localStorage.setItem(this.operation.slug,JSON.stringify(requestTimes));
+        }
     }
     beautifyResponse(event:Event):void {
         let codeElement:any = $(DOM.querySelector(this.el.nativeElement,'pre code'));

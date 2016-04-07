@@ -13,23 +13,15 @@
                 </p><br/>
             </div>
             <div class="card-action">
-                <a (click)="goToDetailPage($event,i)" href=""
-                   class="waves-effect black-text waves-light btn" [ngClass]="operation.getMethodClass()"><i class="mdi-action-swap-vert"></i>Try api</a>
+                <button (click)="goToDetailPage($event,i)" class="btn waves-effect waves-light" [ngClass]="operation.getMethodClass()">
+                    <i class="material-icons left">swap_vert</i>Try api
+                </button>
 
-                <a href="" (click)="onClickStatBtn(operation)" class="waves-effect black-text waves-light btn"
-                   [ngClass]="operation.getMethodClass()"
-                   *ngIf="hasStats($index)"><i class="mdi-editor-insert-chart"></i>Stats</a>
+                <button (click)="chartModal.showGraph(operation)" class="btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" *ngIf="hasStats(operation)">
+                    <i class="material-icons left">insert_chart</i>Stats
+                </button>
             </div>
         </div>
     </div>
-    <div id="chartModal" class="modal modal-fixed-footer">
-        <div class="modal-content">
-            <canvas class="chart chart-line" legend="true" colours="colors" options="options" series="series"
-                    data="stats" labels="labels"></canvas>
-        </div>
-        <div class="modal-footer">
-            <a href="" ng-click="onCloseModal('chartModal')"
-               class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-    </div>
+    <chart-modal #chartModal></chart-modal>
 </div>
