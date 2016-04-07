@@ -8,7 +8,7 @@ export class MaterializeCollapsible implements AfterViewInit {
     ngAfterViewInit():void {
         setTimeout(() => {
             $(this.el.nativeElement).collapsible({
-                accordion : true
+                accordion : false
             });
         });
     }

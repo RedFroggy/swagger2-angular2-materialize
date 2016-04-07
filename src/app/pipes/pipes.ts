@@ -31,3 +31,30 @@ export class TagFilterPipe implements PipeTransform {
         });
     }
 }
+
+@Pipe({ name: 'searchFiler',  pure: false })
+export class SearchFilterPipe implements PipeTransform {
+    transform(value: Array<PathsObject>, args: string[] = null): any {
+        let filter = args[0];
+        if (filter && _.isArray(value)) {
+
+            let allUndefined:boolean = true;
+            Object.keys(filter).forEach((key:string) => {
+                if(filter[key]) {
+                    allUndefined = false;
+                }
+            });
+
+            if(allUndefined) {
+                return value;
+            }
+
+            return value.filter((path:PathsObject) => {
+                console.log(path.name.toLowerCase(),filter.name.toLowerCase());
+                return path.name.toLowerCase().indexOf(filter.name.toLowerCase()) !== -1;
+            });
+        } else {
+            return value;
+        }
+    }
+}

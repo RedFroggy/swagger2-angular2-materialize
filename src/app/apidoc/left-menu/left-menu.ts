@@ -1,7 +1,7 @@
 import {Component,OnInit, forwardRef, Inject} from 'angular2/core';
 import {ApiDocService} from '../apidoc.service';
 import {ApiDefinition,PathsObject} from '../../model/apidoc';
-import {ValuesPipe,CountPipe,TagFilterPipe} from '../../pipes/pipes';
+import {ValuesPipe,CountPipe,TagFilterPipe,SearchFilterPipe} from '../../pipes/pipes';
 import {ApiMain} from '../main/api.main';
 import {Router} from 'angular2/router';
 import {MaterializeCollapsible} from '../../directive/materialize-collapsible';
@@ -10,7 +10,7 @@ import {MaterializeCollection} from '../../directive/materialize-collection';
 @Component({
     selector:'left-menu',
     template:require('./left-menu.html'),
-    pipes:[ValuesPipe,CountPipe,TagFilterPipe],
+    pipes:[ValuesPipe,CountPipe,TagFilterPipe,SearchFilterPipe],
     directives:[MaterializeCollapsible,MaterializeCollection]
 })
 export class LeftMenu {
