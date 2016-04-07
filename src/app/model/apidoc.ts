@@ -346,6 +346,7 @@ export class OperationObject {
     consume:{value?:string,selected:string};
     produce:{value?:string,selected:string};
     slug:string;
+    chartColor:string;
     constructor(path?:string,method?:string,_opObj?:any) {
         this.responses = [];
         this.parameters = [];

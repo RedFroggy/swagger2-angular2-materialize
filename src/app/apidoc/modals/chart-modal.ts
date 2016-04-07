@@ -16,11 +16,13 @@ export class ChartModal extends MaterializeModal {
     private chart:Chart;
     private chartData:any;
     private operations:Array<OperationObject>;
+    private chartOperations:Array<OperationObject>;
     private currentOperation:OperationObject;
     private selectedOperation:any;
     constructor(public el: ElementRef,private zone:NgZone,private apiDocService:ApiDocService) {
         super(el);
         this.operations = [];
+        this.chartOperations = [];
         this.resetData();
         this.selectedOperation = {};
         this.currentOperation = new OperationObject();
@@ -68,14 +70,16 @@ export class ChartModal extends MaterializeModal {
         if(slugs && !_.isEmpty(slugs)) {
 
             this.resetData();
+            let max:number = 0;
 
             let operations:Array<OperationObject> = this.apiDoc.getOperationsBySlug(slugs);
 
-            operations.forEach((operation:OperationObject,index:number) => {
+            operations.forEach((operation:OperationObject) => {
+
+                operation.chartColor = this.getRandomColor();
 
                 let dataSetData = {
                     label: '',
-                    fillColor: this.getRandomColor(),
                     strokeColor: 'rgba(220,220,220,1)',
                     pointColor: 'rgba(220,220,220,1)',
                     pointStrokeColor: '#fff',
@@ -83,14 +87,14 @@ export class ChartModal extends MaterializeModal {
                     pointHighlightStroke: 'rgba(220,220,220,1)',
                     data: []
                 };
+                dataSetData.fillColor = operation.chartColor;
 
                 let requestTimes:{date:Date,time:number}[] = JSON.parse(localStorage.getItem(operation.slug));
-
-                if(_.isEmpty(this.chartData.labels)) {
-                    _.map(requestTimes, 'date').forEach((dateStr:string, index:number) => {
-                        //moment(dateStr).format('MM/DD/YYYY HH:mm:ss.SSS')
-                        this.chartData.labels.push(index + 1);
-                    });
+                if(requestTimes.length > max) {
+                    max = requestTimes.length;
+                    for(let i:number = 0;i<max;i++) {
+                        this.chartData.labels.push(i + 1);
+                    }
                 }
 
                 dataSetData.data = _.map(requestTimes,'time');
@@ -98,9 +102,11 @@ export class ChartModal extends MaterializeModal {
 
                 this.chartData.datasets.push(dataSetData);
             });
+
+            this.chartOperations = operations;
+
             let ctx:any = this.getContext();
             this.chart = new Chart(ctx).Bar(this.chartData, this.chartData.options);
-            $('#legend').html(this.chart.generateLegend());
         }
     }
     listOperations():void {

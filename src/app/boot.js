@@ -7,7 +7,6 @@ require('rxjs/add/operator/map');
 var apidoc_service_1 = require('./apidoc/apidoc.service');
 //Styles css
 require('../assets/styles/styles.css');
-require('../assets/styles/chart.css');
 function main() {
     return browser_1.bootstrap(app_component_1.AppComponent, [
         http_1.HTTP_PROVIDERS,
