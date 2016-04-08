@@ -5,7 +5,7 @@ Swagger 2 Angular 2 MaterializeCSS
 Swagger 2 UI made with Angular 2 and MaterializeCSS
 
 # Demo
-You can test it here: [Swagger 2 UI Demo](http://linkia-demo.redfroggy.fr/swagger2)
+You can test it here: [Swagger 2 UI Demo](http://linkia-demo.redfroggy.fr/swagger2){:target="_blank"}
 
 # Screenshots
 ![image](http://i.imgur.com/mppox2Y.png?1)
@@ -14,8 +14,8 @@ You can test it here: [Swagger 2 UI Demo](http://linkia-demo.redfroggy.fr/swagge
 ![image](http://i.imgur.com/OBZHvqK.png?1) 
 
 # Stack
-- [Angular 2](https://angular.io)
-- [MaterializeCSS](http://materializecss.com)
+- [Angular 2](https://angular.io){:target="_blank"}
+- [MaterializeCSS](http://materializecss.com){:target="_blank"}
 - Webpack
 - Karma
 - Jasmine
