@@ -12,7 +12,6 @@ import {ControlGroup,Control,FormBuilder,Validators} from 'angular2/common';
 import {DataTypeLink} from '../data-type/data-type-link';
 import {MaterializeInputFile} from '../materialize/input-file/materialize-input-file';
 
-///<reference path="../../../../typings/main/ambient/node/index.d.ts" />
 
 @Component({
     selector:'doc-detail',

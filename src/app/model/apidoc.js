@@ -35,13 +35,6 @@ var ApiResult = (function () {
         this.date = new Date();
         this.operation = new OperationObject();
     }
-    //TODO const
-    ApiResult.prototype.getHighLightClass = function () {
-        if (this.operation.isJson()) {
-            return 'json';
-        }
-        return 'xml';
-    };
     ApiResult.prototype.getRequestTime = function () {
         if (this.date && this.endDate) {
             return this.endDate.getTime() - this.date.getTime();
@@ -137,7 +130,7 @@ var ApiDefinition = (function () {
             }
         }
         if (item && item.items) {
-            return item.items.type;
+            return item.items['type'];
         }
     };
     ApiDefinition.prototype.isObject = function (type) {
@@ -153,8 +146,8 @@ var ApiDefinition = (function () {
         if (item && item.schema) {
             return this.isArray(item.schema.type);
         }
-        if (item && item.type) {
-            return this.isArray(item.type);
+        if (item && item.hasOwnProperty('type')) {
+            return this.isArray(item['type']);
         }
         return false;
     };

@@ -44,13 +44,6 @@ export class ApiResult {
         this.date = new Date();
         this.operation = new OperationObject();
     }
-    //TODO const
-    getHighLightClass():string {
-        if(this.operation.isJson()) {
-            return 'json';
-        }
-        return 'xml';
-    }
     getRequestTime():number {
         if(this.date && this.endDate) {
             return this.endDate.getTime() - this.date.getTime();
@@ -163,7 +156,7 @@ export class ApiDefinition {
             }
         }
         if(item && item.items) {
-            return item.items.type;
+            return item.items['type'];
         }
     }
     isObject(type:string):boolean {
@@ -179,8 +172,8 @@ export class ApiDefinition {
         if(item && item.schema) {
             return this.isArray(item.schema.type);
         }
-        if(item && item.type) {
-            return this.isArray(item.type);
+        if(item && item.hasOwnProperty('type')) {
+            return this.isArray(item['type']);
         }
         return false;
     }
@@ -612,7 +605,7 @@ export class ParameterObject {
     'in': string;
     description: string;
     required: boolean;
-    value:{selected:string};
+    value:{selected:any};
     schema:ReferenceObject;
     collectionFormat:string;
     items:ItemsObject;

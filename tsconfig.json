@@ -2,14 +2,11 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true
   },
-  "files":[
-    "src/app/boot.ts",
-    "src/app/vendor.ts"
-  ],
   "exclude": [
     "node_modules",
     "typings/main.d.ts",

@@ -13,7 +13,7 @@ import {MultipleMaterializeSelect} from '../../materialize/select/multiple-mater
 })
 export class ChartModal extends MaterializeModal {
     @ViewChild('operationSelect') operationSelect:MultipleMaterializeSelect;
-    private chart:Chart;
+    private chart:LinearInstance;
     private chartData:any;
     private operations:Array<OperationObject>;
     private chartOperations:Array<OperationObject>;
@@ -53,7 +53,8 @@ export class ChartModal extends MaterializeModal {
         return 'rgb(' + r() + ',' + r() + ',' + r() + ')';
     }
     getContext():any {
-        return DOM.querySelector(this.el.nativeElement,'canvas').getContext('2d');
+        let canvas:any = DOM.querySelector(this.el.nativeElement,'canvas');
+        return canvas.getContext('2d');
     }
     showGraph(operation:OperationObject):void {
         this.currentOperation = operation;
@@ -87,7 +88,7 @@ export class ChartModal extends MaterializeModal {
                     pointHighlightStroke: 'rgba(220,220,220,1)',
                     data: []
                 };
-                dataSetData.fillColor = operation.chartColor;
+                dataSetData['fillColor'] = operation.chartColor;
 
                 let requestTimes:{date:Date,time:number}[] = JSON.parse(localStorage.getItem(operation.slug));
                 if(requestTimes.length > max) {
