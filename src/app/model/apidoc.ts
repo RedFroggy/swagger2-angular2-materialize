@@ -1,251 +1,10 @@
 import {Control,Validators} from 'angular2/common';
+import {ApiModelUtils} from './api-utils';
+import {IJsonSchema} from './api-json-schema';
+import {ApiResult} from './api-result';
+import {OperationObject} from './api-operation';
+import {ParameterObject,ParametersDefinitionsObject} from './api-parameter';
 
-///<reference path="../../../typings/browser/ambient/node/index.d.ts" />
-
-type MimeTypes = string[];
-type Parameters = (ParameterObject)[];
-
-const TYPE_DEFINITION:string = '#/definitions/';
-const TYPE_ARRAY:string = 'array';
-const TYPE_OBJECT:string = 'object';
-const TYPE_FILE:string = 'file';
-const TYPE_DATE:string = 'date';
-const PATH_PARAM:string = 'path';
-const QUERY_PARAM:string = 'query';
-const BODY_PARAM:string = 'body';
-const FORM_PARAM:string = 'formData';
-const HTTP_METHOD_PATCH:string = 'PATCH';
-const HTTP_METHOD_POST:string = 'POST';
-const HTTP_METHOD_PUT:string = 'PUT';
-const HTTP_METHOD_GET:string = 'GET';
-const HTTP_METHOD_DELETE:string = 'DELETE';
-
-const APPLICATION_FORM_URL_ENCODED:string = 'application/x-www-form-urlencoded';
-const MULTIPART_FORM_DATA:string = 'multipart/form-data';
-const APPLICATION_JSON:string = 'application/json';
-const APPLICATION_XML:string = 'application/xml';
-
-const METHOD_CLASS:Object = {
-    GET:'grey lighten-1',
-    POST:'teal lighten-2',
-    PUT:'yellow darken-2',
-    DELETE:'red lighten-2',
-    PATCH:'light-blue lighten-2',
-    HEAD:'pink lighten-2'
-};
-
-export class ApiResult {
-    message:string;
-    status:number;
-    date:Date;
-    endDate:Date;
-    operation:OperationObject;
-    constructor() {
-        this.date = new Date();
-        this.operation = new OperationObject();
-    }
-    getRequestTime():number {
-        if(this.date && this.endDate) {
-            return this.endDate.getTime() - this.date.getTime();
-        }
-    }
-}
-
-export class ApiDefinition {
-    swagger: string;
-    info: InfoObject;
-    host: string;
-    basePath: string;
-    schemes: string[];
-    consumes: MimeTypes;
-    produces: MimeTypes;
-    paths: Array<PathsObject>;
-    definitions: Array<DefinitionsObject>;
-    parameters: ParametersDefinitionsObject;
-    responses: ResponsesDefinitionsObject;
-    securityDefinitions: SecurityDefinitionsObject;
-    security: SecurityRequirementObject[];
-    tags: TagObject[];
-    externalDocs: ExternalDocumentationObject;
-    baseUrl:string;
-    constructor(_apiDoc?:any) {
-        this.info = new InfoObject();
-        this.paths = [];
-        this.produces = [];
-        this.consumes = [];
-        this.schemes = [];
-        this.definitions = [];
-        this.parameters = new ParametersDefinitionsObject();
-        this.responses = new ResponsesDefinitionsObject();
-        this.securityDefinitions = new SecurityDefinitionsObject();
-        this.externalDocs = new ExternalDocumentationObject();
-        this.security = [];
-        this.tags = [];
-
-        if(_apiDoc) {
-            Object.assign(this, _apiDoc);
-
-            //TODO config
-            this.baseUrl = 'http://'+this.host;
-            if(this.basePath) {
-                this.baseUrl +=  this.basePath;
-            }
-
-            if(_apiDoc.info) {
-                this.info = new InfoObject(_apiDoc.info);
-            }
-            if(_apiDoc.paths) {
-                this.paths = [];
-                Object.keys(_apiDoc.paths).forEach((key:string)=> {
-                    this.paths.push(new PathsObject(key,_apiDoc.paths[key]));
-                });
-            }
-            if(_apiDoc.definitions) {
-                this.definitions = [];
-                Object.keys(_apiDoc.definitions).forEach((name:string) => {
-                    this.definitions.push(new DefinitionsObject(name,_apiDoc.definitions[name]));
-                });
-
-            }
-            if(_apiDoc.tags) {
-                this.tags = [];
-                _apiDoc.tags.forEach((tag:any) => {
-                    this.tags.push(new TagObject(tag));
-                });
-            }
-            if(_apiDoc.externalDocs) {
-                this.externalDocs = new ExternalDocumentationObject(_apiDoc.externalDocs);
-            }
-        }
-    }
-    getDefinitionByEntity(entity:string):DefinitionsObject {
-        return this.definitions.find((definition:DefinitionsObject) => {
-            return definition.name === entity;
-        });
-    }
-    hasDefinition(type:string,toEntityName:boolean = false):boolean {
-        if(toEntityName) {
-            type = this.getEntityName(type);
-        }
-        if(!type) {
-            return false;
-        }
-        let definition:DefinitionsObject = this.getDefinitionByEntity(type);
-        return definition && this.isObject(definition.schema.type);
-    }
-    getEntityName(name:string):string {
-        if(name) {
-            return name.replace(TYPE_DEFINITION, '');
-        }
-    }
-    isDtoType(item:ResponseObject|ParameterObject):boolean {
-        if(!this.isTypeArray(item)) {
-            return item && item.schema && this.hasRef(item.schema) && this.hasDefinition(item.schema.entity);
-        }
-        return item && item.schema && item.schema.items
-            && this.hasRef(item.schema.items)
-            && this.hasDefinition(item.schema.items.entity);
-    }
-    getDtoType(item:ResponseObject|ParameterObject):string {
-        if(item && item.schema) {
-            if (item.schema.entity) {
-                return item.schema.entity;
-            }
-            if(item.schema.items && item.schema.items.entity) {
-                return item.schema.items.entity;
-            }
-        }
-        if(item && item.items) {
-            return item.items['type'];
-        }
-    }
-    isObject(type:string):boolean {
-        return type === TYPE_OBJECT;
-    }
-    isArray(type:string):boolean {
-        return type === TYPE_ARRAY;
-    }
-    hasRef(obj:any):boolean {
-        return !!obj.$ref;
-    }
-    isTypeArray(item:ResponseObject|ParameterObject):boolean {
-        if(item && item.schema) {
-            return this.isArray(item.schema.type);
-        }
-        if(item && item.hasOwnProperty('type')) {
-            return this.isArray(item['type']);
-        }
-        return false;
-    }
-    getStatusClass(status:number):string {
-        if(status >= 200 && status < 300) {
-            return 'green darken-2';
-        }
-        return ' red darken-2';
-    }
-    getBodyDescription(entityName:string,isXml:boolean):any {
-        let definition:DefinitionsObject = this.getDefinitionByEntity(entityName);
-        console.log(definition,entityName);
-        let body:any = {};
-        if(definition) {
-            Object.keys(definition.schema.properties).forEach((name:string) => {
-                let property:IJsonSchema = definition.schema.properties[name];
-                let bodyValue:any;
-                if(!this.isArray(property.type) && !this.isObject(property.type)) {
-                    if(property.type === 'integer') {
-                        bodyValue = 0;
-                    } else if(property.enum && !_.isEmpty(property.enum)) {
-                        bodyValue = property.enum[0];
-                    } else if(property.type === 'string') {
-                        if(property.format === 'date-time') {
-                            bodyValue = new Date().toISOString();
-                        } else {
-                            bodyValue = property.example ? property.example : 'string';
-                        }
-                    } else if(property.type === 'boolean') {
-                        bodyValue = property.default ? property.default : true;
-                    } else if(property.$ref) {
-                        bodyValue = this.getBodyDescription(this.getEntityName(property.$ref),isXml);
-                        if(isXml) {
-                            name = Object.keys(bodyValue)[0];
-                            bodyValue = bodyValue[name];
-                        }
-                    }
-                } else if (this.isArray(property.type)) {
-                    if(property.items.type === 'string') {
-                        bodyValue = ['string'];
-                    } else if(property.items.$ref) {
-                        bodyValue = [this.getBodyDescription(this.getEntityName(property.items.$ref),isXml)];
-                        if(isXml && property.xml.wrapped) {
-                            name = property.xml.name;
-                        }
-                    }
-                }
-                body[name] = bodyValue;
-            });
-            if(isXml && definition.schema.xml) {
-                let xmlBody:any = {};
-                xmlBody[definition.schema.xml.name] = body;
-                return xmlBody;
-            }
-        }
-        return body;
-    }
-    getOperationsBySlug(slugs:Array<string>):Array<OperationObject> {
-        let operations:Array<OperationObject> = [];
-        if(slugs) {
-            this.paths.forEach((path:PathsObject) => {
-                let pathOperations:Array<OperationObject> = path.path.operations.filter((operation:OperationObject) => {
-                    return slugs.indexOf(operation.slug) !== -1;
-                });
-                if(!_.isEmpty(pathOperations)) {
-                    operations = operations.concat(pathOperations);
-                }
-            });
-        }
-        return operations;
-    }
-}
 
 export class InfoObject {
     title: string;
@@ -305,7 +64,7 @@ export class PathsObject {
 export class PathItemObject {
     $ref: string;
     path:string;
-    parameters: Parameters;
+    parameters: (ParameterObject)[];
     operations:Array<OperationObject>;
     constructor(path?:string,_pathItemObj?:any) {
         this.path = path;
@@ -315,142 +74,6 @@ export class PathItemObject {
                 this.operations.push(new OperationObject(path,method,_pathItemObj[method]));
             });
         }
-    }
-}
-
-export class OperationObject {
-    name:string;
-    path:string;
-    tags: string[];
-    summary: string;
-    description: string;
-    externalDocs: ExternalDocumentationObject;
-    operationId: string;
-    consumes: MimeTypes;
-    produces: MimeTypes;
-    parameters: Parameters;
-    responses: Array<ResponsesObject>;
-    schemes: string[];
-    deprecated: boolean;
-    security: SecurityRequirementObject[];
-    originalData:any;
-    dataJson:string;
-    patchJson:string;
-    consume:{value?:string,selected:string};
-    produce:{value?:string,selected:string};
-    slug:string;
-    chartColor:string;
-    constructor(path?:string,method?:string,_opObj?:any) {
-        this.responses = [];
-        this.parameters = [];
-        this.produces = [];
-        this.consumes = [];
-        this.path = path;
-        this.produce = {selected:APPLICATION_JSON};
-        this.consume = {selected:APPLICATION_JSON};
-        if(method) {
-            this.name = method.toUpperCase();
-        }
-        if(_opObj) {
-            Object.assign(this,_opObj);
-            this.slug = btoa(this.name+this.path+this.operationId);
-            if(_opObj.externalDocs) {
-                this.externalDocs = new ExternalDocumentationObject(_opObj.externalDocs);
-            }
-            if(_opObj.responses) {
-                this.responses = [];
-                Object.keys(_opObj.responses).forEach((code:string) => {
-                    this.responses.push(new ResponsesObject(code,_opObj.responses));
-                });
-            }
-            if(_opObj.parameters) {
-                this.parameters = [];
-                _opObj.parameters.forEach((param:any) => {
-                    this.parameters.push(new ParameterObject(param));
-                });
-            }
-            if(_opObj.produces && !_.isEmpty(this.produces)) {
-                this.produce = {selected:this.produces[0]};
-            }
-            if(_opObj.consumes && !_.isEmpty(this.consumes)) {
-                this.consume = {selected:this.consumes[0]};
-            }
-        }
-    }
-    getMethodClass():string {
-        if(this.name) {
-            return METHOD_CLASS[this.name];
-        }
-    }
-    getResponseByCode(code:string):ResponseObject {
-        let respObj:ResponsesObject = this.responses.find((resp:ResponsesObject) => {
-            return resp.code === code;
-        });
-
-        if(respObj) {
-            return respObj.response;
-        }
-    }
-    getRequestUrl(onlyParameters:boolean = false):string {
-        let url :string = !onlyParameters ? this.path : '';
-
-        if(this.parameters.length > 0) {
-            this.parameters.forEach((param:ParameterObject) => {
-                if(param.value && param.value.selected) {
-                    if (param.isPathParam()) {
-                        url = url.replace(new RegExp('{' + param.name + '}'), param.value.selected);
-                    } else if (param.isQueryParam()) {
-                        url += url.indexOf('?') === -1 ? '?' + param.name + '=' + param.value.selected : '&' + param.name + '=' + param.value.selected;
-                    }
-                }
-            });
-        }
-        return url;
-    }
-    isPatchMethod():boolean {
-        return this.name === HTTP_METHOD_PATCH;
-    }
-    isPostMethod():boolean {
-        return this.name === HTTP_METHOD_POST;
-    }
-    isPutMethod():boolean {
-        return this.name === HTTP_METHOD_PUT;
-    }
-    isWriteMethod():boolean {
-        return this.isPatchMethod() || this.isPostMethod() || this.isPutMethod();
-    }
-    isGetMethod():boolean {
-        return this.name === HTTP_METHOD_GET;
-    }
-    isDeleteMethod():boolean {
-        return this.name === HTTP_METHOD_DELETE;
-    }
-    isType(item:{selected:string},type):boolean {
-        return item && item.selected && item.selected === type;
-    }
-    isProduceJson():boolean {
-        return this.isType(this.produce,APPLICATION_JSON);
-    }
-    isProduceXml():boolean {
-        return this.isType(this.produce,APPLICATION_XML);
-    }
-    isConsumeJson():boolean {
-        return this.isType(this.consume,APPLICATION_JSON);
-    }
-    isConsumeXml():boolean {
-        return this.isType(this.consume,APPLICATION_XML);
-    }
-    isConsumeFormUrlEncoded():boolean {
-        return this.isType(this.consume,APPLICATION_FORM_URL_ENCODED);
-    }
-    isConsumeMultipartFormData():boolean {
-        return this.isType(this.consume,MULTIPART_FORM_DATA);
-    }
-    getMapProduces():{value:string}[] {
-        return this.produces.map((mimeType:string) => {return {value:mimeType,label:mimeType} ;});
-    }
-    getMapConsumes():{value:string}[] {
-        return this.consumes.map((mimeType:string) => {return {value:mimeType,label:mimeType} ;});
     }
 }
 
@@ -510,7 +133,7 @@ export class ResponseObject {
 }
 
 export class HeadersObject {
-    [index: string]: HeaderObject;
+    [index: string]: ItemsObject;
     constructor(_headersObj?:any) {
         if(_headersObj) {
             Object.assign(this,_headersObj);
@@ -593,87 +216,6 @@ export class ItemsObject {
     }
 }
 
-export class HeaderObject extends ItemsObject {
-}
-
-export class ParametersDefinitionsObject {
-    [index: string]: ParameterObject;
-}
-
-export class ParameterObject {
-    name: string;
-    'in': string;
-    description: string;
-    required: boolean;
-    value:{selected:any};
-    schema:ReferenceObject;
-    collectionFormat:string;
-    items:ItemsObject;
-    type:string;
-    control:Control;
-    constructor(_paramObj?:any) {
-        this.items = new ItemsObject();
-        this.value = {selected:''};
-        this.control = new Control();
-        if(_paramObj) {
-            Object.assign(this,_paramObj);
-            if(_paramObj.schema) {
-                this.schema = new ReferenceObject(_paramObj.schema);
-            }
-            if(_paramObj.items) {
-                this.items = new ItemsObject(_paramObj.items);
-            }
-            this.createControl();
-        }
-    }
-    isPathParam():boolean {
-        return this.in === PATH_PARAM;
-    }
-    isQueryParam():boolean {
-        return this.in === QUERY_PARAM;
-    }
-    isBodyParam():boolean {
-        return this.in === BODY_PARAM;
-    }
-    isFormParam():boolean {
-        return this.in === FORM_PARAM;
-    }
-    isTypeArray():boolean {
-        return (this.type && this.type === TYPE_ARRAY)
-            || (this.schema && this.schema.type && this.schema.type === TYPE_ARRAY);
-    }
-    isTypeEnum():boolean {
-        return this.items.enum && !_.isEmpty(this.items.enum);
-    }
-    isTypeFile():boolean {
-        return this.type === TYPE_FILE;
-    }
-    isTypeDate():boolean {
-        return this.type === TYPE_DATE;
-    }
-    getParameterType():string {
-        if(this.isBodyParam()) {
-            if(this.isTypeArray()) {
-                return this.schema.items.entity;
-            }
-            return this.schema.entity;
-        } else if(!this.isTypeArray()) {
-            return this.type;
-        } else if (this.isTypeEnum() && this.items.enum.length > 0) {
-            return 'Enum ['+this.items.enum.join(',')+']';
-        }
-        return '['+this.items.type+']';
-    }
-    getEnumMap():{value:string}[] {
-        return this.items.enum.map((enumVal:string) => {return {value:enumVal,label:enumVal} ;});
-    }
-    createControl():void {
-        if(this.required) {
-            this.control = new Control(this.name,Validators.required);
-        }
-    }
-}
-
 export class ReferenceObject {
     $ref: string;
     entity:string;
@@ -683,10 +225,10 @@ export class ReferenceObject {
         if(_refObj) {
             Object.assign(this,_refObj);
             if(this.$ref) {
-                this.entity = this.$ref.replace(TYPE_DEFINITION, '');
+                this.entity = ApiModelUtils.extractEntityName(this.$ref);
             }
             if(this.items && this.items.$ref) {
-                this.items.entity = this.items.$ref.replace(TYPE_DEFINITION, '');
+                this.items.entity = ApiModelUtils.extractEntityName(this.items.$ref);
             }
         }
     }
@@ -701,53 +243,6 @@ export class ExternalDocumentationObject {
             Object.assign(this,_externDocObj);
         }
     }
-}
-
-export interface IJsonSchema {
-    id?: string;
-    example?: string;
-    $schema?: string;
-    $ref?:string;
-    title?: string;
-    description?: string;
-    multipleOf?: number;
-    maximum?: number;
-    exclusiveMaximum?: boolean;
-    minimum?: number;
-    exclusiveMinimum?: boolean;
-    maxLength?: number;
-    minLength?: number;
-    pattern?: string;
-    additionalItems?: boolean | IJsonSchema;
-    items?: IJsonSchema;
-    maxItems?: number;
-    minItems?: number;
-    uniqueItems?: boolean;
-    maxProperties?: number;
-    minProperties?: number;
-    required?: string[];
-    additionalProperties?: boolean | IJsonSchema;
-    definitions?: {
-        [name: string]: IJsonSchema
-    };
-    properties?: {
-        [name: string]: IJsonSchema
-    };
-    patternProperties?: {
-        [name: string]: IJsonSchema
-    };
-    dependencies?: {
-        [name: string]: IJsonSchema | string[]
-    };
-    'enum'?: any[];
-    type?: string;
-    format?:string;
-    default?:boolean;
-    allOf?: IJsonSchema[];
-    anyOf?: IJsonSchema[];
-    oneOf?: IJsonSchema[];
-    not?: IJsonSchema;
-    xml?:{name:string,wrapped:boolean};
 }
 
 export class SchemaObject implements IJsonSchema {
@@ -780,12 +275,12 @@ export class SchemaObject implements IJsonSchema {
                 this.items = new ReferenceObject(_schemaObj.items);
             }
             if(_schemaObj.$ref) {
-                this.entity = this.$ref.replace(TYPE_DEFINITION,'');
+                this.entity = ApiModelUtils.extractEntityName(this.$ref);
             }
         }
     }
     isPropertyTypeArray(value:any):boolean {
-        return value.type === TYPE_ARRAY;
+        return  ApiModelUtils.isArray(value.type);
     }
     getPropertyByName(name:string):string {
         if(this.properties[name]) {

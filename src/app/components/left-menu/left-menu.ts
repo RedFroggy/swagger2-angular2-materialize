@@ -1,6 +1,7 @@
 import {Component,OnInit, forwardRef, Inject} from 'angular2/core';
 import {ApiDocService} from '../../services/apidoc.service';
-import {ApiDefinition,PathsObject} from '../../model/apidoc';
+import {ApiDefinition} from '../../model/api-definition';
+import {PathsObject} from '../../model/apidoc';
 import {ValuesPipe,CountPipe,TagFilterPipe,SearchFilterPipe} from '../../pipes/pipes';
 import {Router} from 'angular2/router';
 import {MaterializeCollapsible} from '../../directives/materialize-collapsible';

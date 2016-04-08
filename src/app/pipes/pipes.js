@@ -76,7 +76,6 @@ var SearchFilterPipe = (function () {
                 return value;
             }
             return value.filter(function (path) {
-                console.log(path.name.toLowerCase(), filter.name.toLowerCase());
                 return path.name.toLowerCase().indexOf(filter.name.toLowerCase()) !== -1;
             });
         }

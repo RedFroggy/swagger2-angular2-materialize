@@ -1,12 +1,13 @@
 
 import {Component,DynamicComponentLoader, Injector,Inject,forwardRef} from 'angular2/core';
 import {ApiDocService} from '../../services/apidoc.service';
-import {ApiDefinition} from '../../model/apidoc';
+import {ApiDefinition} from '../../model/api-definition';
+import {OperationObject} from '../../model/api-operation';
 import {ApiDocDetail} from '../detail/detail';
 import {Host} from 'angular2/core';
 import {RouteParams,Router} from 'angular2/router';
 import {LeftMenu} from '../left-menu/left-menu';
-import {PathsObject, OperationObject, DefinitionsObject} from '../../model/apidoc';
+import {PathsObject, DefinitionsObject} from '../../model/apidoc';
 import {TypeModal} from '../materialize/modals/type.modal';
 import {ChartModal} from '../materialize/modals/chart-modal';
 

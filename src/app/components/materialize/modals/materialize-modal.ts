@@ -1,4 +1,4 @@
-import {ApiDefinition} from '../../../model/apidoc';
+import {ApiDefinition} from '../../../model/api-definition';
 import {ElementRef} from 'angular2/core';
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {AfterViewInit} from 'angular2/core';

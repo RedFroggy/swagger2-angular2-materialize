@@ -2,9 +2,12 @@ import {Injectable} from 'angular2/core';
 import {Http,Response,Request,RequestOptions,Headers} from 'angular2/http';
 import * as EnvConfig from '../utils/env.config';
 import {Observable} from 'rxjs/Observable';
-import {ApiDefinition} from '../model/apidoc';
+import {ApiDefinition} from '../model/api-definition';
 import {Observer} from 'rxjs/Observer';
-import {PathsObject,OperationObject,ApiResult,DefinitionsObject,ParameterObject} from '../model/apidoc';
+import {PathsObject,DefinitionsObject} from '../model/apidoc';
+import {ApiResult} from '../model/api-result';
+import {OperationObject} from '../model/api-operation';
+import {ParameterObject} from '../model/api-parameter';
 
 const HEADER_CONTENT_TYPE:string = 'Content-Type';
 const HEADER_ACCEPT:string = 'Accept';

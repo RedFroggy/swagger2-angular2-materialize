@@ -2,8 +2,12 @@ import {Component} from 'angular2/core';
 import {LeftMenu} from '../left-menu/left-menu';
 import {Router,RouteParams} from 'angular2/router';
 import {ApiDocService} from '../../services/apidoc.service';
-import {OperationObject,ParameterObject,ApiDefinition,PathsObject,DefinitionsObject,IJsonSchema} from '../../model/apidoc';
-import {Response} from 'angular2/http';
+import {PathsObject,DefinitionsObject} from '../../model/apidoc';
+import {ApiDefinition} from '../../model/api-definition';
+import {IJsonSchema} from '../../model/api-json-schema';
+import {ApiModelUtils} from '../../model/api-utils';
+import {OperationObject} from '../../model/api-operation';
+import {ParameterObject} from '../../model/api-parameter';
 import {TypeModal} from '../materialize/modals/type.modal';
 import {BodyModal} from '../materialize/modals/body-modal';
 import {SimpleMaterializeSelect} from '../materialize/select/simple-materialize-select';
@@ -64,7 +68,7 @@ export class ApiDocDetail {
         event.preventDefault();
         console.log(parameter);
         this.operation.originalData = this.apiDoc.getBodyDescription(parameter.getParameterType(),this.operation.isConsumeXml());
-        if(parameter.isTypeArray()) {
+        if(ApiModelUtils.isTypeArray(parameter)) {
             this.operation.originalData = [this.operation.originalData];
         }
 

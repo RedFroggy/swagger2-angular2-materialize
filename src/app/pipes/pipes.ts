@@ -1,5 +1,6 @@
 import {PipeTransform,Pipe} from 'angular2/core';
-import {PathsObject,OperationObject} from '../model/apidoc';
+import {PathsObject} from '../model/apidoc';
+import {OperationObject} from '../model/api-operation';
 
 ///<reference path="../../../typings/browser/ambient/lodash/index.d.ts" />
 
@@ -50,7 +51,6 @@ export class SearchFilterPipe implements PipeTransform {
             }
 
             return value.filter((path:PathsObject) => {
-                console.log(path.name.toLowerCase(),filter.name.toLowerCase());
                 return path.name.toLowerCase().indexOf(filter.name.toLowerCase()) !== -1;
             });
         } else {
