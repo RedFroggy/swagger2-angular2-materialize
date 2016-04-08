@@ -1,16 +1,16 @@
 import {Component} from 'angular2/core';
 import {LeftMenu} from '../left-menu/left-menu';
 import {Router,RouteParams} from 'angular2/router';
-import {ApiDocService} from '../apidoc.service';
+import {ApiDocService} from '../../services/apidoc.service';
 import {OperationObject,ParameterObject,ApiDefinition,PathsObject,DefinitionsObject,IJsonSchema} from '../../model/apidoc';
 import {Response} from 'angular2/http';
-import {TypeModal} from '../modals/type.modal';
-import {BodyModal} from '../modals/body-modal';
-import {SimpleMaterializeSelect} from '../../components/simple-materialize-select';
-import {MultipleMaterializeSelect} from '../../components/multiple-materialize-select';
+import {TypeModal} from '../materialize/modals/type.modal';
+import {BodyModal} from '../materialize/modals/body-modal';
+import {SimpleMaterializeSelect} from '../materialize/select/simple-materialize-select';
+import {MultipleMaterializeSelect} from '../materialize/select/multiple-materialize-select';
 import {ControlGroup,Control,FormBuilder,Validators} from 'angular2/common';
-import {DataTypeLink} from '../../components/data-type-link';
-import {MaterializeInputFile} from '../../components/materialize-input-file';
+import {DataTypeLink} from '../data-type/data-type-link';
+import {MaterializeInputFile} from '../materialize/input-file/materialize-input-file';
 
 ///<reference path="../../../../typings/main/ambient/node/index.d.ts" />
 

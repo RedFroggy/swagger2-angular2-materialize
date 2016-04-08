@@ -1,7 +1,7 @@
 
 import {Component} from 'angular2/core';
 import {Router} from 'angular2/router';
-import {MaterializeHeader,MaterializeCollapseButton} from '../directive/materialize-header';
+import {MaterializeHeader,MaterializeCollapseButton} from '../../directives/materialize-header';
 
 @Component({
     selector:'header',

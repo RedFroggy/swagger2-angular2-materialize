@@ -1,12 +1,12 @@
 import {Component,Input,ElementRef} from 'angular2/core';
-import {ApiResult,OperationObject,ApiDefinition} from '../../model/apidoc';
-import {ApiDocService} from '../apidoc.service';
+import {ApiResult,OperationObject,ApiDefinition} from '../../../model/apidoc';
+import {ApiDocService} from '../../../services/apidoc.service';
 import {MaterializeModal} from './materialize-modal';
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {NgZone} from 'angular2/core';
 import {Response} from 'angular2/http';
 
-///<reference path="../../../../typings/main/ambient/node/index.d.ts" />
+///<reference path="../../../../../typings/main/ambient/node/index.d.ts" />
 
 @Component({
     selector:'body-modal',

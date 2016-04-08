@@ -1,7 +1,7 @@
 import {Component,Input,ElementRef} from 'angular2/core';
-import {DefinitionsObject,ApiDefinition} from '../../model/apidoc';
-import {ValuesPipe} from '../../pipes/pipes';
-import {ApiDocService} from '../apidoc.service';
+import {DefinitionsObject,ApiDefinition} from '../../../model/apidoc';
+import {ValuesPipe} from '../../../pipes/pipes';
+import {ApiDocService} from '../../../services/apidoc.service';
 import {MaterializeModal} from './materialize-modal';
 
 @Component({

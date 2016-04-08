@@ -1,9 +1,9 @@
-import {ApiDefinition} from '../../model/apidoc';
+import {ApiDefinition} from '../../../model/apidoc';
 import {ElementRef} from 'angular2/core';
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {AfterViewInit} from 'angular2/core';
 
-///<reference path="../../../../typings/main/ambient/jquery/index.d.ts" />
+///<reference path="../../../../../typings/main/ambient/jquery/index.d.ts" />
 
 export abstract class MaterializeModal implements AfterViewInit {
     modal:any;

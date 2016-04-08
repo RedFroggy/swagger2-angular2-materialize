@@ -9,9 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var router_1 = require('angular2/router');
-var header_1 = require('./header/header');
-var home_1 = require('./home/home');
-var api_main_1 = require('./apidoc/main/api.main');
+var header_1 = require('./components/header/header');
+var home_1 = require('./components/home/home');
+var main_1 = require('./components/main/main');
 var AppComponent = (function () {
     function AppComponent() {
         console.log('Application initializing');
@@ -24,7 +24,7 @@ var AppComponent = (function () {
         }),
         router_1.RouteConfig([
             new router_1.Route({ path: '/home', component: home_1.Home, name: 'Home', useAsDefault: true }),
-            new router_1.Route({ path: '/apis/...', component: api_main_1.ApiMain, name: 'Apis' })
+            new router_1.Route({ path: '/apis/...', component: main_1.Main, name: 'Apis' })
         ]), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

@@ -1,10 +1,10 @@
 import {MaterializeModal} from './materialize-modal';
 import {Component,ElementRef,NgZone,ViewChild} from 'angular2/core';
-import {OperationObject,ApiDefinition,PathsObject} from '../../model/apidoc';
+import {OperationObject,ApiDefinition,PathsObject} from '../../../model/apidoc';
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {DatePipe} from 'angular2/common';
-import {ApiDocService} from '../apidoc.service';
-import {MultipleMaterializeSelect} from '../../components/multiple-materialize-select';
+import {ApiDocService} from '../../../services/apidoc.service';
+import {MultipleMaterializeSelect} from '../../materialize/select/multiple-materialize-select';
 
 @Component({
     selector:'chart-modal',

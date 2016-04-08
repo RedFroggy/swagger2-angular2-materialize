@@ -5,7 +5,7 @@ import {ROUTER_PROVIDERS,HashLocationStrategy,LocationStrategy} from 'angular2/r
 import {provide} from 'angular2/core';
 
 import 'rxjs/add/operator/map';
-import {ApiDocService} from './apidoc/apidoc.service';
+import {ApiDocService} from './services/apidoc.service';
 
 //Styles css
 import '../assets/styles/styles.css';

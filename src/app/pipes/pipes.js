@@ -59,4 +59,36 @@ var TagFilterPipe = (function () {
     return TagFilterPipe;
 })();
 exports.TagFilterPipe = TagFilterPipe;
+var SearchFilterPipe = (function () {
+    function SearchFilterPipe() {
+    }
+    SearchFilterPipe.prototype.transform = function (value, args) {
+        if (args === void 0) { args = null; }
+        var filter = args[0];
+        if (filter && _.isArray(value)) {
+            var allUndefined = true;
+            Object.keys(filter).forEach(function (key) {
+                if (filter[key]) {
+                    allUndefined = false;
+                }
+            });
+            if (allUndefined) {
+                return value;
+            }
+            return value.filter(function (path) {
+                console.log(path.name.toLowerCase(), filter.name.toLowerCase());
+                return path.name.toLowerCase().indexOf(filter.name.toLowerCase()) !== -1;
+            });
+        }
+        else {
+            return value;
+        }
+    };
+    SearchFilterPipe = __decorate([
+        core_1.Pipe({ name: 'searchFiler', pure: false }), 
+        __metadata('design:paramtypes', [])
+    ], SearchFilterPipe);
+    return SearchFilterPipe;
+})();
+exports.SearchFilterPipe = SearchFilterPipe;
 //# sourceMappingURL=pipes.js.map

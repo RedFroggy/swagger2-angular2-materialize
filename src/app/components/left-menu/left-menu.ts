@@ -1,11 +1,10 @@
 import {Component,OnInit, forwardRef, Inject} from 'angular2/core';
-import {ApiDocService} from '../apidoc.service';
+import {ApiDocService} from '../../services/apidoc.service';
 import {ApiDefinition,PathsObject} from '../../model/apidoc';
 import {ValuesPipe,CountPipe,TagFilterPipe,SearchFilterPipe} from '../../pipes/pipes';
-import {ApiMain} from '../main/api.main';
 import {Router} from 'angular2/router';
-import {MaterializeCollapsible} from '../../directive/materialize-collapsible';
-import {MaterializeCollection} from '../../directive/materialize-collection';
+import {MaterializeCollapsible} from '../../directives/materialize-collapsible';
+import {MaterializeCollection} from '../../directives/materialize-collection';
 
 @Component({
     selector:'left-menu',

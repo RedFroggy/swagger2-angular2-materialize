@@ -4,7 +4,7 @@ var http_1 = require('angular2/http');
 var router_1 = require('angular2/router');
 var core_1 = require('angular2/core');
 require('rxjs/add/operator/map');
-var apidoc_service_1 = require('./apidoc/apidoc.service');
+var apidoc_service_1 = require('./services/apidoc.service');
 //Styles css
 require('../assets/styles/styles.css');
 function main() {
