@@ -5,7 +5,7 @@ Swagger 2 Angular 2 MaterializeCSS
 Swagger 2 UI made with Angular 2 and MaterializeCSS
 
 # Demo
-Feel free to try it here: [Swagger 2 UI Demo](http://linkia-demo.redfroggy.fr/swagger2
+Feel free to try it here: [Swagger 2 UI Demo](http://linkia-demo.redfroggy.fr/swagger2)
 
 # Features
 - Responsive application
