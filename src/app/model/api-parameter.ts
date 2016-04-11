@@ -74,7 +74,7 @@ export class ParameterObject {
         return '['+this.items.type+']';
     }
     getEnumMap():{value:string}[] {
-        return this.items.enum.map((enumVal:string) => {return {value:enumVal,label:enumVal} ;});
+        return this.items.enum.map((enumVal:string) => {return {value:enumVal,label:enumVal,selected:this.items && this.items.default === enumVal} ;});
     }
     createControl():void {
         if(this.required) {

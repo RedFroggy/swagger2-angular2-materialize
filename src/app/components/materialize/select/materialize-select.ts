@@ -25,9 +25,8 @@ export abstract class MaterializeSelect implements AfterViewInit {
         this.model.selected = value;
         this.selectValueChange.emit(this.model);
     }
-    isSelected(value:string):boolean {
-        return false;
-    }
+    isSelected(option:any):boolean {}
+    isDisabled(option:any):boolean {}
     refresh():void {
         if(this.selectInput) {
             this.selectInput.material_select();

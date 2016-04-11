@@ -27,8 +27,8 @@ export class SimpleMaterializeSelect extends MaterializeSelect {
         }
     }
     onChangeValue():void {}
-    isSelected(value:string):boolean {
-        if(value === this.selected) {
+    isSelected(option:any):boolean {
+        if(option.value === this.selected) {
             return true;
         }
     }

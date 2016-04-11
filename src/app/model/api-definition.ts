@@ -172,12 +172,12 @@ export class ApiDefinition {
         }
         return body;
     }
-    getOperationsBySlug(slugs:Array<string>):Array<OperationObject> {
+    getOperationsByProperty(values:Array<string>,property:string):Array<OperationObject> {
         let operations:Array<OperationObject> = [];
-        if(slugs) {
+        if(values) {
             this.paths.forEach((path:PathsObject) => {
                 let pathOperations:Array<OperationObject> = path.path.operations.filter((operation:OperationObject) => {
-                    return slugs.indexOf(operation.slug) !== -1;
+                    return values.indexOf(operation[property]) !== -1;
                 });
                 if(!_.isEmpty(pathOperations)) {
                     operations = operations.concat(pathOperations);

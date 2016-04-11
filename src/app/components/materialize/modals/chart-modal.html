@@ -3,7 +3,7 @@
         <h5>{{currentOperation.summary}} - {{currentOperation.operationId}}</h5>
         <div class="row s12">
             <div class="col s8">
-                <materialize-select-multiple #operationSelect (on-change)="onSelectOperation($event)" [options]="getOperationsMap()" [(model)]="selectedOperation" ></materialize-select-multiple>
+                <materialize-select-multiple #operationSelect [selected]="" [disabled-values]="disabledValues" (on-change)="onSelectOperation($event)" [options]="getOperationsMap()" [(model)]="selectedOperation" ></materialize-select-multiple>
             </div>
             <div class="col s4">
                 <ul class="collection">
@@ -17,7 +17,6 @@
         <div class="row" id="chartCanvasWrapper">
             <canvas id="chartCanvas" width="400"></canvas>
         </div>
-
     </div>
     <div class="modal-footer">
         <a href="" (click)="closeModal($event)" class="modal-action modal-close waves-effect waves-green btn-flat">

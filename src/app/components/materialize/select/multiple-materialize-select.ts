@@ -13,8 +13,7 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
     @Input() name:string;
     @Input() label:string;
     @Input() model:any;
-    @Input() options:[{label:string,value:string}];
-    @Input() selected:string;
+    @Input() options:[{label:string,value:string,selected:boolean,disabled:boolean}];
     @Output('on-change') selectValueChange: EventEmitter<any> =  new EventEmitter();
     constructor(el: ElementRef) {
         super(el,true);
@@ -40,6 +39,16 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
                 this.refresh();
             }
         });
+    }
+    isSelected(option:any):boolean {
+        if(option.selected) {
+            return true;
+        }
+    }
+    isDisabled(option:any):boolean {
+        if(option.disabled) {
+            return true;
+        }
     }
     onChangeValue():void {
         let newValuesArr = [], ul = this.selectInput.prev();

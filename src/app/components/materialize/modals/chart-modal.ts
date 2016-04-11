@@ -65,17 +65,15 @@ export class ChartModal extends MaterializeModal {
             setTimeout(() => this.operationSelect.refresh(),0);
             this.zone.run(()=> {
                 this.listOperations();
-                this.createChart([operation.slug]);
+                this.createChart(this.operations);
             });
         }});
     }
-    createChart(slugs:Array<string>):void {
-        if(slugs && !_.isEmpty(slugs)) {
+    createChart(operations:Array<OperationObject>):void {
+        if(operations && !_.isEmpty(operations)) {
 
             this.resetData();
             let max:number = 0;
-
-            let operations:Array<OperationObject> = this.apiDoc.getOperationsBySlug(slugs);
 
             operations.forEach((operation:OperationObject) => {
 
@@ -115,7 +113,7 @@ export class ChartModal extends MaterializeModal {
     listOperations():void {
         this.apiDoc.paths.forEach((path:PathsObject) => {
             let operations:Array<OperationObject> = path.path.operations.filter((operation:OperationObject) => {
-                return localStorage.getItem(operation.slug) !== null && operation.slug !== this.currentOperation.slug;
+                return localStorage.getItem(operation.slug) !== null;
             });
             if(!_.isEmpty(operations)) {
                 this.operations = this.operations.concat(operations);
@@ -123,23 +121,24 @@ export class ChartModal extends MaterializeModal {
         });
     }
     getOperationsMap():{value:string,label:string}[] {
-        let operations:any = this.operations.map((operation:OperationObject) => {
+        return this.operations.map((operation:OperationObject) => {
             let data:any = {};
-            data.value = operation.slug;
+            data.value = operation.operationId;
             data.label = operation.operationId;
+            data.disabled = operation.operationId === this.currentOperation.operationId;
+            data.selected = true;
             return data;
         });
-        console.log(operations);
-        return operations;
     }
     onSelectOperation(event:any):void {
         if (event && event.hasOwnProperty('selected')) {
-            let slugs:Array<string> = event.selected;
-            if(!slugs) {
-                this.createChart([this.currentOperation.slug]);
+            let operations:Array<OperationObject> = [];
+            if(!event.selected) {
+                this.createChart([this.currentOperation]);
             } else {
-                slugs.push(this.currentOperation.slug);
-                this.createChart(slugs);
+                operations = this.apiDoc.getOperationsByProperty(event.selected,'operationId');
+                operations.push(this.currentOperation);
+                this.createChart(operations);
             }
         }
     }
