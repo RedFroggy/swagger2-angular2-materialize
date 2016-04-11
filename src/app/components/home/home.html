@@ -1,7 +1,23 @@
-<div class="jumbotron">
+<div class="jumbotron" [hidden]="!apiDocService.apiValid">
     <h1>{{apiDoc.info.title}}</h1>
     <p>{{apiDoc.info.description}}</p>
     <p>Version: {{apiDoc.info.version}}</p>
-    <img src="http://www.redfroggy.fr/wp-content/uploads/2014/02/red_froggy_150.png?b5b528" width="100" height="85"><br/><br/>
-    <p><a href="{{apiDoc.info.termsOfService}}" target="_blank" class="waves-effect waves-light btn-large red darken-2">View site »</a></p>
+    <p><a href="{{apiDoc.info.termsOfService}}" target="_blank" class="waves-effect waves-light btn-large red darken-2"><i class="material-icons left">link</i> View site</a></p><br/>
+</div>
+<div class="jumbotron">
+    <div [hidden]="apiDocService.apiValid">
+        Can't read swagger JSON from http://petstore.swagger.io/v2/sswawagger.json
+    </div>
+    <form class="col s12">
+        <div class="row">
+            <div class="input-field col s3"></div>
+            <div class="input-field col s6">
+                <input placeholder="Swagger 2 api url" id="apiUrl" [(ngModel)]="apiUrl" type="text" class="validate">
+            </div>
+            <div class="col padding-top-15">
+                <a class="btn-floating btn-large waves-effect waves-light red darken-2" (click)="apiDocService.onChangeApi(apiUrl)" title="Change Swagger Api"><i class="material-icons">send</i></a>
+            </div>
+            <div class="input-field col s3"></div>
+        </div>
+    </form>
 </div>

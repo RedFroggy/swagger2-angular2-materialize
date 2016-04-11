@@ -33,6 +33,9 @@ import 'lodash/lodash';
 import 'materialize-css/dist/css/materialize.css';
 import 'materialize-css/dist/js/materialize.js';
 
+// Font awesome
+import 'font-awesome/css/font-awesome.css';
+
 // Moment
 window.moment = require('moment/moment.js');
 

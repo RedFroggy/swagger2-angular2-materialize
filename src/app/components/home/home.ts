@@ -8,8 +8,16 @@ import {ApiDefinition} from '../../model/api-definition';
 })
 export class Home {
     private apiDoc:ApiDefinition;
-    constructor(apiDocService:ApiDocService) {
+    private apiUrl:string;
+    constructor(private apiDocService:ApiDocService) {
         this.apiDoc = new ApiDefinition();
         apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
+
+        if(!localStorage.getItem('API-URL')) {
+            this.apiUrl = apiDocService.getDefaultApi();
+        } else {
+            this.apiUrl = localStorage.getItem('API-URL');
+        }
+
     }
 }

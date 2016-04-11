@@ -1,31 +1,48 @@
 import {Injectable} from 'angular2/core';
 import {Http,Response,Request,RequestOptions,Headers} from 'angular2/http';
-import * as EnvConfig from '../utils/env.config';
-import {Observable} from 'rxjs/Observable';
-import {ApiDefinition} from '../model/api-definition';
 import {Observer} from 'rxjs/Observer';
+import {Observable} from 'rxjs/Observable';
 import {PathsObject,DefinitionsObject} from '../model/apidoc';
 import {ApiResult} from '../model/api-result';
+import {ApiDefinition} from '../model/api-definition';
 import {OperationObject} from '../model/api-operation';
 import {ParameterObject} from '../model/api-parameter';
 
 const HEADER_CONTENT_TYPE:string = 'Content-Type';
 const HEADER_ACCEPT:string = 'Accept';
 
+const DEFAULT_API:string = 'http://petstore.swagger.io/v2/swagger.json';
+
 @Injectable()
 export class ApiDocService {
     apiDoc:ApiDefinition;
-    constructor(private http:Http) {}
+    apiUrl:string;
+    apiValid:boolean = false;
+    constructor(private http:Http) {
+        if(!localStorage.getItem('API-URL')) {
+            localStorage.setItem('API-URL',this.getDefaultApi());
+        }
+        this.apiUrl = localStorage.getItem('API-URL');
+    }
+    getDefaultApi():string {
+        return DEFAULT_API;
+    }
+    onChangeApi(apiUrl:string):void {
+        localStorage.setItem('API-URL',apiUrl);
+        window.location.reload();
+    }
     getApi():Observable<ApiDefinition> {
         if(this.apiDoc) {
             console.log('Getting doc definition from cache');
             return Observable.create((observer:Observer<ApiDefinition>) => {
+                this.apiValid = true;
                 return observer.next(this.apiDoc);
             });
         }
         //TODO config
-        return this.http.get(EnvConfig.SERVER_ROOT_URL + '/v2/swagger.json').map((res:Response) => {
+        return this.http.get(this.apiUrl).map((res:Response) => {
             this.apiDoc = new ApiDefinition(res.json());
+            this.apiValid = true;
             console.log('Getting doc definition from server');
             return this.apiDoc;
         });

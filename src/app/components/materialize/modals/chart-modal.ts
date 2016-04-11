@@ -123,12 +123,14 @@ export class ChartModal extends MaterializeModal {
         });
     }
     getOperationsMap():{value:string,label:string}[] {
-        return this.operations.map((operation:OperationObject) => {
+        let operations:any = this.operations.map((operation:OperationObject) => {
             let data:any = {};
             data.value = operation.slug;
             data.label = operation.operationId;
             return data;
         });
+        console.log(operations);
+        return operations;
     }
     onSelectOperation(event:any):void {
         if (event && event.hasOwnProperty('selected')) {

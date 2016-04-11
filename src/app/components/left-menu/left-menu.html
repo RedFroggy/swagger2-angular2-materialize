@@ -7,7 +7,6 @@
                 <input type="text" [(ngModel)]="query" id="query"/>
                 <label class="active" for="query">Search api</label>
             </div>
-
         </li>
         <ul class="collapsible" id="apiCollapsible" data-collapsible="expandable" materialize-collapsible>
             <li *ngFor="#tag of apiDoc.tags;#i=index">
