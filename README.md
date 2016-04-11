@@ -23,6 +23,7 @@ Feel free to try it here: [Swagger 2 UI Demo](http://linkia-demo.redfroggy.fr/sw
 
 # Screenshots
 ![image](http://i.imgur.com/mppox2Y.png?1)
+![image](http://i.imgur.com/pbkEvaT.png?1)
 ![image](http://i.imgur.com/xQ4nnKj.png?1)
 ![image](http://i.imgur.com/n3KcvFI.png?1)
 ![image](http://i.imgur.com/OBZHvqK.png?1) 
