@@ -22,11 +22,11 @@ Feel free to try it here: [Swagger 2 UI Demo](http://public.redfroggy.fr/swagger
 - Possibility to compare statistics from one api to another
 
 # Screenshots
-![image](http://i.imgur.com/mppox2Y.png?1)
-![image](http://i.imgur.com/pbkEvaT.png?1)
-![image](http://i.imgur.com/xQ4nnKj.png?1)
-![image](http://i.imgur.com/n3KcvFI.png?1)
-![image](http://i.imgur.com/OBZHvqK.png?1) 
+![image](http://i.imgur.com/2aXJ3TK.png?1)
+![image](http://i.imgur.com/zUvFBFB.png?1)
+![image](http://i.imgur.com/ddWJJgF.png?1)
+![image](http://i.imgur.com/UWzzSii.png?1)
+![image](http://i.imgur.com/WD53mGp.png?1) 
 
 # Stack
 - [Angular 2](https://angular.io)
