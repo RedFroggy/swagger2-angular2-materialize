@@ -7,6 +7,7 @@ import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {DatePipe} from 'angular2/common';
 import {ApiDocService} from '../../../services/apidoc.service';
 import {MultipleMaterializeSelect} from '../../materialize/select/multiple-materialize-select';
+import * as Config from '../../../utils/env.config';
 
 @Component({
     selector:'chart-modal',
@@ -32,7 +33,6 @@ export class ChartModal extends MaterializeModal {
     }
     resetData():void {
         this.chartData = {
-            type:'Line',
             labels: [],
             datasets: [],
             options:{
@@ -52,7 +52,7 @@ export class ChartModal extends MaterializeModal {
     }
     getRandomColor() {
         var r = () => { return Math.floor(Math.random()*256);};
-        return 'rgb(' + r() + ',' + r() + ',' + r() + ')';
+        return 'rgba(' + r() + ',' + r() + ',' + r() + ',0.5)';
     }
     getContext():any {
         let canvas:any = DOM.querySelector(this.el.nativeElement,'canvas');
@@ -69,6 +69,24 @@ export class ChartModal extends MaterializeModal {
             });
         }});
     }
+    getDataSetByType():any {
+        let chartType:string = this.getChartType();
+        let dataSet:any = {
+            label: '',
+            strokeColor: 'rgba(220,220,220,1)',
+            data: []
+        };
+       if(chartType === Config.CHART_TYPE_LINE) {
+           dataSet.pointColor = 'rgba(220,220,220,1)';
+           dataSet.pointStrokeColor = '#fff';
+           dataSet.pointHighlightFill = '#fff';
+           dataSet.pointHighlightStroke = 'rgba(220,220,220,1)';
+       } else {
+           dataSet.highlightFill = 'rgba(220,220,220,0.75)';
+           dataSet.highlightStroke = 'rgba(220,220,220,1)';
+       }
+        return dataSet;
+    }
     createChart(operations:Array<OperationObject>):void {
         if(operations && !_.isEmpty(operations)) {
 
@@ -79,19 +97,12 @@ export class ChartModal extends MaterializeModal {
 
                 operation.chartColor = this.getRandomColor();
 
-                let dataSetData = {
-                    label: '',
-                    strokeColor: 'rgba(220,220,220,1)',
-                    pointColor: 'rgba(220,220,220,1)',
-                    pointStrokeColor: '#fff',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(220,220,220,1)',
-                    data: []
-                };
+                let dataSetData = this.getDataSetByType();
                 dataSetData['fillColor'] = operation.chartColor;
 
                 let requestTimes:{date:Date,time:number}[] = JSON.parse(localStorage.getItem(operation.slug));
                 if(requestTimes.length > max) {
+                    this.chartData.labels = [];
                     max = requestTimes.length;
                     for(let i:number = 0;i<max;i++) {
                         this.chartData.labels.push(i + 1);
@@ -107,10 +118,20 @@ export class ChartModal extends MaterializeModal {
             this.chartOperations = operations;
 
             let ctx:any = this.getContext();
-            this.chart = new Chart(ctx).Bar(this.chartData, this.chartData.options);
+
+            let chartType:string = this.getChartType();
+            if(chartType === Config.CHART_TYPE_LINE) {
+                this.chart = new Chart(ctx).Line(this.chartData, this.chartData.options);
+            } else {
+                this.chart = new Chart(ctx).Bar(this.chartData, this.chartData.options);
+            }
         }
     }
+    getChartType():string {
+        return localStorage.getItem(Config.LOCAL_STORAGE_CHART_TYPE) ? localStorage.getItem(Config.LOCAL_STORAGE_CHART_TYPE) : Config.CHART_TYPE_BAR;
+    }
     listOperations():void {
+        this.operations = [];
         this.apiDoc.paths.forEach((path:PathsObject) => {
             let operations:Array<OperationObject> = path.path.operations.filter((operation:OperationObject) => {
                 return localStorage.getItem(operation.slug) !== null;

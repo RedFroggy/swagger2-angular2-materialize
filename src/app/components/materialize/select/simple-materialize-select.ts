@@ -13,9 +13,13 @@ export class SimpleMaterializeSelect extends MaterializeSelect {
     @Input() model:any;
     @Input() options:[{label:string,value:string}];
     @Input() selected:string;
-    @Output() selectValueChange: EventEmitter<any> =  new EventEmitter();
+    @Output('on-change') selectValueChange: EventEmitter<any> =  new EventEmitter();
     constructor(el: ElementRef) {
         super(el,false);
+    }
+    ngAfterViewInit():void {
+        super.ngAfterViewInit();
+        this.refresh();
     }
     ngOnChanges(changes):void {
         let dropDownSelect:any = DOM.querySelector(this.el.nativeElement,'ul.select-dropdown');
@@ -26,7 +30,9 @@ export class SimpleMaterializeSelect extends MaterializeSelect {
             this.selectInput.material_select();
         }
     }
-    onChangeValue():void {}
+    onChangeValue():void {
+        console.log(this.selectInput.val());
+    }
     isSelected(option:any):boolean {
         if(option.value === this.selected) {
             return true;

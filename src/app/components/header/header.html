@@ -11,11 +11,10 @@
                 <li><a href="" id="startedLink"><i class="material-icons left">play_circle_filled</i>Getting started</a></li>
                 <li><a href="" id="apiLink" (click)="goToPage($event,'Apis','ApiDocList')" [hidden]="!apiDocService.apiValid"><i class="material-icons left">public</i>Apis</a></li>
             </ul>
-            <ul class="right hide-on-med-and-down">
-                <li>
-                    <a href="" class="right"><i class="material-icons left">system_update_tv</i>Login</a>
-                    <a href="" class="right"><i class="material-icons left">exit_to_app</i>Logout</a>
-                </li>
+            <ul class="right hide-on-med-and-down" materialize-header>
+                <li><a href="" id="settingsLink" (click)="goToPage($event,'Settings')"><i class="material-icons left">settings</i>Settings</a></li>
+                <li><a href=""><i class="material-icons left">system_update_tv</i>Login</a></li>
+                <!--<li><a href=""><i class="material-icons left">exit_to_app</i>Logout</a></li>-->
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse" materialize-collapse-button><i class="material-icons">menu</i></a>
         </div>

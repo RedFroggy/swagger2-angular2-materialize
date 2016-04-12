@@ -12,6 +12,7 @@ var router_1 = require('angular2/router');
 var header_1 = require('./components/header/header');
 var home_1 = require('./components/home/home');
 var main_1 = require('./components/main/main');
+var settings_1 = require('./components/settings/settings');
 var AppComponent = (function () {
     function AppComponent() {
         console.log('Application initializing');
@@ -24,7 +25,8 @@ var AppComponent = (function () {
         }),
         router_1.RouteConfig([
             new router_1.Route({ path: '/home', component: home_1.Home, name: 'Home', useAsDefault: true }),
-            new router_1.Route({ path: '/apis/...', component: main_1.Main, name: 'Apis' })
+            new router_1.Route({ path: '/apis/...', component: main_1.Main, name: 'Apis' }),
+            new router_1.Route({ path: '/settings', component: settings_1.Settings, name: 'Settings' })
         ]), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

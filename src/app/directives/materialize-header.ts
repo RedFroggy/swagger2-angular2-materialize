@@ -15,11 +15,15 @@ export class MaterializeHeader implements AfterViewInit {
             $(this.el.nativeElement).find('#apiLink').addClass('active red darken-4');
             $(this.el.nativeElement).find('#mobileApiLink').addClass('active red darken-4 white-text');
         }
+        if(this.router.lastNavigationAttempt.indexOf('settings') !== -1) {
+            $(this.el.nativeElement).find('#settingsLink').addClass('active red darken-4');
+            $(this.el.nativeElement).find('#mobileApiLink').addClass('active red darken-4 white-text');
+        }
     }
     @HostListener('click', ['$event'])
     onClickList(event:Event):void {
         event.preventDefault();
-        $(this.el.nativeElement).find('a.active').removeClass('active red darken-4');
+        $(this.el.nativeElement).parent().find('a.active').removeClass('active red darken-4');
         $(event.target).parents('li:first').find('a').addClass('active red darken-4');
     }
 }

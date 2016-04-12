@@ -1,23 +1,6 @@
-<div class="jumbotron" [hidden]="!apiDocService.apiValid">
+<div class="jumbotron">
     <h1>{{apiDoc.info.title}}</h1>
     <p>{{apiDoc.info.description}}</p>
     <p>Version: {{apiDoc.info.version}}</p>
     <p><a href="{{apiDoc.info.termsOfService}}" target="_blank" class="waves-effect waves-light btn-large red darken-2"><i class="material-icons left">link</i> View site</a></p><br/>
-</div>
-<div class="jumbotron">
-    <div [hidden]="apiDocService.apiValid">
-        Can't read swagger JSON from http://petstore.swagger.io/v2/sswawagger.json
-    </div>
-    <form class="col s12">
-        <div class="row">
-            <div class="input-field col s3"></div>
-            <div class="input-field col s6">
-                <input placeholder="Swagger 2 api url" id="apiUrl" [(ngModel)]="apiUrl" type="text" class="validate">
-            </div>
-            <div class="col padding-top-15">
-                <a class="btn-floating btn-large waves-effect waves-light red darken-2" (click)="apiDocService.onChangeApi(apiUrl)" title="Change Swagger Api"><i class="material-icons">send</i></a>
-            </div>
-            <div class="input-field col s3"></div>
-        </div>
-    </form>
 </div>
