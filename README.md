@@ -26,7 +26,8 @@ Feel free to try it here: [Swagger 2 UI Demo](http://public.redfroggy.fr/swagger
 ![image](http://i.imgur.com/zUvFBFB.png?1)
 ![image](http://i.imgur.com/ddWJJgF.png?1)
 ![image](http://i.imgur.com/UWzzSii.png?1)
-![image](http://i.imgur.com/WD53mGp.png?1) 
+![image](http://i.imgur.com/WD53mGp.png?1)
+![image](http://i.imgur.com/oqZ3Xec.png?1) 
 
 # Stack
 - [Angular 2](https://angular.io)
