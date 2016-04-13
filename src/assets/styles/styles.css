@@ -45,3 +45,12 @@ span.legend {
 i.redfroggy-theme {
     color:#D32F2F;
 }
+
+.breadcrumb:before {
+    color: black;
+    margin: -4px 10px 0 8px;
+}
+
+.breadcrumb:last-child {
+    color: #039be5 !important;
+}

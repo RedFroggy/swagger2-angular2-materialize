@@ -12,12 +12,27 @@ import {MaterializeModal} from './materialize-modal';
 })
 export class TypeModal extends MaterializeModal {
     definition:DefinitionsObject;
+    properties:Array<any>;
+    entityHistory:Array<string>;
     constructor(apiDocService:ApiDocService,el: ElementRef) {
         super(el);
         this.definition = new DefinitionsObject();
+        this.properties = [];
+        this.entityHistory = [];
         apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
     }
-    onSelectType(eventData:Event) {
+    selectBreadcrumb($event:Event,index:number):void {
+        $event.preventDefault();
+        this.entityHistory = this.entityHistory.slice(index,index+1);
+        if(this.entityHistory.length >= 1 ) {
+            this.definition = this.apiDoc.getDefinitionByEntity(_.last(this.entityHistory));
+            if(this.definition) {
+                this.properties = Object.keys(this.definition.schema.properties).map((key) => {return {value:this.definition.schema.properties[key],key:key};});
+            }
+        }
+    }
+    onSelectType(eventData:Event):void {
+        this.entityHistory = [];
         this.selectType(null,eventData);
     }
     selectType(event:Event,property:any,openModal:boolean = true): void {
@@ -33,6 +48,12 @@ export class TypeModal extends MaterializeModal {
                 : this.apiDoc.getEntityName(property.value.$ref);
         }
         this.definition = this.apiDoc.getDefinitionByEntity(entity);
+        if(this.definition) {
+            this.properties = Object.keys(this.definition.schema.properties).map((key) => {return {value:this.definition.schema.properties[key],key:key};});
+        }
+
+        this.entityHistory.push(entity);
+
         if(openModal) {
             this.openModal(event);
         }
@@ -48,7 +69,7 @@ export class TypeModal extends MaterializeModal {
     }
     isArrayDtoType(property:any):boolean {
         return this.definition.schema.isPropertyTypeArray(property.value)
-            && this.apiDoc.hasDefinition(property.value.items.$ref,true);
+            && property.value.items && this.apiDoc.hasDefinition(property.value.items.$ref,true);
     }
     isArraySimpleType(property:any):boolean {
         return this.definition.schema.isPropertyTypeArray(property.value)
