@@ -7,6 +7,5 @@ before_install:
     - sh -e /etc/init.d/xvfb start
     - npm install -g karma
     - npm install -g typescript
-    - npm install -g typings
 before_script:
     - npm install
