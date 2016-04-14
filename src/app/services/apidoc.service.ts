@@ -7,6 +7,7 @@ import {ApiResult} from '../model/api-result';
 import {ApiDefinition} from '../model/api-definition';
 import {OperationObject} from '../model/api-operation';
 import {ParameterObject} from '../model/api-parameter';
+import * as Config from '../utils/env.config';
 
 const HEADER_CONTENT_TYPE:string = 'Content-Type';
 const HEADER_ACCEPT:string = 'Accept';
@@ -19,10 +20,13 @@ export class ApiDocService {
     apiUrl:string;
     apiValid:boolean = false;
     constructor(private http:Http) {
-        if(!localStorage.getItem('API-URL')) {
-            localStorage.setItem('API-URL',this.getDefaultApi());
+        if(!localStorage.getItem(Config.LOCAL_STORAGE_API_URL)) {
+            localStorage.setItem(Config.LOCAL_STORAGE_API_URL,this.getDefaultApi());
         }
-        this.apiUrl = localStorage.getItem('API-URL');
+        if(!localStorage.getItem(Config.LOCAL_STORAGE_CHART_TYPE)) {
+            localStorage.setItem(Config.LOCAL_STORAGE_CHART_TYPE,Config.CHART_TYPE_LINE);
+        }
+        this.apiUrl = localStorage.getItem(Config.LOCAL_STORAGE_API_URL);
     }
     getDefaultApi():string {
         return DEFAULT_API;

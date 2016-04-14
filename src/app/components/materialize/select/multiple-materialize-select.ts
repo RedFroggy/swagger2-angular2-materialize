@@ -15,6 +15,7 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
     @Input() model:any;
     @Input() options:[{label:string,value:string,selected:boolean,disabled:boolean}];
     @Output('on-change') selectValueChange: EventEmitter<any> =  new EventEmitter();
+    @Output() selected:string;
     constructor(el: ElementRef) {
         super(el,true);
     }

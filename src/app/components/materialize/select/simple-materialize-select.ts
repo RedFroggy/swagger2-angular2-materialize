@@ -33,6 +33,7 @@ export class SimpleMaterializeSelect extends MaterializeSelect {
     onChangeValue():void {
         console.log(this.selectInput.val());
     }
+    isDisabled(option:any){}
     isSelected(option:any):boolean {
         if(option.value === this.selected) {
             return true;

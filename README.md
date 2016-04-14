@@ -29,9 +29,16 @@ Feel free to try it here: [Swagger 2 UI Demo](http://public.redfroggy.fr/swagger
 ![image](http://i.imgur.com/WD53mGp.png?1)
 ![image](http://i.imgur.com/oqZ3Xec.png?1) 
 
+# Supported browsers
+Tested on the following browsers:
+- Chrome
+- Firefox
+- Internet Explorer 11
+
 # Stack
 - [Angular 2](https://angular.io)
 - [MaterializeCSS](http://materializecss.com)
+- [ChartJS](http://www.chartjs.org/)
 - Webpack
 - Karma
 - Jasmine
@@ -79,6 +86,8 @@ To start the server:
 ```bash
 $ npm run start
 ```
+Then go to http://localhost:3000
+
 To build the project:
 ```bash
 $ npm run build

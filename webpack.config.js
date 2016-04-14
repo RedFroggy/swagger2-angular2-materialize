@@ -159,7 +159,17 @@ var config = {
             new webpack.DefinePlugin({
                 VERSION: JSON.stringify(VERSION + "-SNAPSHOT")
             })
-        ]
+        ],
+        devServer: {
+            port: 3000,
+            host: 'localhost',
+            inline:false,
+            historyApiFallback: true,
+            watchOptions: {
+                aggregateTimeout: 300,
+                poll: 1000
+            }
+        }
     },
     //endregion
     //region Test configuration
@@ -215,6 +225,7 @@ var config = {
             // Clean reporting directory
             new CleanWebpackPlugin([path.resolve('./reporting')], { verbose: false })
         ],
+
         node: {
             global: 'window',
             process: false,

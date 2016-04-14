@@ -16,7 +16,7 @@ export class Settings {
     private apiUrl:string;
     private selectedType:string;
     constructor(private apiDocService:ApiDocService) {
-        this.chartType = {};
+        this.chartType = {selected:null};
         this.chartOptions = [{label:'Line chart',value:Config.CHART_TYPE_LINE,selected:true},{label:'Bar chart',value:Config.CHART_TYPE_BAR}];
 
         this.apiDoc = new ApiDefinition();
