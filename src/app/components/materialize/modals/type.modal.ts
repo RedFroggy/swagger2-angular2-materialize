@@ -23,11 +23,15 @@ export class TypeModal extends MaterializeModal {
     }
     selectBreadcrumb($event:Event,index:number):void {
         $event.preventDefault();
-        this.entityHistory = this.entityHistory.slice(index,index+1);
-        if(this.entityHistory.length >= 1 ) {
-            this.definition = this.apiDoc.getDefinitionByEntity(_.last(this.entityHistory));
-            if(this.definition) {
-                this.properties = Object.keys(this.definition.schema.properties).map((key) => {return {value:this.definition.schema.properties[key],key:key};});
+        if(index < this.entityHistory.length - 1) {
+            this.entityHistory = this.entityHistory.slice(index, index + 1);
+            if (this.entityHistory.length >= 1) {
+                this.definition = this.apiDoc.getDefinitionByEntity(_.last(this.entityHistory));
+                if (this.definition) {
+                    this.properties = Object.keys(this.definition.schema.properties).map((key) => {
+                        return {value: this.definition.schema.properties[key], key: key};
+                    });
+                }
             }
         }
     }

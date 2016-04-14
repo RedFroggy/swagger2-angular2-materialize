@@ -14,17 +14,30 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
     @Input() model:any;
     @Input() options:[{label:string,value:string,selected:boolean,disabled:boolean}];
     @Output('on-change') selectValueChange: EventEmitter<any> =  new EventEmitter();
+    @Input() selected:string;
     constructor(el: ElementRef) {
         super(el,true);
     }
     ngAfterViewInit():void {
         super.ngAfterViewInit();
         this.refresh();
+        if(this.selected) {
+            setTimeout(() => {
+                this.updateValue([this.selected]);
+                this.setValue();
+            }, 0);
+        }
     }
     setValue():void {
         let ul = this.selectInput.prev();
         ul.children('li').toArray().forEach((li, i) => {
             $(li).removeClass('active');
+            let value:string = this.selectInput.children('option').toArray()[i].value;
+            if(value === this.selected) {
+                $(li).addClass('active');
+                this.selectInput.val([this.selected]);
+                this.refresh();
+            }
         });
     }
     isSelected(option:any):boolean {

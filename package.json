@@ -50,7 +50,7 @@
     "webpack-merge": "^0.8.3"
   },
   "dependencies": {
-    "angular2": "^2.0.0-beta.14",
+    "angular2": "2.0.0-beta.14",
     "materialize-css": "^0.97.6",
     "bootstrap": "3.3.6",
     "core-js": "^2.1.5",
@@ -58,7 +58,6 @@
     "highlight.js": "9.2.0",
     "lodash": "^4.3.0",
     "rxjs": "5.0.0-beta.4",
-    "swagger.d.ts": "0.0.2",
     "underscore": "1.8.3",
     "vkbeautify": "0.99.1",
     "zone.js": "0.6.10",
