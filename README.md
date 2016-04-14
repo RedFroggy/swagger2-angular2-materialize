@@ -1,4 +1,4 @@
-Swagger 2 Angular 2 MaterializeCSS
+Swagger 2 Angular 2 MaterializeCSS [![Build Status](https://travis-ci.org/RedFroggy/swagger2-angular2-materialize.svg?branch=master)](https://travis-ci.org/RedFroggy/swagger2-angular2-materialize)
 ==========
 
 # Presentation
