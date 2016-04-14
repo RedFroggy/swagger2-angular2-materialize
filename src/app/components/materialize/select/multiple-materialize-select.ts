@@ -25,11 +25,6 @@ export class MultipleMaterializeSelect extends MaterializeSelect {
         let ul = this.selectInput.prev();
         ul.children('li').toArray().forEach((li, i) => {
             $(li).removeClass('active');
-            let value:string = this.selectInput.children('option').toArray()[i].value;
-            if(value === this.selected) {
-                $(li).addClass('active');
-                this.refresh();
-            }
         });
     }
     isSelected(option:any):boolean {
