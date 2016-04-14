@@ -1,8 +1,9 @@
 node_modules/
-target/
 .idea/
 dist/
 typings/
+reports/
+coverage/
 *.iml
 src/**/*.js
 src/**/*.js.map

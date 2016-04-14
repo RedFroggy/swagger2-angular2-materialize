@@ -174,9 +174,9 @@ var config = {
     //endregion
     //region Test configuration
     test: {
-        devtool: 'source-map',
+        devtool: 'inline-source-map',
         resolve: {
-            extensions: ['', '.ts', '.js']
+            extensions: ['', '.ts', '.js'],
         },
         module: {
             preLoaders: [
@@ -223,7 +223,7 @@ var config = {
         },
         plugins: [
             // Clean reporting directory
-            new CleanWebpackPlugin([path.resolve('./reporting')], { verbose: false })
+            new CleanWebpackPlugin([path.resolve('./reports')], { verbose: false })
         ],
 
         node: {
