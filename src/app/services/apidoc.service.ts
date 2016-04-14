@@ -43,11 +43,11 @@ export class ApiDocService {
                 return observer.next(this.apiDoc);
             });
         }
+        console.log('Getting doc definition from server');
         //TODO config
         return this.http.get(this.apiUrl).map((res:Response) => {
             this.apiDoc = new ApiDefinition(res.json());
             this.apiValid = true;
-            console.log('Getting doc definition from server');
             return this.apiDoc;
         });
     }

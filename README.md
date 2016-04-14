@@ -6,6 +6,7 @@ Swagger 2 UI made with Angular 2 and MaterializeCSS
 
 # Demo
 Feel free to try it here: [Swagger 2 UI Demo](http://public.redfroggy.fr/swagger2)
+You can try with your Swagger 2 api by setting the url under the "Settings" menu
 
 # Features
 - Responsive application
@@ -70,7 +71,6 @@ Tested on the following browsers:
 - tslint.json: TSLint configuration file
 - typings.json: Typings configuration file
 - package.json: For managing npm dependencies and running scripts
-- bs-config.json: Liter server configuration file
 - dist: production folder
 ```
 
