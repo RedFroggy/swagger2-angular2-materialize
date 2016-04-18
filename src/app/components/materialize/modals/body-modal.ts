@@ -33,13 +33,23 @@ export class BodyModal extends MaterializeModal {
             this.storeRequest();
         },(err:Response) => {
             console.log('Request error',err);
-            let body:string = err.text();
             this.apiResult.operation = this.operation;
             this.apiResult.endDate = new Date();
             this.apiResult.status = err.status;
-            this.apiResult.message = _.isEmpty(body) ? body : err.json();
+            this.apiResult.message = this.tryParseErrorResponse(err);
             this.beautifyResponse(event);
         });
+    }
+    tryParseErrorResponse(err:Response):any {
+        let body:string = err.text();
+        if(_.isEmpty(body)) {
+            return body;
+        }
+        try {
+            return err.json();
+        } catch(e) {
+            return body;
+        }
     }
     storeRequest():void {
         if(this.operation.slug) {
