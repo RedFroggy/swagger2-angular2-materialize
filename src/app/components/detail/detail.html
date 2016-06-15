@@ -48,7 +48,7 @@
                             <th>Parameter type</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="#parameter of operation.parameters;#i=index" >
+                            <tr *ngFor="let parameter of operation.parameters;let i=index" >
                                 <td>{{parameter.name}}</td>
                                 <td *ngIf="!parameter.isBodyParam()">
                                     <div class="input-field" *ngIf="!parameter.isTypeEnum() && !parameter.isTypeFile()">
@@ -90,7 +90,7 @@
                         <th>Headers</th>
                         </thead>
                         <tbody>
-                        <tr *ngFor="#response of operation.responses">
+                        <tr *ngFor="let response of operation.responses">
                             <td><a class="waves-effect waves-light btn" [ngClass]="apiDoc.getStatusClass(response.code)">{{response.code}}</a></td>
                             <td>{{response.response.description}}</td>
                             <td>

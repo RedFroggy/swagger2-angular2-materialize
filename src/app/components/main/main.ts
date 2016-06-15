@@ -1,8 +1,8 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {LeftMenu} from '../left-menu/left-menu';
 import {ApiDocList} from '../list/list';
 import {ApiDocDetail} from '../detail/detail';
-import {RouteConfig,Route,ROUTER_DIRECTIVES} from 'angular2/router';
+import {RouteConfig,Route,ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 
 @Component({
     selector:'doc-main',

@@ -1,12 +1,10 @@
-import {Component,Input,ElementRef} from 'angular2/core';
+import {Component,Input,ElementRef,NgZone} from '@angular/core';
 import {ApiDefinition} from '../../../model/api-definition';
 import {OperationObject} from '../../../model/api-operation';
 import {ApiResult} from '../../../model/api-result';
 import {ApiDocService} from '../../../services/apidoc.service';
 import {MaterializeModal} from './materialize-modal';
-import {DOM} from 'angular2/src/platform/dom/dom_adapter';
-import {NgZone} from 'angular2/core';
-import {Response} from 'angular2/http';
+import {Response} from '@angular/http';
 
 ///<reference path="../../../../../typings/main/ambient/node/index.d.ts" />
 
@@ -62,7 +60,7 @@ export class BodyModal extends MaterializeModal {
         }
     }
     beautifyResponse(event:Event):void {
-        let codeElement:any = $(DOM.querySelector(this.el.nativeElement,'pre code'));
+        let codeElement:any = $(this.el.nativeElement).find('pre code');
         this.openModal(event,
         {
             ready: () => {

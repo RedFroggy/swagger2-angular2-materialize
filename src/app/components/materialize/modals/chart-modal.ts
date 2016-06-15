@@ -1,10 +1,8 @@
 import {MaterializeModal} from './materialize-modal';
-import {Component,ElementRef,NgZone,ViewChild} from 'angular2/core';
+import {Component,ElementRef,NgZone,ViewChild} from '@angular/core';
 import {PathsObject} from '../../../model/apidoc';
 import {OperationObject} from '../../../model/api-operation';
 import {ApiDefinition} from '../../../model/api-definition';
-import {DOM} from 'angular2/src/platform/dom/dom_adapter';
-import {DatePipe} from 'angular2/common';
 import {ApiDocService} from '../../../services/apidoc.service';
 import {MultipleMaterializeSelect} from '../../materialize/select/multiple-materialize-select';
 import * as Config from '../../../utils/env.config';
@@ -55,7 +53,7 @@ export class ChartModal extends MaterializeModal {
         return 'rgba(' + r() + ',' + r() + ',' + r() + ',0.5)';
     }
     getContext():any {
-        let canvas:any = DOM.querySelector(this.el.nativeElement,'canvas');
+        let canvas:any = $(this.el.nativeElement).find('canvas')[0];
         return canvas.getContext('2d');
     }
     showGraph(operation:OperationObject):void {

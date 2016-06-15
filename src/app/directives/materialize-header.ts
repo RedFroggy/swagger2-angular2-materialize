@@ -1,21 +1,20 @@
-import {Directive,ElementRef,HostListener,AfterViewInit} from 'angular2/core';
-import {Router} from 'angular2/router';
+import {Directive,ElementRef,HostListener,AfterViewInit} from '@angular/core';
 
 @Directive({
     selector:'ul[materialize-header]'
 })
 export class MaterializeHeader implements AfterViewInit {
-    constructor(private el:ElementRef,private router:Router) {}
+    constructor(private el:ElementRef) {}
     ngAfterViewInit():void {
-        if(_.isEmpty(this.router.lastNavigationAttempt) || this.router.lastNavigationAttempt.indexOf('home') !== -1) {
+        if(location.hash.indexOf('home') !== -1) {
             $(this.el.nativeElement).find('#homeLink').addClass('active red darken-4');
             $(this.el.nativeElement).find('#mobileHomeLink').addClass('active red darken-4');
         }
-        if(this.router.lastNavigationAttempt.indexOf('apis') !== -1) {
+        if(location.hash.indexOf('apis') !== -1) {
             $(this.el.nativeElement).find('#apiLink').addClass('active red darken-4');
             $(this.el.nativeElement).find('#mobileApiLink').addClass('active red darken-4 white-text');
         }
-        if(this.router.lastNavigationAttempt.indexOf('settings') !== -1) {
+        if(location.hash.indexOf('settings') !== -1) {
             $(this.el.nativeElement).find('#settingsLink').addClass('active red darken-4');
             $(this.el.nativeElement).find('#mobileApiLink').addClass('active red darken-4 white-text');
         }

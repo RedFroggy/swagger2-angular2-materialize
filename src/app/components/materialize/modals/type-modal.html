@@ -1,7 +1,7 @@
 <div id="typeObjectModal" class="modal modal-fixed-footer">
     <div class="modal-content">
         <div class="col s12">
-            <a href="" (click)="selectBreadcrumb($event,i)" class="breadcrumb black-text" *ngFor="#entity of entityHistory;#i=index">{{entity}}</a>
+            <a href="" (click)="selectBreadcrumb($event,i)" class="breadcrumb black-text" *ngFor="let entity of entityHistory;let i=index">{{entity}}</a>
         </div>
         <table class="responsive-table">
             <thead>
@@ -11,7 +11,7 @@
             <th>Required</th>
             </thead>
             <tbody>
-                <tr class="collection" *ngFor="#property of properties">
+                <tr class="collection" *ngFor="let property of properties">
                     <td class="title">{{property.key}}</td>
                     <td>
                         <span *ngIf="isSimpleType(property)">{{property.value.type}}</span>

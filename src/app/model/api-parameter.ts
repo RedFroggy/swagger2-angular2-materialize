@@ -1,6 +1,6 @@
 import {ItemsObject,ReferenceObject} from './apidoc';
 import {ApiModelUtils} from './api-utils';
-import {Control,Validators} from 'angular2/common';
+import {Control,Validators} from '@angular/common';
 
 const TYPE_FILE:string = 'file';
 const TYPE_DATE:string = 'date';

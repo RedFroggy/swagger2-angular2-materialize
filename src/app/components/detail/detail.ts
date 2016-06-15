@@ -1,10 +1,9 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {LeftMenu} from '../left-menu/left-menu';
-import {Router,RouteParams} from 'angular2/router';
+import {Router,RouteParams} from '@angular/router-deprecated';
 import {ApiDocService} from '../../services/apidoc.service';
-import {PathsObject,DefinitionsObject} from '../../model/apidoc';
+import {PathsObject} from '../../model/apidoc';
 import {ApiDefinition} from '../../model/api-definition';
-import {IJsonSchema} from '../../model/api-json-schema';
 import {ApiModelUtils} from '../../model/api-utils';
 import {OperationObject} from '../../model/api-operation';
 import {ParameterObject} from '../../model/api-parameter';
@@ -12,7 +11,7 @@ import {TypeModal} from '../materialize/modals/type.modal';
 import {BodyModal} from '../materialize/modals/body-modal';
 import {SimpleMaterializeSelect} from '../materialize/select/simple-materialize-select';
 import {MultipleMaterializeSelect} from '../materialize/select/multiple-materialize-select';
-import {ControlGroup,Control,FormBuilder,Validators} from 'angular2/common';
+import {ControlGroup,FormBuilder} from '@angular/common';
 import {DataTypeLink} from '../data-type/data-type-link';
 import {MaterializeInputFile} from '../materialize/input-file/materialize-input-file';
 
@@ -46,7 +45,6 @@ export class ApiDocDetail {
             let path:PathsObject = this.apiDocService.apiDoc.paths[this.pathId-1];
             if(path) {
                 this.operation = path.path.operations[operationId - 1];
-                //this.operation.slug = 'op-'+ (this.pathId-1)+'-'+(operationId -1);
 
                 setTimeout(()=> {
                     this.operation.parameters.forEach((parameter:ParameterObject) => this.apiDetailForm.addControl(parameter.name,parameter.control));

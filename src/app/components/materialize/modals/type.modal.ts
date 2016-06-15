@@ -1,4 +1,4 @@
-import {Component,Input,ElementRef} from 'angular2/core';
+import {Component,ElementRef} from '@angular/core';
 import {ApiDefinition} from '../../../model/api-definition';
 import {DefinitionsObject} from '../../../model/apidoc';
 import {ValuesPipe} from '../../../pipes/pipes';

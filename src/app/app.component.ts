@@ -1,9 +1,8 @@
 
-import {Component} from 'angular2/core';
-import {ROUTER_DIRECTIVES,RouteConfig,Route,Router} from 'angular2/router';
+import {Component} from '@angular/core';
+import {ROUTER_DIRECTIVES,RouteConfig,Route} from '@angular/router-deprecated';
 import {Header} from './components/header/header';
 import {Home} from './components/home/home';
-import {ApiDocDetail} from './components/detail/detail';
 import {Main} from './components/main/main';
 import {Settings} from './components/settings/settings';
 

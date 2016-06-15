@@ -1,4 +1,4 @@
-import {PipeTransform,Pipe} from 'angular2/core';
+import {PipeTransform,Pipe} from '@angular/core';
 import {PathsObject} from '../model/apidoc';
 import {OperationObject} from '../model/api-operation';
 
@@ -20,13 +20,13 @@ export class CountPipe implements PipeTransform {
 
 @Pipe({ name: 'tagFiler',  pure: false })
 export class TagFilterPipe implements PipeTransform {
-    transform(value: Array<PathsObject>, args: string[] = null): any {
+    transform(value: Array<PathsObject>, args: any): any {
         if(!args || _.isEmpty(args)) {
             return value;
         }
         return value.filter((path:PathsObject) => {
             let data:Array<OperationObject> = path.path.operations.filter((operation:OperationObject) => {
-                return operation.tags && operation.tags.indexOf(args[0]) !== -1;
+                return operation.tags && operation.tags.indexOf(args) !== -1;
             });
             return data && !_.isEmpty(data);
         });

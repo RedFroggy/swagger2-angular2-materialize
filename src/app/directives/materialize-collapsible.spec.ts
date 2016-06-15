@@ -1,16 +1,17 @@
 import {MaterializeCollapsible} from './materialize-collapsible';
-import {beforeEachProviders,TestComponentBuilder,injectAsync,ComponentFixture} from 'angular2/testing';
-import {Component,ViewChildren,QueryList} from 'angular2/core';
+import {beforeEachProviders,injectAsync} from '@angular/core/testing';
+import {TestComponentBuilder,ComponentFixture} from '@angular/compiler/testing';
+import {Component,ViewChildren,QueryList} from '@angular/core';
 
 describe('Directive: MaterializeCollapsible', () => {
-    let fixture:ComponentFixture;
+    let fixture:ComponentFixture<any>;
 
     beforeEachProviders(() => [TestComponentBuilder]);
 
     beforeEach(injectAsync([TestComponentBuilder], tcb => {
         return tcb
             .createAsync(Container)
-            .then((f:ComponentFixture) => {
+            .then((f:ComponentFixture<any>) => {
                 f.detectChanges();
                 fixture = f;
             });

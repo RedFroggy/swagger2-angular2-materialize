@@ -1,4 +1,4 @@
-import {Directive,ElementRef,HostListener} from 'angular2/core';
+import {Directive,ElementRef,HostListener} from '@angular/core';
 
 @Directive({
     selector:'ul[materialize-collection]'

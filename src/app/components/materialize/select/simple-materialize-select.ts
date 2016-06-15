@@ -1,7 +1,5 @@
-import {Component,ElementRef,Input,Output,EventEmitter} from 'angular2/core';
+import {Component,ElementRef,Input,Output,EventEmitter} from '@angular/core';
 import {MaterializeSelect} from './materialize-select';
-import {DOM} from 'angular2/src/platform/dom/dom_adapter';
-import {Control} from 'angular2/common';
 
 @Component({
     selector:'materialize-select-simple',
@@ -22,7 +20,7 @@ export class SimpleMaterializeSelect extends MaterializeSelect {
         this.refresh();
     }
     ngOnChanges(changes):void {
-        let dropDownSelect:any = DOM.querySelector(this.el.nativeElement,'ul.select-dropdown');
+        let dropDownSelect:any = $(this.el.nativeElement).find('ul.select-dropdown');
         let options:any = $(dropDownSelect).find('li');
 
         if(this.selectInput && !_.isEmpty(changes.options.currentValue) && _.isEmpty(options)) {

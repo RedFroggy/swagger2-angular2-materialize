@@ -1,5 +1,5 @@
 <div class="row col s9">
-    <div class="col s12 m6" *ngFor="#operation of apiPath.path.operations;#i=index">
+    <div class="col s12 m6" *ngFor="let operation of apiPath.path.operations;let i=index">
         <div class="card">
             <div class="card-panel" [ngClass]="operation.getMethodClass()">
                 <strong>{{operation.name}}</strong> {{operation.summary}}<br/>

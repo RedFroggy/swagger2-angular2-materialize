@@ -1,6 +1,5 @@
 
-import {ElementRef,Input,EventEmitter,Output,AfterViewInit} from 'angular2/core';
-import {DOM} from 'angular2/src/platform/dom/dom_adapter';
+import {ElementRef,EventEmitter,AfterViewInit} from '@angular/core';
 
 export abstract class MaterializeSelect implements AfterViewInit {
     name:string;
@@ -13,9 +12,9 @@ export abstract class MaterializeSelect implements AfterViewInit {
         this.multiple = multiple;
     }
     ngAfterViewInit():void {
-        this.selectInput = $(DOM.querySelector(this.el.nativeElement,'select'));
+        this.selectInput = $(this.el.nativeElement).find('select');
 
-        let divParent:any = $(DOM.querySelector(this.el.nativeElement,'.input-field'));
+        let divParent:any = $(this.el.nativeElement).find('.input-field');
         divParent.on('change', 'select', () => {
             this.onChangeValue();
             this.updateValue(this.selectInput.val());
@@ -28,9 +27,7 @@ export abstract class MaterializeSelect implements AfterViewInit {
     abstract isSelected(option:any);
     abstract isDisabled(option:any);
     refresh():void {
-        if(this.selectInput) {
-            this.selectInput.material_select();
-        }
+        this.selectInput.material_select();
     }
     abstract onChangeValue():void;
 }

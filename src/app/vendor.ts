@@ -9,12 +9,10 @@ var $ = jQuery = require('jquery/dist/jquery');
 window['jQuery'] = $;
 
 // Angular 2
-import 'angular2/platform/browser';
-import 'angular2/platform/common_dom';
-import 'angular2/core';
-import 'angular2/common';
-import 'angular2/http';
-import 'angular2/router';
+import '@angular/core';
+import '@angular/common';
+import '@angular/http';
+import '@angular/router-deprecated';
 
 // RxJS
 import 'rxjs/add/operator/map';

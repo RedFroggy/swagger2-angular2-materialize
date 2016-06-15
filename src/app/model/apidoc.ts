@@ -1,9 +1,8 @@
-import {Control,Validators} from 'angular2/common';
+import {Control,Validators} from '@angular/common';
 import {ApiModelUtils} from './api-utils';
 import {IJsonSchema} from './api-json-schema';
-import {ApiResult} from './api-result';
 import {OperationObject} from './api-operation';
-import {ParameterObject,ParametersDefinitionsObject} from './api-parameter';
+import {ParameterObject} from './api-parameter';
 
 
 export class InfoObject {

@@ -1,4 +1,4 @@
-import {Directive,AfterViewInit,ElementRef} from 'angular2/core';
+import {Directive,AfterViewInit,ElementRef} from '@angular/core';
 
 @Directive({
     selector:'ul[materialize-collapsible]'

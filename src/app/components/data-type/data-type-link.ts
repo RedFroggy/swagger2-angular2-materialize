@@ -1,4 +1,4 @@
-import {Component,Input,Output,EventEmitter} from 'angular2/core';
+import {Component,Input,Output,EventEmitter} from '@angular/core';
 import {ApiDefinition} from '../../model/api-definition';
 import {ResponseObject} from '../../model/apidoc';
 import {ApiDocService} from '../../services/apidoc.service';

@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {SimpleMaterializeSelect} from '../materialize/select/simple-materialize-select';
 import {ApiDocService} from '../../services/apidoc.service';
 import {ApiDefinition} from '../../model/api-definition';

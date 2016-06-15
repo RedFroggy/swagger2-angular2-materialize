@@ -1,8 +1,9 @@
-import {bootstrap} from 'angular2/platform/browser';
+import {bootstrap} from '@angular/platform-browser-dynamic';
 import {AppComponent} from './app.component';
-import {HTTP_PROVIDERS} from 'angular2/http';
-import {ROUTER_PROVIDERS,HashLocationStrategy,LocationStrategy} from 'angular2/router';
-import {provide} from 'angular2/core';
+import {HTTP_PROVIDERS} from '@angular/http';
+import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
+import {provide} from '@angular/core';
+import {HashLocationStrategy,LocationStrategy} from '@angular/common';
 
 import 'rxjs/add/operator/map';
 import {ApiDocService} from './services/apidoc.service';

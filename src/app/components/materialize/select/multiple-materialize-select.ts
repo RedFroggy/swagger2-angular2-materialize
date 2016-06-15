@@ -1,6 +1,5 @@
-import {Component,ElementRef,Input,Output,EventEmitter} from 'angular2/core';
+import {Component,ElementRef,Input,Output,EventEmitter} from '@angular/core';
 import {MaterializeSelect} from './materialize-select';
-import {Control} from 'angular2/common';
 
 /// <reference path="..\..\..\..\..\typings\main\ambient\jquery\index.d.ts" />
 
