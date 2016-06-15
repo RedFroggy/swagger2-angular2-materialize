@@ -70,7 +70,7 @@
     "postinstall": "typings install",
     "start": "npm run server:dev",
     "server": "npm run server:dev",
-    "server:dev": "webpack-dev-server --config webpack.config.js --inline --progress --profile --colors --watch --display-error-details --display-cached --content-base src/",
+    "server:dev": "webpack-dev-server --config webpack.config.js --progress --profile --colors --watch --display-error-details --display-cached --content-base src/",
     "build": "npm run build:dev",
     "build:dev": "webpack --profile --colors --display-error-details --display-cached --watch --environment=dev",
     "build:prod": "webpack --profile --colors --display-error-details --display-cached --environment=prod",
