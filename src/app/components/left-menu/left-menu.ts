@@ -3,9 +3,10 @@ import {ApiDocService} from '../../services/apidoc.service';
 import {ApiDefinition} from '../../model/api-definition';
 import {PathsObject} from '../../model/apidoc';
 import {ValuesPipe,CountPipe,TagFilterPipe,SearchFilterPipe} from '../../pipes/pipes';
-import {Router} from '@angular/router-deprecated';
 import {MaterializeCollapsible} from '../../directives/materialize-collapsible';
 import {MaterializeCollection} from '../../directives/materialize-collection';
+import {Router} from "@angular/router";
+
 
 @Component({
     selector:'left-menu',
@@ -24,11 +25,13 @@ export class LeftMenu {
     onSelectApi(event:Event,apiPath:PathsObject):void {
         event.preventDefault();
         let index:number = 0;
+        // console.log(`index of clicked path ${apiPath.name} is ${this.apiDoc.paths.indexOf(apiPath)}`);
         this.apiDoc.paths.forEach( (path:PathsObject,idx:number) => {
             if(path.name === apiPath.name) {
                 index = idx;
             }
         });
-        this.router.navigate(['ApiDocList',{path:index+1}]);
+        // console.log(`calculated index is: ${index}`)
+        this.router.navigate(['apis',{path:index+1}]);
     }
 }

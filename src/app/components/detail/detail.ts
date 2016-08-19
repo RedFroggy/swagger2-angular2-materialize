@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {LeftMenu} from '../left-menu/left-menu';
-import {Router,RouteParams} from '@angular/router-deprecated';
+// import {Router,RouteParams} from '@angular/router-deprecated';
 import {ApiDocService} from '../../services/apidoc.service';
 import {PathsObject} from '../../model/apidoc';
 import {ApiDefinition} from '../../model/api-definition';
@@ -11,10 +11,8 @@ import {TypeModal} from '../materialize/modals/type.modal';
 import {BodyModal} from '../materialize/modals/body-modal';
 import {SimpleMaterializeSelect} from '../materialize/select/simple-materialize-select';
 import {MultipleMaterializeSelect} from '../materialize/select/multiple-materialize-select';
-import {ControlGroup,FormBuilder} from '@angular/common';
 import {DataTypeLink} from '../data-type/data-type-link';
 import {MaterializeInputFile} from '../materialize/input-file/materialize-input-file';
-
 
 @Component({
     selector:'doc-detail',
@@ -22,45 +20,41 @@ import {MaterializeInputFile} from '../materialize/input-file/materialize-input-
     directives:[LeftMenu,TypeModal,
         BodyModal,SimpleMaterializeSelect,
         MultipleMaterializeSelect,DataTypeLink,
-        MaterializeInputFile]
+        MaterializeInputFile,
+        ]
 })
 export class ApiDocDetail {
     operation:OperationObject;
     private pathId:number;
-    private apiDetailForm:ControlGroup;
     private apiDoc:ApiDefinition;
-    constructor(private apiDocService:ApiDocService,formBuilder: FormBuilder,private router:Router,private routeParams:RouteParams) {
+    // constructor(private apiDocService:ApiDocService, private router:Router,private routeParams:RouteParams) {
+    constructor(private apiDocService:ApiDocService) {
         this.operation = new OperationObject();
-        this.apiDetailForm = formBuilder.group({});
         this.apiDoc = new ApiDefinition();
 
         this.init();
     }
     init():void {
-        this.pathId = parseInt(this.routeParams.get('path'));
-        let operationId:number = parseInt(this.routeParams.get('operation'));
+        // this.pathId = parseInt(this.routeParams.get('path'));
+        // let operationId:number = parseInt(this.routeParams.get('operation'));
 
         this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => {
             this.apiDoc = apiDoc;
             let path:PathsObject = this.apiDocService.apiDoc.paths[this.pathId-1];
             if(path) {
-                this.operation = path.path.operations[operationId - 1];
-
-                setTimeout(()=> {
-                    this.operation.parameters.forEach((parameter:ParameterObject) => this.apiDetailForm.addControl(parameter.name,parameter.control));
-                },0);
+                // this.operation = path.path.operations[operationId - 1];
 
                 if (!this.operation) {
-                    this.router.navigate(['ApiDocList', {path: this.pathId}]);
+                    // this.router.navigate(['ApiDocList', {path: this.pathId}]);
                 }
             } else {
-                this.router.navigate(['ApiDocList', {path: this.pathId}]);
+                // this.router.navigate(['ApiDocList', {path: this.pathId}]);
             }
         });
     }
     goToListPage(event:Event):void {
         event.preventDefault();
-        this.router.navigate(['ApiDocList', {path: this.pathId}]);
+        // this.router.navigate(['ApiDocList', {path: this.pathId}]);
     }
     generate(event:Event,parameter:ParameterObject):void {
         event.preventDefault();

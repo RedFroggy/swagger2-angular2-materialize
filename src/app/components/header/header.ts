@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {Router} from '@angular/router-deprecated';
 import {MaterializeHeader,MaterializeCollapseButton} from '../../directives/materialize-header';
 import {ApiDocService} from '../../services/apidoc.service';
+import {Router} from "@angular/router";
 
 @Component({
     selector:'header',
@@ -10,9 +10,10 @@ import {ApiDocService} from '../../services/apidoc.service';
 })
 export class Header {
     constructor(private router:Router,private apiDocService:ApiDocService) {}
+    constructor(private apiDocService:ApiDocService) {}
     goToPage($event:Event,...apis):void {
         $event.preventDefault();
-        apis.push({path:1});
+        apis.push(1);
         this.router.navigate(apis);
     }
     onChangeApi(event:Event):void {

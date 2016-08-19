@@ -3,11 +3,12 @@ import {Component} from '@angular/core';
 import {ApiDocService} from '../../services/apidoc.service';
 import {ApiDefinition} from '../../model/api-definition';
 import {OperationObject} from '../../model/api-operation';
-import {RouteParams,Router} from '@angular/router-deprecated';
 import {LeftMenu} from '../left-menu/left-menu';
 import {PathsObject, DefinitionsObject} from '../../model/apidoc';
 import {TypeModal} from '../materialize/modals/type.modal';
 import {ChartModal} from '../materialize/modals/chart-modal';
+import {Router, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs";
 
 @Component({
     selector:'doc-list',
@@ -19,20 +20,33 @@ export class ApiDocList {
     private definition:DefinitionsObject;
     private pathId:number;
     private apiDoc:ApiDefinition;
-    constructor(private apiDocService:ApiDocService, private router:Router,private routeParams:RouteParams) {
+
+    private sub: Subscription;
+
+    constructor(private apiDocService:ApiDocService, private router:Router, private route: ActivatedRoute) {}
+
+    ngOnInit() {
         this.apiPath = new PathsObject();
         this.definition = new DefinitionsObject();
         this.apiDoc = new ApiDefinition();
 
-        this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => {
-            this.apiDoc = apiDoc;
-            this.pathId = parseInt(routeParams.get('path'));
-            this.apiPath = this.apiDocService.apiDoc.paths[this.pathId-1];
-            if(!this.apiPath) {
-                this.router.navigate(['ApiDocList', {path: 1}]);
-            }
+        this.sub = this.route.params.subscribe(params => {
+            this.pathId = +params['path'];
+
+            this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => {
+                this.apiDoc = apiDoc;
+                this.apiPath = this.apiDocService.apiDoc.paths[this.pathId-1];
+                if(!this.apiPath) {
+                    this.router.navigate(['apis', 1]);
+                }
+            });
         });
     }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+
     hasStats(operation:OperationObject):boolean {
         if(operation && localStorage.getItem(operation.slug) !== null) {
             let requestTimes:{date:Date,time:number}[] = JSON.parse(localStorage.getItem(operation.slug));

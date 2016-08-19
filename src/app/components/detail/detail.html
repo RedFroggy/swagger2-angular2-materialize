@@ -4,7 +4,7 @@
             <span aria-hidden="true"></span> <i class="material-icons left">arrow_back</i> Back
         </a>
     <div class="row">
-        <form class="form" [ngFormModel]="apiDetailForm">
+        <form class="form" #apiDetailForm="ngForm">
             <div>
                 <div class="section">
                     <h5>General information</h5>
@@ -31,7 +31,11 @@
                 </div>
                 <div class="section">
                     <span class="right">
-                        <button  (click)="bodyModal.tryApi($event)" class="text-black btn waves-effect waves-light"
+
+
+
+
+                        <button type="submit" class="text-black btn waves-effect waves-light" (click)="bodyModal.tryApi($event)"
                              [ngClass]="operation.getMethodClass()" [disabled]="!apiDetailForm.valid">Send <i class="material-icons right">send</i></button>
                     </span>
 
@@ -52,7 +56,7 @@
                                 <td>{{parameter.name}}</td>
                                 <td *ngIf="!parameter.isBodyParam()">
                                     <div class="input-field" *ngIf="!parameter.isTypeEnum() && !parameter.isTypeFile()">
-                                        <input [attr.id]="parameter.name" [ngFormControl]="parameter.control" type="text" [(ngModel)]="parameter.value.selected"/>
+                                        <input [attr.id]="parameter.name"  type="text" [(ngModel)]="parameter.value.selected" name="nonBodyParam"/>
                                         <label [attr.for]="parameter.name">{{parameter.name}}</label>
                                     </div>
                                     <!--<div *ngIf="parameter.isTypeDate()">
@@ -68,7 +72,13 @@
                                     </div>
                                 </td>
                                 <td *ngIf="parameter.isBodyParam()">
-                                    <textarea [attr.id]="parameter.name" class="materialize-textarea" [ngFormControl]="parameter.control" placeholder="{{parameter.name}}" [(ngModel)]="operation.dataJson" required rows="10"></textarea><br/>
+                                    <textarea [attr.id]="parameter.name" class="materialize-textarea" placeholder="{{parameter.name}}" [(ngModel)]="operation.dataJson" name="bodyParam" rows="10"></textarea><br/>
+
+
+
+
+
+
                                     <button type="button" (click)="generate($event,parameter)" class="text-black btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" ><i class="material-icons left">settings</i> Generate</button>
                                 </td>
                                 <td>{{parameter.description}}</td>

@@ -22,9 +22,10 @@ export class BodyModal extends MaterializeModal {
         this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
     }
     tryApi(event:Event):void {
+        //
         event.preventDefault();
         this.apiResult.date = new Date();
-
+        //
         this.apiDocService.sendRequest(this.operation).subscribe((apiResult:ApiResult) => {
             this.apiResult = apiResult;
             this.beautifyResponse(event);
