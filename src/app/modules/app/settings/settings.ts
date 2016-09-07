@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {SimpleMaterializeSelect} from '../materialize/select/simple-materialize-select';
-import {ApiDocService} from '../../services/apidoc.service';
-import {ApiDefinition} from '../../model/api-definition';
-import * as Config from '../../utils/env.config';
+import {SimpleMaterializeSelect} from '../../materialize/select/simple-materialize-select';
+import {ApiDocService} from '../../../services/apidoc.service';
+import {ApiDefinition} from '../../../model/api-definition';
+import * as Config from '../../../utils/env.config';
 
 @Component({
     selector:'settings',

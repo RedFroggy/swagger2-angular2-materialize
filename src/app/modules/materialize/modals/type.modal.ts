@@ -7,7 +7,6 @@ import {MaterializeModal} from './materialize-modal';
 
 @Component({
     selector:'type-modal',
-    pipes:[ValuesPipe],
     template:require('./type-modal.html')
 })
 export class TypeModal extends MaterializeModal {

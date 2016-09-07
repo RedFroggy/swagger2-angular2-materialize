@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {ApiDocService} from '../../services/apidoc.service';
-import {ApiDefinition} from '../../model/api-definition';
+import {ApiDocService} from '../../../services/apidoc.service';
+import {ApiDefinition} from '../../../model/api-definition';
 
 @Component({
     selector:'home',

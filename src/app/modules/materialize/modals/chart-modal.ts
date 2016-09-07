@@ -10,7 +10,6 @@ import * as Config from '../../../utils/env.config';
 @Component({
     selector:'chart-modal',
     template:require('./chart-modal.html'),
-    directives:[MultipleMaterializeSelect]
 })
 export class ChartModal extends MaterializeModal {
     @ViewChild('operationSelect') operationSelect:MultipleMaterializeSelect;

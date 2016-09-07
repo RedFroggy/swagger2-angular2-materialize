@@ -1,7 +1,8 @@
 import {Routes, RouterModule} from '@angular/router';
-import {ApiDocList} from "../list/list";
-import {ApiDocDetail} from "../detail/detail";
+import {ApiDocList} from "./list/list";
+import {ApiDocDetail} from "./detail/detail";
 import {Main} from "./main";
+import {ModuleWithProviders} from "@angular/core";
 
 const mainRoutes: Routes = [
     {   path: 'apis',
@@ -13,4 +14,4 @@ const mainRoutes: Routes = [
     }
 ]
 
-export const mainRouting = RouterModule.forChild(mainRoutes);
+export const mainRouting: ModuleWithProviders = RouterModule.forChild(mainRoutes);

@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
-import {ApiDocService} from '../../services/apidoc.service';
-import {ApiDefinition} from '../../model/api-definition';
-import {PathsObject} from '../../model/apidoc';
-import {ValuesPipe,CountPipe,TagFilterPipe,SearchFilterPipe} from '../../pipes/pipes';
-import {MaterializeCollapsible} from '../../directives/materialize-collapsible';
-import {MaterializeCollection} from '../../directives/materialize-collection';
+import {ApiDocService} from '../../../services/apidoc.service';
+import {ApiDefinition} from '../../../model/api-definition';
+import {PathsObject} from '../../../model/apidoc';
+import {ValuesPipe,CountPipe,TagFilterPipe,SearchFilterPipe} from '../../../pipes/pipes';
+import {MaterializeCollapsible} from '../../../directives/materialize-collapsible';
+import {MaterializeCollection} from '../../../directives/materialize-collection';
 import {Router} from "@angular/router";
 
 
@@ -32,6 +32,6 @@ export class LeftMenu {
             }
         });
         // console.log(`calculated index is: ${index}`)
-        this.router.navigate(['apis',{path:index+1}]);
+        this.router.navigate(['apis', index+1]);
     }
 }

@@ -112,7 +112,7 @@ var config = {
                     loaders: ['style-loader', 'css-loader']
                 },
                 //Extract fonts
-                { test: /\.(woff|woff2)($|\?)/,  loader: "url-loader?limit=10000&mimetype=application/font-woff" },
+                { test: /\.(woff|woff2)($|\?)/,  loader: "url-loader?limit=10000&mimetype=app/font-woff" },
                 { test: /\.ttf($|\?)/,    loader: "file-loader" },
                 { test: /\.eot($|\?)/,    loader: "file-loader" },
                 { test: /\.svg($|\?)/,    loader: "file-loader" }

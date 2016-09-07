@@ -1,8 +1,8 @@
 import {Component,Input,Output,EventEmitter} from '@angular/core';
-import {ApiDefinition} from '../../model/api-definition';
-import {ResponseObject} from '../../model/apidoc';
-import {ApiDocService} from '../../services/apidoc.service';
-import {ParameterObject} from '../../model/api-parameter';
+import {ApiDefinition} from '../../../model/api-definition';
+import {ResponseObject} from '../../../model/apidoc';
+import {ApiDocService} from '../../../services/apidoc.service';
+import {ParameterObject} from '../../../model/api-parameter';
 
 @Component({
     selector:'data-type-link',

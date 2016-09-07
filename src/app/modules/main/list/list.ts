@@ -1,19 +1,19 @@
 
 import {Component} from '@angular/core';
-import {ApiDocService} from '../../services/apidoc.service';
-import {ApiDefinition} from '../../model/api-definition';
-import {OperationObject} from '../../model/api-operation';
+import {ApiDocService} from '../../../services/apidoc.service';
+import {ApiDefinition} from '../../../model/api-definition';
+import {OperationObject} from '../../../model/api-operation';
 import {LeftMenu} from '../left-menu/left-menu';
-import {PathsObject, DefinitionsObject} from '../../model/apidoc';
-import {TypeModal} from '../materialize/modals/type.modal';
-import {ChartModal} from '../materialize/modals/chart-modal';
+import {PathsObject, DefinitionsObject} from '../../../model/apidoc';
+import {TypeModal} from '../../materialize/modals/type.modal';
+import {ChartModal} from '../../materialize/modals/chart-modal';
 import {Router, ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
 
 @Component({
     selector:'doc-list',
     template:require('./list.html'),
-    directives:[LeftMenu,TypeModal,ChartModal]
+    // directives:[LeftMenu,TypeModal,ChartModal]
 })
 export class ApiDocList {
     private apiPath:PathsObject;
@@ -56,7 +56,7 @@ export class ApiDocList {
     }
     goToDetailPage(event:Event,index:number):void {
         event.preventDefault();
-        this.router.navigate(['ApiDocDetail',{path:this.pathId,operation:index+1}]);
+        this.router.navigate(['apis', this.pathId, 'detail', index+1]);
     }
 }
 
