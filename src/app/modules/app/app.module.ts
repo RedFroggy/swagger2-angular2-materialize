@@ -11,9 +11,10 @@ import {SharedModule} from "../shared.module";
 import {CommonModule, LocationStrategy, HashLocationStrategy} from "@angular/common";
 import {MaterializeModule} from "../materialize/materialize.module";
 import {FormsModule} from "@angular/forms";
+import {Header} from "./header/header";
 
 @NgModule({
-    declarations: [AppComponent, Home, Settings],
+    declarations: [AppComponent, Home, Settings, Header],
     imports:      [BrowserModule, CommonModule, HttpModule, FormsModule, routing, MaterializeModule, MainModule],
     bootstrap:    [AppComponent],
     providers:    [ApiDocService, {provide: LocationStrategy, useClass: HashLocationStrategy}]

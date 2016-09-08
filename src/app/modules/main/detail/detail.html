@@ -73,12 +73,6 @@
                                 </td>
                                 <td *ngIf="parameter.isBodyParam()">
                                     <textarea [attr.id]="parameter.name" class="materialize-textarea" placeholder="{{parameter.name}}" [(ngModel)]="operation.dataJson" name="bodyParam" rows="10"></textarea><br/>
-
-
-
-
-
-
                                     <button type="button" (click)="generate($event,parameter)" class="text-black btn waves-effect waves-light" [ngClass]="operation.getMethodClass()" ><i class="material-icons left">settings</i> Generate</button>
                                 </td>
                                 <td>{{parameter.description}}</td>

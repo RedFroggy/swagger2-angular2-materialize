@@ -35,10 +35,9 @@ export class TagFilterPipe implements PipeTransform {
 
 @Pipe({ name: 'searchFiler',  pure: false })
 export class SearchFilterPipe implements PipeTransform {
-    transform(value: Array<PathsObject>, args: string[] = null): any {
-        let filter:any = args[0];
+    transform(value: Array<PathsObject>, args: any): any {
+        let filter:any = args;
         if (filter && _.isArray(value)) {
-
             let allUndefined:boolean = true;
             Object.keys(filter).forEach((key:string) => {
                 if(filter[key]) {

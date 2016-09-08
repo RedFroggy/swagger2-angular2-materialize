@@ -9,9 +9,11 @@ import {MaterializeModule} from "../materialize/materialize.module";
 import {FormsModule} from "@angular/forms";
 import {DataTypeLink} from "./data-type/data-type-link";
 import {LeftMenu} from "./left-menu/left-menu";
+import {SearchFilterPipe, TagFilterPipe, CountPipe} from "../../pipes/pipes";
 
 @NgModule({
-    declarations: [Main, ApiDocDetail, ApiDocList, DataTypeLink, LeftMenu],
+    declarations: [ Main, ApiDocDetail, ApiDocList, DataTypeLink, LeftMenu,
+                    CountPipe, TagFilterPipe, SearchFilterPipe ],
     imports:      [CommonModule, mainRouting, MaterializeModule, FormsModule, SharedModule],
 })
 export class MainModule {}

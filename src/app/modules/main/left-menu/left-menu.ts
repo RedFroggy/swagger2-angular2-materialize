@@ -3,8 +3,8 @@ import {ApiDocService} from '../../../services/apidoc.service';
 import {ApiDefinition} from '../../../model/api-definition';
 import {PathsObject} from '../../../model/apidoc';
 import {ValuesPipe,CountPipe,TagFilterPipe,SearchFilterPipe} from '../../../pipes/pipes';
-import {MaterializeCollapsible} from '../../../directives/materialize-collapsible';
-import {MaterializeCollection} from '../../../directives/materialize-collection';
+import {MaterializeCollapsible} from '../../materialize/directives/materialize-collapsible';
+import {MaterializeCollection} from '../../materialize/directives/materialize-collection';
 import {Router} from "@angular/router";
 
 

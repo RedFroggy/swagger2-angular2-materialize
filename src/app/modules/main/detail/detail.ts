@@ -40,8 +40,8 @@ export class ApiDocDetail {
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe(params => {
-            this.pathId = +params['path'];
-            this.operationId = +params['operation'];
+            this.pathId = parseInt(params['path']);
+            this.operationId = parseInt(params['operation']);
 
             this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => {
                 this.apiDoc = apiDoc;
@@ -77,11 +77,13 @@ export class ApiDocDetail {
 
         if(this.operation.isConsumeJson()) {
             this.operation.dataJson = JSON.stringify(this.operation.originalData, null, 4);
+
         } else if(this.operation.isConsumeXml()) {
             this.operation.dataJson = vkbeautify.xml(x2js.js2xml(this.operation.originalData));
         }
         setTimeout(() => {
             $('textarea').trigger('autoresize');
         },0);
+
     }
 }

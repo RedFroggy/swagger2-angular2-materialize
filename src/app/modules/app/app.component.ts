@@ -10,7 +10,6 @@ import {Routes, RouterModule} from '@angular/router'
 @Component({
     selector:'swagger-app',
     templateUrl: './app/modules/app/app.html',
-    directives: [Header]
 })
 
 export class AppComponent {
