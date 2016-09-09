@@ -11,23 +11,28 @@ Error.stackTraceLimit = Infinity;
 
 
 // Prefer CoreJS over the polyfills above
-require('core-js');
+require('core-js/es6');
+require('core-js/es7/reflect');
 
 require('zone.js/dist/zone.js');
 require('zone.js/dist/long-stack-trace-zone.js');
+require('zone.js/dist/async-test.js');
+require('zone.js/dist/fake-async-test.js');
+require('zone.js/dist/sync-test.js');
+require('zone.js/dist/proxy.js');
 require('zone.js/dist/jasmine-patch.js');
 
 // RxJS
 require('rxjs/Rx');
 
-var testing = require('angular2/testing');
-var browser = require('angular2/platform/testing/browser');
+var testing = require('@angular/core/testing');
+var browser = require('@angular/platform-browser-dynamic/testing');
 
-testing.setBaseTestProviders(
-    browser.TEST_BROWSER_PLATFORM_PROVIDERS,
-    browser.TEST_BROWSER_APPLICATION_PROVIDERS);
+testing.TestBed.initTestEnvironment(
+    browser.BrowserDynamicTestingModule,
+    browser.platformBrowserDynamicTesting()
+);
 
-Object.assign(global, testing);
 /*
  Ok, this is kinda crazy. We can use the the context method on
  require that webpack created in order to tell webpack

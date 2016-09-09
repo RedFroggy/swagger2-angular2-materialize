@@ -1,7 +1,6 @@
 import {Component,ElementRef} from '@angular/core';
 import {ApiDefinition} from '../../../model/api-definition';
 import {DefinitionsObject} from '../../../model/apidoc';
-import {ValuesPipe} from '../../../pipes/pipes';
 import {ApiDocService} from '../../../services/apidoc.service';
 import {MaterializeModal} from './materialize-modal';
 

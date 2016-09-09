@@ -7,7 +7,6 @@ import {Settings} from "./settings/settings";
 import {ApiDocService} from "../../services/apidoc.service";
 import {HttpModule} from "@angular/http";
 import {MainModule} from "../main/main.module";
-import {SharedModule} from "../shared.module";
 import {CommonModule, LocationStrategy, HashLocationStrategy} from "@angular/common";
 import {MaterializeModule} from "../materialize/materialize.module";
 import {FormsModule} from "@angular/forms";

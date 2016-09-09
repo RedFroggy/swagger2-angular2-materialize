@@ -1,30 +1,16 @@
 import {Component} from '@angular/core';
-import {LeftMenu} from '../left-menu/left-menu';
 import {ApiDocService} from '../../../services/apidoc.service';
 import {PathsObject} from '../../../model/apidoc';
 import {ApiDefinition} from '../../../model/api-definition';
 import {ApiModelUtils} from '../../../model/api-utils';
 import {OperationObject} from '../../../model/api-operation';
 import {ParameterObject} from '../../../model/api-parameter';
-import {TypeModal} from '../../materialize/modals/type.modal';
-import {BodyModal} from '../../materialize/modals/body-modal';
-import {SimpleMaterializeSelect} from '../../materialize/select/simple-materialize-select';
-import {MultipleMaterializeSelect} from '../../materialize/select/multiple-materialize-select';
-import {DataTypeLink} from '../data-type/data-type-link';
-import {MaterializeInputFile} from '../../materialize/input-file/materialize-input-file';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 
 @Component({
     selector:'doc-detail',
     template:require('./detail.html'),
-    // directives:[
-    //     BodyModal,
-    //     SimpleMaterializeSelect,
-    //     MultipleMaterializeSelect,
-    //     DataTypeLink,
-    //     MaterializeInputFile,
-    // ]
 })
 export class ApiDocDetail {
     operation:OperationObject;
