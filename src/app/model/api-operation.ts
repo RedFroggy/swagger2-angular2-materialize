@@ -9,7 +9,7 @@ const HTTP_METHOD_PUT:string = 'PUT';
 const HTTP_METHOD_GET:string = 'GET';
 const HTTP_METHOD_DELETE:string = 'DELETE';
 
-const APPLICATION_FORM_URL_ENCODED:string = 'application/x-www-form-urlencoded';
+const APPLICATION_FORM_URL_ENCODED:string = 'app/x-www-form-urlencoded';
 const MULTIPART_FORM_DATA:string = 'multipart/form-data';
 const APPLICATION_JSON:string = 'application/json';
 const APPLICATION_XML:string = 'application/xml';

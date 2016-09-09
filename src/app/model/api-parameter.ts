@@ -1,6 +1,5 @@
 import {ItemsObject,ReferenceObject} from './apidoc';
 import {ApiModelUtils} from './api-utils';
-import {Control,Validators} from '@angular/common';
 
 const TYPE_FILE:string = 'file';
 const TYPE_DATE:string = 'date';
@@ -23,11 +22,9 @@ export class ParameterObject {
     collectionFormat:string;
     items:ItemsObject;
     type:string;
-    control:Control;
     constructor(_paramObj?:any) {
         this.items = new ItemsObject();
         this.value = {selected:''};
-        this.control = new Control();
         if(_paramObj) {
             Object.assign(this,_paramObj);
             if(_paramObj.schema) {
@@ -36,7 +33,6 @@ export class ParameterObject {
             if(_paramObj.items) {
                 this.items = new ItemsObject(_paramObj.items);
             }
-            this.createControl();
         }
     }
     isPathParam():boolean {
@@ -75,10 +71,5 @@ export class ParameterObject {
     }
     getEnumMap():{value:string}[] {
         return this.items.enum.map((enumVal:string) => {return {value:enumVal,label:enumVal,selected:this.items && this.items.default === enumVal} ;});
-    }
-    createControl():void {
-        if(this.required) {
-            this.control = new Control(this.name,Validators.required);
-        }
     }
 }

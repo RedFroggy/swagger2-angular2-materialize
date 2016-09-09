@@ -121,6 +121,12 @@ export class ApiDocService {
         }
         reqOptions.headers = headers;
         console.log('Calling api with options',reqOptions);
+
+        // Angular 2 RC5 fix via setting body to '' (see https://github.com/angular/angular/issues/10612)
+        reqOptions.body === null || typeof reqOptions.body === 'undefined'
+            ? reqOptions.body = ''
+            : reqOptions.body = reqOptions.body
+
         return this.http.request(new Request(reqOptions)).map((res:Response) => {
             apiResult.operation = operation;
             apiResult.endDate = new Date();

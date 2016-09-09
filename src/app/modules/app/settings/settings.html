@@ -1,0 +1,32 @@
+<div class="row center-align">
+    <form class="col s12">
+        <div class="row">
+            <div class="input-field col s3"></div>
+            <div class="input-field col s6">
+                <input id="apiUrl" [(ngModel)]="apiUrl" type="text" class="validate" name="apiUrl">
+                <label for="apiUrl">Swagger 2 Api Url</label>
+            </div>
+            <div class="input-field col s3"></div>
+        </div>
+        <div class="row">
+            <strong class="red-text text-darken-2" [hidden]="apiDocService.apiValid">Can't read swagger JSON from {{apiUrl}}</strong>
+        </div>
+        <div class="row">
+            <div class="input-field col s3"></div>
+            <div class="input-field col s6">
+                <materialize-select-simple #chartTypeSelect name="chartType" label="Chart Type"
+                                           [options]="chartOptions"
+                                           [selected]="selectedType"
+                                           [(model)]="chartType"></materialize-select-simple>
+            </div>
+            <div class="input-field col s3"></div>
+        </div>
+        <div class="row">
+            <div class="input-field">
+                <button class="btn waves-effect waves-light red darken-2" (click)="validSettings()" type="button" name="action">Send
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
