@@ -6,7 +6,7 @@ import {Component,Input,Output,EventEmitter} from '@angular/core';
 })
 export class MaterializeInputFile {
     @Input() model:any;
-    @Output() changeEmitter:EventEmitter<File> = new EventEmitter();
+    @Output() changeEmitter:EventEmitter<File> = new EventEmitter<File>();
     onChange(event:any):void {
         let reader:FileReader = new FileReader();
         reader.onloadend = (loadEvent:any) => {
