@@ -37,7 +37,7 @@ Tested on the following browsers:
 - Internet Explorer 11
 
 # Stack
-- [Angular 2 RC 1](https://angular.io)
+- [Angular 2 RC 6](https://angular.io)
 - [MaterializeCSS](http://materializecss.com)
 - [ChartJS](http://www.chartjs.org/)
 - Webpack
@@ -92,3 +92,10 @@ To build the project:
 ```bash
 $ npm run build
 ```
+
+# Contributing
+* Unit tests need to be fixed with Angular 2 RC6 version. You're help is welcome.
+
+# Contributors
+
+* Maximilian Hengelein ([@mhengelein](https://github.com/mhengelein))
