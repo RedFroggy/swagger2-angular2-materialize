@@ -10,7 +10,7 @@ import {ParameterObject} from '../../../model/api-parameter';
 })
 export class DataTypeLink {
     @Input() data:ResponseObject|ParameterObject;
-    @Output('select-type') selectType:EventEmitter<any> = new EventEmitter();
+    @Output('select-type') selectType:EventEmitter<string> = new EventEmitter<string>();
     private apiDoc:ApiDefinition;
     constructor(apiDocService:ApiDocService) {
         this.apiDoc = new ApiDefinition();

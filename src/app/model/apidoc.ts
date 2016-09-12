@@ -1,4 +1,3 @@
-import {Control,Validators} from '@angular/common';
 import {ApiModelUtils} from './api-utils';
 import {IJsonSchema} from './api-json-schema';
 import {OperationObject} from './api-operation';
@@ -51,6 +50,7 @@ export class LicenseObject {
 export class PathsObject {
     name:string;
     path: PathItemObject;
+    selected: boolean;
     constructor(name?:string,_pathItem?:any) {
         this.name = name;
         this.path = new PathItemObject();
