@@ -37,7 +37,7 @@ Tested on the following browsers:
 - Internet Explorer 11
 
 # Stack
-- [Angular 2 RC 6](https://angular.io)
+- [Angular 2.0.0](https://angular.io)
 - [MaterializeCSS](http://materializecss.com)
 - [ChartJS](http://www.chartjs.org/)
 - Webpack
@@ -94,7 +94,7 @@ $ npm run build
 ```
 
 # Contributing
-* Unit tests need to be fixed with Angular 2 RC6 version. You're help is welcome.
+* Unit tests need to be fixed with Angular 2.0.0 version. You're help is welcome.
 
 # Contributors
 

@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 
 @Component({
     selector:'swagger-app',
-    templateUrl: './app/modules/app/app.html',
+    template: require('./app.html'),
 })
 
 export class AppComponent {
