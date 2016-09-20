@@ -94,7 +94,7 @@ $ npm run build
 ```
 
 # Contributing
-* Unit tests need to be fixed with Angular 2.0.0 version. You're help is welcome.
+* Unit tests need to be fixed with Angular 2.0.0 version. Your help is welcome.
 
 # Contributors
 
