@@ -80,10 +80,10 @@ export class ApiDocService {
 
         if(operation.isWriteMethod()) {
             if(operation.isConsumeJson()) {
-                reqOptions.body = JSON.stringify(operation.originalData);
+                reqOptions.body = operation.dataJson;
             }
             if(operation.isConsumeXml()) {
-                reqOptions.body = x2js.js2xml(operation.originalData);
+                reqOptions.body = operation.dataJson;
             }
             if(operation.isConsumeFormUrlEncoded()) {
                 let formBody:string = '';
