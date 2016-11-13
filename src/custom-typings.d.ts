@@ -1,8 +1,9 @@
 interface Window {
     vkbeautify:VkBeautify;
     x2js:X2JS;
-    Chart:Chart;
+    Chart:any;
     moment:any;
+    hljs:any;
 }
 
 interface VkBeautify {
@@ -20,3 +21,4 @@ declare var x2js:X2JS;
 declare module 'vkbeautify' {
     export = vkbeautify;
 }
+

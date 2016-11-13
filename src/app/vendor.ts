@@ -5,7 +5,7 @@ require('zone.js/dist/zone');
 
 require('zone.js/dist/long-stack-trace-zone');
 
-var $ = jQuery = require('jquery/dist/jquery');
+let $ = require('jquery/dist/jquery');
 window['jQuery'] = $;
 
 // Angular 2
@@ -41,14 +41,14 @@ window.moment = require('moment/moment.js');
 window.Chart = require('chart.js/Chart.js');
 
 // x2js
-var X2JS = require('x2js/x2js.js');
+let X2JS = require('x2js/x2js.js');
 window.x2js = new X2JS();
 
 // Highlight
 import 'highlight.js/styles/default.css';
-var hljs = require('highlight.js/lib/highlight');
+let hljs = require('highlight.js/lib/highlight');
 require('highlight.js/lib/index');
-//window.hljs = hljs;
+window.hljs = hljs;
 
 window.vkbeautify = require('vkbeautify');
 

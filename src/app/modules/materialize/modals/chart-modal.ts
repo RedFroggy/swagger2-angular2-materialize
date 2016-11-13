@@ -48,7 +48,7 @@ export class ChartModal extends MaterializeModal {
         }
     }
     getRandomColor() {
-        var r = () => { return Math.floor(Math.random()*256);};
+        let r = () => { return Math.floor(Math.random()*256);};
         return 'rgba(' + r() + ',' + r() + ',' + r() + ',0.5)';
     }
     getContext():any {
@@ -58,13 +58,15 @@ export class ChartModal extends MaterializeModal {
     showGraph(operation:OperationObject):void {
         this.currentOperation = operation;
         this.resetData();
-        this.openModal(null,{ready:()=> {
-            setTimeout(() => this.operationSelect.refresh(),0);
-            this.zone.run(()=> {
-                this.listOperations();
-                this.createChart(this.operations);
-            });
-        }});
+        this.openModal(null,{
+            ready:() => {
+                setTimeout(() => this.operationSelect.refresh(),0);
+                this.zone.run(()=> {
+                    this.listOperations();
+                    this.createChart(this.operations);
+                });
+            }
+        });
     }
     getDataSetByType():any {
         let chartType:string = this.getChartType();
