@@ -78,6 +78,7 @@ var config = {
             }
         },
 	postcss: [
+	    precss(),
 	    autoprefixer({browsers: ['last 2 versions', 'Firefox ESR']})
 	],
         module: {
