@@ -94,5 +94,5 @@
     "test": "npm run test:unit --environment=test",
     "test:continuous": "npm run test:unit --environment=test -- --auto-watch --no-single-run",
     "test:unit": "karma start"
-  },
+  }
 }
