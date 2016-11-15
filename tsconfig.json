@@ -9,14 +9,14 @@
     "sourceRoot": "src"
   },
   "exclude": [
-    "node_modules",
-    "./node_modules/rxjs/**/*.d.ts"
+    "node_modules"
   ],
   "filesGlob": [
     "./src/**/*.ts",
     "./test/**/*.ts",
     "!./node_modules/**/*.ts",
-    "src/custom-typings.d.ts"
+    "src/custom-typings.d.ts",
+    "./node_modules/@types/**/*.d.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "resolveGlobs": true,

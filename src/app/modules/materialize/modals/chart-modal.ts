@@ -7,8 +7,6 @@ import {ApiDocService} from '../../../services/apidoc.service';
 import {MultipleMaterializeSelect} from '../select/multiple-materialize-select';
 import * as Config from '../../../utils/env.config';
 
-import * as _ from 'lodash';
-
 @Component({
     selector:'chart-modal',
     template:require('./chart-modal.html'),

@@ -19,7 +19,7 @@ module.exports = function(config) {
         // list of files to exclude
         exclude: [ ],
 
-        reporters: ['junit','html', 'coverage'],
+        reporters: ['junit','html'],
 
         junitReporter: {
             outputDir: 'reports/junit',
@@ -50,30 +50,24 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'spec-bundle.js': ['coverage', 'webpack', 'sourcemap']
+            'spec-bundle.js': ['webpack', 'sourcemap']
         },
 
         // Webpack Config at ./webpack.test.config.js
         webpack: testWebpackConfig,
 
         coverageReporter: {
-            dir : 'coverage/',
-            reporters: [
-                { type: 'text-summary', subdir: 'report-text' },
-                { type: 'json', subdir: 'report-json' },
-                { type: 'html', subdir: 'report-html' },
-                { type: 'cobertura', subdir: 'report-cobertura' },
-                { type: 'lcovonly', subdir: 'report-lcov', file: 'coverage.lcov' }
-            ]
+            type: 'in-memory'
         },
+        remapCoverageReporter: {
+            'text-summary': null,
+            json: './coverage/coverage.json',
+            html: './coverage/html'
+        },
+        webpackMiddleware: { stats: 'errors-only'},
 
         // Webpack please don't spam the console when running in karma!
         webpackServer: { noInfo: true },
-
-        // test results reporter to use
-        // possible values: 'dots', 'progress'
-        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        //reporters: [ 'mocha', 'coverage' ],
 
         // web server port
         port: 9876,

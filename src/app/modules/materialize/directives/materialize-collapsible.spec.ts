@@ -1,33 +1,27 @@
+/// <reference path="../../../../../node_modules/@types/jasmine/index.d.ts" />
+
 import {MaterializeCollapsible} from './materialize-collapsible';
-import {beforeEachProviders,injectAsync} from '@angular/core/testing';
-import {TestComponentBuilder,ComponentFixture} from '@angular/compiler/testing';
-import {Component,ViewChildren,QueryList} from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+let comp:MaterializeCollapsible;
+
 
 describe('Directive: MaterializeCollapsible', () => {
     let fixture:ComponentFixture<any>;
 
-    beforeEachProviders(() => [TestComponentBuilder]);
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [ MaterializeCollapsible ], // declare the test component
+        });
 
-    beforeEach(injectAsync([TestComponentBuilder], tcb => {
-        return tcb
-            .createAsync(Container)
-            .then((f:ComponentFixture<any>) => {
-                f.detectChanges();
-                fixture = f;
-            });
-    }));
+        let fixture: ComponentFixture<MaterializeCollapsible> = TestBed.createComponent(MaterializeCollapsible);
+
+        comp = fixture.componentInstance; // MaterializeCollapsible test instance
+
+    });
 
     it('Initialization should be ok', () => {
         let directive:MaterializeCollapsible = fixture.componentInstance.children.first;
         expect(directive).toBeDefined();
     });
 });
-
-@Component({
-    selector: 'container',
-    template: `<ul materialize-collapsible></ul>`,
-    directives: [MaterializeCollapsible]
-})
-export class Container {
-    @ViewChildren(MaterializeCollapsible) children:QueryList<MaterializeCollapsible>;
-}
