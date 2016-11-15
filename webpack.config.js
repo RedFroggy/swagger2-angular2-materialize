@@ -77,6 +77,10 @@ var config = {
                 "jQuery":'jquery'
             }
         },
+	postcss: [
+	    precss(),
+	    autoprefixer({browsers: ['last 2 versions', 'Firefox ESR']})
+	],
         module: {
             preLoaders: [
                 // Generate source map for debugging
@@ -109,7 +113,7 @@ var config = {
                 // Extract plain-ol' vanilla CSS
                 {
                     test: /\.css$/,
-                    loaders: ['style-loader', 'css-loader']
+                    loader: "style-loader!css-loader!postcss-loader"
                 },
                 //Extract fonts
                 { test: /\.(woff|woff2)($|\?)/,  loader: "url-loader?limit=10000&mimetype=application/font-woff" },
