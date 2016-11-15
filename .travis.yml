@@ -1,10 +1,14 @@
 language: node_js
 node_js:
-    - "0.10"
-script: npm run test
+  - "4"
+  - "5"
+  - "6"
+  - "node"
+script: npm test
 before_install:
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
+    - npm install -g typings
     - npm install -g karma
     - npm install -g typescript
 before_script:
