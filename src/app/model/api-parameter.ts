@@ -1,6 +1,8 @@
 import {ItemsObject,ReferenceObject} from './apidoc';
 import {ApiModelUtils} from './api-utils';
 
+import * as _ from 'lodash';
+
 const TYPE_FILE:string = 'file';
 const TYPE_DATE:string = 'date';
 const PATH_PARAM:string = 'path';

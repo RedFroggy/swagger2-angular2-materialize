@@ -14,14 +14,11 @@ export abstract class MaterializeModal implements AfterViewInit {
         this.modalRef = $(this.el.nativeElement).find('div.modal');
         this.modalRef.modal();
     }
-    openModal(event?:Event,options?:any):void {
+    openModal(event?:Event):void {
         if(event) {
             event.preventDefault();
         }
-        if(!options) {
-            options = 'open';
-        }
-        this.modalRef.modal(options);
+        this.modalRef.modal('open');
     }
     closeModal(event?:Event):void {
         if(event) {

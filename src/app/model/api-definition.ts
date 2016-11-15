@@ -8,6 +8,7 @@ import {ApiModelUtils} from './api-utils';
 import {OperationObject} from './api-operation';
 import {IJsonSchema} from './api-json-schema';
 import {ParametersDefinitionsObject,ParameterObject} from './api-parameter';
+import * as _ from 'lodash';
 
 export class ApiDefinition {
     swagger: string;
@@ -126,7 +127,6 @@ export class ApiDefinition {
     }
     getBodyDescription(entityName:string,isXml:boolean):any {
         let definition:DefinitionsObject = this.getDefinitionByEntity(entityName);
-        console.log(definition,entityName);
         let body:any = {};
         if(definition) {
             Object.keys(definition.schema.properties).forEach((name:string) => {

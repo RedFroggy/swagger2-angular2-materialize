@@ -2,7 +2,7 @@ import {PipeTransform,Pipe} from '@angular/core';
 import {PathsObject} from '../model/apidoc';
 import {OperationObject} from '../model/api-operation';
 
-///<reference path="../../../typings/browser/ambient/lodash/index.d.ts" />
+import * as _ from 'lodash';
 
 @Pipe({ name: 'values',  pure: false })
 export class ValuesPipe implements PipeTransform {

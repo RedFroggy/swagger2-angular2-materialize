@@ -53,10 +53,12 @@ Tested on the following browsers:
 		-- boot.ts: Angular2 entry point
 		-- app.component.ts: Booststrap component
 		-- app.html: Bootsrap html
-		-- directives: Angular 2 directives
+		-- modules: Angular 2 modules
+		    -- app: application components (home, header and settings page)
+		    -- main: Api List and api detail page, left menu
+		    -- materialize: MaterializeCSS components (modals, inputs, etc..)
 		-- services: Angular 2 services
 		-- model: Swagger api typescript definition
-		-- components: Main components
 		-- pipes: Angular2 @Pipe components
 		-- utils: Utility classes
     -- assets: Assets folder
@@ -99,3 +101,4 @@ $ npm run build
 # Contributors
 
 * Maximilian Hengelein ([@mhengelein](https://github.com/mhengelein))
+* Francesco Soncina ([@phra](https://github.com/phra))

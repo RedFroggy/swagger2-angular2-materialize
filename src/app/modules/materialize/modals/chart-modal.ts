@@ -4,8 +4,10 @@ import {PathsObject} from '../../../model/apidoc';
 import {OperationObject} from '../../../model/api-operation';
 import {ApiDefinition} from '../../../model/api-definition';
 import {ApiDocService} from '../../../services/apidoc.service';
-import {MultipleMaterializeSelect} from '../../materialize/select/multiple-materialize-select';
+import {MultipleMaterializeSelect} from '../select/multiple-materialize-select';
 import * as Config from '../../../utils/env.config';
+
+import * as _ from 'lodash';
 
 @Component({
     selector:'chart-modal',
@@ -33,7 +35,7 @@ export class ChartModal extends MaterializeModal {
             labels: [],
             datasets: [],
             options:{
-                animation: true,
+                animation: false,
                 responsive: true,
                 tooltipTemplate: (tooltip) => {
                     return tooltip.datasetLabel+' - '+tooltip.value+' ms';
@@ -58,14 +60,11 @@ export class ChartModal extends MaterializeModal {
     showGraph(operation:OperationObject):void {
         this.currentOperation = operation;
         this.resetData();
-        this.openModal(null,{
-            ready:() => {
-                setTimeout(() => this.operationSelect.refresh(),0);
-                this.zone.run(()=> {
-                    this.listOperations();
-                    this.createChart(this.operations);
-                });
-            }
+        this.openModal(null);
+        setTimeout(() => this.operationSelect.refresh(),0);
+        this.zone.run(()=> {
+            this.listOperations();
+            this.createChart(this.operations);
         });
     }
     getDataSetByType():any {
@@ -97,7 +96,7 @@ export class ChartModal extends MaterializeModal {
                 operation.chartColor = this.getRandomColor();
 
                 let dataSetData = this.getDataSetByType();
-                dataSetData['fillColor'] = operation.chartColor;
+                dataSetData['backgroundColor'] = operation.chartColor;
 
                 let requestTimes:{date:Date,time:number}[] = JSON.parse(localStorage.getItem(operation.slug));
                 if(requestTimes.length > max) {
@@ -120,9 +119,10 @@ export class ChartModal extends MaterializeModal {
 
             let chartType:string = this.getChartType();
             if(chartType === Config.CHART_TYPE_LINE) {
-                this.chart = new Chart(ctx).Line(this.chartData, this.chartData.options);
+                console.log(this.chartData);
+                this.chart = Chart.Line(ctx,{data:this.chartData, options:this.chartData.options});
             } else {
-                this.chart = new Chart(ctx).Bar(this.chartData, this.chartData.options);
+                this.chart = Chart.Bar(ctx, {data:this.chartData, options:this.chartData.options});
             }
         }
     }

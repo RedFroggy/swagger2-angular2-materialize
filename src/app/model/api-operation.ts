@@ -3,6 +3,8 @@ import {ExternalDocumentationObject,SecurityRequirementObject,ResponsesObject,Re
 import {ApiModelUtils} from './api-utils';
 import {ParameterObject} from './api-parameter';
 
+import * as _ from 'lodash';
+
 const HTTP_METHOD_PATCH:string = 'PATCH';
 const HTTP_METHOD_POST:string = 'POST';
 const HTTP_METHOD_PUT:string = 'PUT';
