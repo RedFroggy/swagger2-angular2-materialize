@@ -77,6 +77,10 @@ export class ApiDocService {
         } else if(operation.produce.selected) {
             headers.set(HEADER_ACCEPT, operation.produce.selected);
         }
+        
+        operation.parameters.forEach((param:ParameterObject) => {
+            if (param.isHeaderParam) headers.set(param.name, param.value.selected);
+        });
 
         if(operation.isWriteMethod()) {
             if(operation.isConsumeJson()) {

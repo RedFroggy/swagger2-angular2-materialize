@@ -7,6 +7,7 @@ const PATH_PARAM:string = 'path';
 const QUERY_PARAM:string = 'query';
 const BODY_PARAM:string = 'body';
 const FORM_PARAM:string = 'formData';
+const HEADER_PARAM:string = 'header';
 
 export class ParametersDefinitionsObject {
     [index: string]: ParameterObject;
@@ -34,6 +35,9 @@ export class ParameterObject {
                 this.items = new ItemsObject(_paramObj.items);
             }
         }
+    }
+    isHeaderParam():boolean {
+        return this.in === HEADER_PARAM;
     }
     isPathParam():boolean {
         return this.in === PATH_PARAM;
