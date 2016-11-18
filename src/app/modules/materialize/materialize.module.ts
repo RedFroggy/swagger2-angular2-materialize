@@ -1,20 +1,25 @@
-import {NgModule} from "@angular/core";
-import {MaterializeInputFile} from "./input-file/materialize-input-file";
-import {BodyModal} from "./modals/body-modal";
-import {ChartModal} from "./modals/chart-modal";
-import {TypeModal} from "./modals/type.modal";
-import {SimpleMaterializeSelect} from "./select/simple-materialize-select";
-import {MultipleMaterializeSelect} from "./select/multiple-materialize-select";
-import {SharedModule} from "../shared.module";
-import {CommonModule} from "@angular/common";
-import {MaterializeCollapsible} from "./directives/materialize-collapsible";
-import {MaterializeCollection} from "./directives/materialize-collection";
-import {MaterializeHeader, MaterializeCollapseButton} from "./directives/materialize-header";
+import {NgModule} from '@angular/core';
+import {MaterializeInputFileComponent} from './input-file/materialize-input-file';
+import {BodyModalComponent} from './modals/body-modal';
+import {ChartModalComponent} from './modals/chart-modal';
+import {TypeModalComponent} from './modals/type.modal';
+import {SimpleMaterializeSelectComponent} from './select/simple-materialize-select';
+import {MultipleMaterializeSelectComponent} from './select/multiple-materialize-select';
+import {SharedModule} from '../shared.module';
+import {CommonModule} from '@angular/common';
+import {MaterializeCollapsibleDirective} from './directives/materialize-collapsible';
+import {MaterializeCollectionDirective} from './directives/materialize-collection';
+import {MaterializeHeader, MaterializeCollapseButton} from './directives/materialize-header';
 
 @NgModule ({
     imports: [CommonModule, SharedModule],
-    declarations:   [MaterializeInputFile, BodyModal, ChartModal, TypeModal, SimpleMaterializeSelect, MultipleMaterializeSelect, MaterializeCollapsible, MaterializeCollection, MaterializeHeader, MaterializeCollapseButton],
-    exports:        [MaterializeInputFile, BodyModal, ChartModal, TypeModal, SimpleMaterializeSelect, MultipleMaterializeSelect, MaterializeCollapsible, MaterializeCollection, MaterializeHeader, MaterializeCollapseButton],
+    declarations:   [MaterializeInputFileComponent, BodyModalComponent, ChartModalComponent,
+        TypeModalComponent, SimpleMaterializeSelectComponent,
+        MultipleMaterializeSelectComponent, MaterializeCollapsibleDirective,
+        MaterializeCollectionDirective, MaterializeHeader, MaterializeCollapseButton],
+    exports:        [MaterializeInputFileComponent, BodyModalComponent, ChartModalComponent,
+        TypeModalComponent, SimpleMaterializeSelectComponent, MultipleMaterializeSelectComponent,
+        MaterializeCollapsibleDirective, MaterializeCollectionDirective, MaterializeHeader, MaterializeCollapseButton],
 })
 export class MaterializeModule {
 

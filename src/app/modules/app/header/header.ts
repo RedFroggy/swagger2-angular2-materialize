@@ -1,28 +1,28 @@
 import {Component} from '@angular/core';
 import {ApiDocService} from '../../../services/apidoc.service';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
-    selector:'header',
-    template:require('./header.html'),
+    selector: 'header',
+    template: require('./header.html'),
 })
-export class Header {
-    constructor(private router:Router,private apiDocService:ApiDocService) {}
-    goToPage($event:Event,...route):void {
+export class HeaderComponent {
+    constructor(private router: Router, private apiDocService: ApiDocService) {}
+    goToPage($event: Event, ...route: Array<any>): void {
         $event.preventDefault();
 
         route =
-            route[0] === "apis"
+            route[0] === 'apis'
             ? [...route, 1]
-            : route;
+            :  route;
 
         console.log(this.router.navigate(route));
     }
-    onChangeApi(event:Event):void {
+    onChangeApi(event: Event): void {
         event.preventDefault();
         $('#modal1').openModal();
     }
-    onCloseModal(event):void {
+    onCloseModal(event: Event): void {
         event.preventDefault();
         $('#modal1').closeModal();
     }

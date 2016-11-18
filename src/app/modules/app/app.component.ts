@@ -2,7 +2,7 @@
 import {Component} from '@angular/core';
 
 @Component({
-    selector:'swagger-app',
+    selector: 'swagger-app',
     template: require('./app.html'),
 })
 

@@ -11,15 +11,15 @@ export class InfoObject {
     contact: ContactObject;
     license: LicenseObject;
     version: string;
-    constructor(_info?:any) {
+    constructor(_info?: any) {
         this.contact = new ContactObject();
         this.license = new LicenseObject();
-        if(_info) {
-            Object.assign(this,_info);
-            if(_info.contact) {
+        if (_info) {
+            Object.assign(this, _info);
+            if (_info.contact) {
                 this.contact = new ContactObject(_info.contact);
             }
-            if(_info.license) {
+            if (_info.license) {
                 this.license = new LicenseObject(_info.license);
             }
         }
@@ -30,9 +30,9 @@ export class ContactObject {
     name: string;
     url: string;
     email: string;
-    constructor(_contact?:any) {
-        if(_contact) {
-            Object.assign(this,_contact);
+    constructor(_contact?: any) {
+        if (_contact) {
+            Object.assign(this, _contact);
         }
     }
 }
@@ -40,63 +40,63 @@ export class ContactObject {
 export class LicenseObject {
     name: string;
     url: string;
-    constructor(_license?:any) {
-        if(_license) {
-            Object.assign(this,_license);
+    constructor(_license?: any) {
+        if (_license) {
+            Object.assign(this, _license);
         }
     }
 }
 
 export class PathsObject {
-    name:string;
+    name: string;
     path: PathItemObject;
     selected: boolean;
-    constructor(name?:string,_pathItem?:any) {
+    constructor(name?: string, _pathItem?: any) {
         this.name = name;
         this.path = new PathItemObject();
-        if(_pathItem) {
-            this.path = new PathItemObject(name,_pathItem);
+        if (_pathItem) {
+            this.path = new PathItemObject(name, _pathItem);
         }
     }
 }
 
 export class PathItemObject {
     $ref: string;
-    path:string;
+    path: string;
     parameters: (ParameterObject)[];
-    operations:Array<OperationObject>;
-    constructor(path?:string,_pathItemObj?:any) {
+    operations: Array<OperationObject>;
+    constructor(path?: string, _pathItemObj?: any) {
         this.path = path;
         this.operations = [];
-        if(_pathItemObj) {
-            Object.keys(_pathItemObj).forEach((method:string) => {
-                this.operations.push(new OperationObject(path,method,_pathItemObj[method]));
+        if (_pathItemObj) {
+            Object.keys(_pathItemObj).forEach((method: string) => {
+                this.operations.push(new OperationObject(path, method, _pathItemObj[method]));
             });
         }
     }
 }
 
 export class DefinitionsObject {
-    name:string;
+    name: string;
     schema: SchemaObject;
-    constructor(name?:string,_defObj?:any) {
+    constructor(name?: string, _defObj?: any) {
         this.name = name;
         this.schema = new SchemaObject();
-        if(_defObj) {
+        if (_defObj) {
             this.schema = new SchemaObject(_defObj);
         }
     }
-    isRequired(fieldName:string):boolean {
+    isRequired(fieldName: string): boolean {
         return this.schema.required.indexOf(fieldName) !== -1;
     }
 }
 
 export class ResponsesObject {
-    code:string;
+    code: string;
     response: ResponseObject;
-    constructor(code:string,_respObj?:any) {
+    constructor(code: string, _respObj?: any) {
         this.code = code;
-        if(_respObj) {
+        if (_respObj) {
             this.response = new ResponseObject(_respObj[code]);
         }
     }
@@ -111,20 +111,20 @@ export class ResponseObject {
     schema: SchemaObject;
     headers: HeadersObject;
     examples: ExampleObject;
-    items:ReferenceObject;
-    constructor(_respObj?:any) {
-        if(_respObj) {
-            Object.assign(this,_respObj);
-            if(_respObj.schema) {
+    items: ReferenceObject;
+    constructor(_respObj?: any) {
+        if (_respObj) {
+            Object.assign(this, _respObj);
+            if (_respObj.schema) {
                 this.schema = new SchemaObject(_respObj.schema);
             }
-            if(_respObj.examples) {
+            if (_respObj.examples) {
                 this.examples = new ExampleObject(_respObj.examples);
             }
-            if(_respObj.headers) {
+            if (_respObj.headers) {
                 this.headers = new HeadersObject(_respObj.headers);
             }
-            if(_respObj.items) {
+            if (_respObj.items) {
                 this.items = new ReferenceObject(_respObj.items);
             }
         }
@@ -133,18 +133,18 @@ export class ResponseObject {
 
 export class HeadersObject {
     [index: string]: ItemsObject;
-    constructor(_headersObj?:any) {
-        if(_headersObj) {
-            Object.assign(this,_headersObj);
+    constructor(_headersObj?: any) {
+        if (_headersObj) {
+            Object.assign(this, _headersObj);
         }
     }
 }
 
 export class ExampleObject {
     [index: string]: any;
-    constructor(_exampleObj?:any) {
-        if(_exampleObj) {
-            Object.assign(this,_exampleObj);
+    constructor(_exampleObj?: any) {
+        if (_exampleObj) {
+            Object.assign(this, _exampleObj);
         }
     }
 }
@@ -176,10 +176,10 @@ export class TagObject {
     name: string;
     description: string;
     externalDocs: ExternalDocumentationObject;
-    constructor(_tagsObj?:any) {
-        if(_tagsObj) {
-            Object.assign(this,_tagsObj);
-            if(_tagsObj.externalDocs) {
+    constructor(_tagsObj?: any) {
+        if (_tagsObj) {
+            Object.assign(this, _tagsObj);
+            if (_tagsObj.externalDocs) {
                 this.externalDocs = new ExternalDocumentationObject(_tagsObj.externalDocs);
             }
         }
@@ -204,11 +204,11 @@ export class ItemsObject {
     uniqueItems: boolean;
     'enum': any[];
     multipleOf: number;
-    constructor(_itemsObject?:any) {
+    constructor(_itemsObject?: any) {
         this.enum = [];
-        if(_itemsObject) {
-            Object.assign(this,_itemsObject);
-            if(_itemsObject.items) {
+        if (_itemsObject) {
+            Object.assign(this, _itemsObject);
+            if (_itemsObject.items) {
                 this.items = new ItemsObject(_itemsObject.items);
             }
         }
@@ -217,16 +217,16 @@ export class ItemsObject {
 
 export class ReferenceObject {
     $ref: string;
-    entity:string;
-    items:{$ref:string,entity:string};
-    type:string;
-    constructor(_refObj?:any) {
-        if(_refObj) {
-            Object.assign(this,_refObj);
-            if(this.$ref) {
+    entity: string;
+    items: {$ref: string, entity: string};
+    type: string;
+    constructor(_refObj?: any) {
+        if (_refObj) {
+            Object.assign(this, _refObj);
+            if (this.$ref) {
                 this.entity = ApiModelUtils.extractEntityName(this.$ref);
             }
-            if(this.items && this.items.$ref) {
+            if (this.items && this.items.$ref) {
                 this.items.entity = ApiModelUtils.extractEntityName(this.items.$ref);
             }
         }
@@ -237,9 +237,9 @@ export class ExternalDocumentationObject {
     [index: string]: any;
     description: string;
     url: string;
-    constructor(_externDocObj?:any) {
-        if(_externDocObj) {
-            Object.assign(this,_externDocObj);
+    constructor(_externDocObj?: any) {
+        if (_externDocObj) {
+            Object.assign(this, _externDocObj);
         }
     }
 }
@@ -251,38 +251,38 @@ export class SchemaObject implements IJsonSchema {
     xml: XMLObject;
     externalDocs: ExternalDocumentationObject;
     example: any;
-    items:ReferenceObject;
-    $ref:string;
-    entity:string;
-    type:string;
+    items: ReferenceObject;
+    $ref: string;
+    entity: string;
+    type: string;
     required: string[];
     properties: {
         [name: string]: IJsonSchema;
     };
-    constructor(_schemaObj?:any) {
+    constructor(_schemaObj?: any) {
         this.required = [];
         this.properties = {};
-        if(_schemaObj) {
-            Object.assign(this,_schemaObj);
-            if(_schemaObj.xml) {
+        if (_schemaObj) {
+            Object.assign(this, _schemaObj);
+            if (_schemaObj.xml) {
                 this.xml = new XMLObject(_schemaObj.xml);
             }
-            if(_schemaObj.externalDocs) {
+            if (_schemaObj.externalDocs) {
                 this.externalDocs = new ExternalDocumentationObject(_schemaObj.externalDocs);
             }
-            if(_schemaObj.items) {
+            if (_schemaObj.items) {
                 this.items = new ReferenceObject(_schemaObj.items);
             }
-            if(_schemaObj.$ref) {
+            if (_schemaObj.$ref) {
                 this.entity = ApiModelUtils.extractEntityName(this.$ref);
             }
         }
     }
-    isPropertyTypeArray(value:any):boolean {
+    isPropertyTypeArray(value: any): boolean {
         return  ApiModelUtils.isArray(value.type);
     }
-    getPropertyByName(name:string):string {
-        if(this.properties[name]) {
+    getPropertyByName(name: string): string {
+        if (this.properties[name]) {
             return this.properties[name].description;
         }
     }
@@ -295,9 +295,9 @@ export class XMLObject {
     prefix: string;
     attribute: boolean;
     wrapped: boolean;
-    constructor(_xmlObject?:any) {
-        if(_xmlObject) {
-            Object.assign(this,_xmlObject);
+    constructor(_xmlObject?: any) {
+        if (_xmlObject) {
+            Object.assign(this, _xmlObject);
         }
     }
 }

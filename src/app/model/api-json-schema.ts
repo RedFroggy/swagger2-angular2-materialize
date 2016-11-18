@@ -2,7 +2,7 @@ export interface IJsonSchema {
     id?: string;
     example?: string;
     $schema?: string;
-    $ref?:string;
+    $ref?: string;
     title?: string;
     description?: string;
     multipleOf?: number;
@@ -36,11 +36,11 @@ export interface IJsonSchema {
     };
     'enum'?: any[];
     type?: string;
-    format?:string;
-    default?:boolean;
+    format?: string;
+    default?: boolean;
     allOf?: IJsonSchema[];
     anyOf?: IJsonSchema[];
     oneOf?: IJsonSchema[];
     not?: IJsonSchema;
-    xml?:{name:string,wrapped:boolean};
+    xml?: {name: string, wrapped: boolean};
 }

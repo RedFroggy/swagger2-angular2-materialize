@@ -1,5 +1,3 @@
-/// <reference path="../../node_modules/@types/node/index.d.ts" />
-
 // Polyfills
 import 'core-js/es6';
 import 'core-js/es7/reflect';
@@ -9,6 +7,7 @@ require('zone.js/dist/long-stack-trace-zone');
 
 let $ = require('jquery/dist/jquery');
 window['jQuery'] = $;
+window['$'] = $;
 
 // Angular 2
 import '@angular/core';
@@ -20,18 +19,18 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/of';
 
-// Twitter Bootstrap
-import 'bootstrap/dist/js/bootstrap.js';
-
-//TypeScript
+// TypeScript
 import 'typescript/lib/typescript';
 
-//Lodash
+// Lodash
 import 'lodash/lodash';
 
 // Materialize css
 import 'materialize-css/dist/css/materialize.css';
 import 'materialize-css/dist/js/materialize.js';
+
+// Twitter Bootstrap
+import 'bootstrap/dist/js/bootstrap.js';
 
 // Font awesome
 import 'font-awesome/css/font-awesome.css';
@@ -40,7 +39,7 @@ import 'font-awesome/css/font-awesome.css';
 window.moment = require('moment/moment.js');
 
 // ChartJS
-window.Chart = require('chart.js/dist/Chart.js');
+window.Chart = require('chart.js/src/Chart.js');
 
 // x2js
 let X2JS = require('x2js/x2js.js');

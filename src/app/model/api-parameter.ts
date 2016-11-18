@@ -1,14 +1,14 @@
-import {ItemsObject,ReferenceObject} from './apidoc';
+import {ItemsObject, ReferenceObject} from './apidoc';
 import {ApiModelUtils} from './api-utils';
 
 import * as _ from 'lodash';
 
-const TYPE_FILE:string = 'file';
-const TYPE_DATE:string = 'date';
-const PATH_PARAM:string = 'path';
-const QUERY_PARAM:string = 'query';
-const BODY_PARAM:string = 'body';
-const FORM_PARAM:string = 'formData';
+const TYPE_FILE = 'file';
+const TYPE_DATE = 'date';
+const PATH_PARAM = 'path';
+const QUERY_PARAM = 'query';
+const BODY_PARAM = 'body';
+const FORM_PARAM = 'formData';
 
 export class ParametersDefinitionsObject {
     [index: string]: ParameterObject;
@@ -19,59 +19,60 @@ export class ParameterObject {
     'in': string;
     description: string;
     required: boolean;
-    value:{selected:any};
-    schema:ReferenceObject;
-    collectionFormat:string;
-    items:ItemsObject;
-    type:string;
-    constructor(_paramObj?:any) {
+    value: {selected: any};
+    schema: ReferenceObject;
+    collectionFormat: string;
+    items: ItemsObject;
+    type: string;
+    constructor(_paramObj?: any) {
         this.items = new ItemsObject();
-        this.value = {selected:''};
-        if(_paramObj) {
-            Object.assign(this,_paramObj);
-            if(_paramObj.schema) {
+        this.value = {selected: ''};
+        if (_paramObj) {
+            Object.assign(this, _paramObj);
+            if (_paramObj.schema) {
                 this.schema = new ReferenceObject(_paramObj.schema);
             }
-            if(_paramObj.items) {
+            if (_paramObj.items) {
                 this.items = new ItemsObject(_paramObj.items);
             }
         }
     }
-    isPathParam():boolean {
+    isPathParam(): boolean {
         return this.in === PATH_PARAM;
     }
-    isQueryParam():boolean {
+    isQueryParam(): boolean {
         return this.in === QUERY_PARAM;
     }
-    isBodyParam():boolean {
+    isBodyParam(): boolean {
         return this.in === BODY_PARAM;
     }
-    isFormParam():boolean {
+    isFormParam(): boolean {
         return this.in === FORM_PARAM;
     }
-    isTypeEnum():boolean {
+    isTypeEnum(): boolean {
         return this.items.enum && !_.isEmpty(this.items.enum);
     }
-    isTypeFile():boolean {
+    isTypeFile(): boolean {
         return this.type === TYPE_FILE;
     }
-    isTypeDate():boolean {
+    isTypeDate(): boolean {
         return this.type === TYPE_DATE;
     }
-    getParameterType():string {
-        if(this.isBodyParam()) {
-            if(ApiModelUtils.isTypeArray(this)) {
+    getParameterType(): string {
+        if (this.isBodyParam()) {
+            if (ApiModelUtils.isTypeArray(this)) {
                 return this.schema.items.entity;
             }
             return this.schema.entity;
-        } else if(!ApiModelUtils.isTypeArray(this)) {
+        } else if (!ApiModelUtils.isTypeArray(this)) {
             return this.type;
         } else if (this.isTypeEnum() && this.items.enum.length > 0) {
-            return 'Enum ['+this.items.enum.join(',')+']';
+            return 'Enum [' + this.items.enum.join(',') + ']';
         }
-        return '['+this.items.type+']';
+        return '[' + this.items.type + ']';
     }
-    getEnumMap():{value:string}[] {
-        return this.items.enum.map((enumVal:string) => {return {value:enumVal,label:enumVal,selected:this.items && this.items.default === enumVal} ;});
+    getEnumMap(): {value: string}[] {
+        return this.items.enum.map((enumVal: string) => {
+            return {value: enumVal, label: enumVal, selected: this.items && this.items.default === enumVal} ; });
     }
 }

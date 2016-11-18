@@ -68,7 +68,7 @@ Tested on the following browsers:
 - node_modules (not in git repository): NPM dependencies
 - karma.conf.js: Karma configuration file for unit tests (not yet)
 - webpack.test.config.js: Build configuration file used for unit tests (not yet)
-- webpack.config.js: Build configuration file
+- webpack.config.old.js: Build configuration file
 - tsconfig.json: TypeScript configuration file
 - tslint.json: TSLint configuration file
 - typings.json: Typings configuration file

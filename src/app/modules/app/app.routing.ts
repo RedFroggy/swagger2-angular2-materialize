@@ -1,11 +1,11 @@
 import {Routes, RouterModule} from '@angular/router';
-import {Home} from "./home/home";
-import {Settings} from "./settings/settings";
-import {ModuleWithProviders} from "@angular/core";
+import {HomeComponent} from './home/home';
+import {SettingsComponent} from './settings/settings';
+import {ModuleWithProviders} from '@angular/core';
 
 const routes: Routes = [
-    {path: 'home', component: Home},
-    {path: 'settings', component: Settings},
+    {path: 'home', component: HomeComponent},
+    {path: 'settings', component: SettingsComponent},
     {path: '', redirectTo: '/home', pathMatch: 'full'},
 ];
 

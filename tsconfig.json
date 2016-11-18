@@ -1,25 +1,35 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "removeComments": false,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
     "sourceMap": true,
-    "sourceRoot": "src"
+    "sourceRoot": "src",
+    "types": [
+      "jasmine",
+      "node",
+      "jquery",
+      "materialize-css",
+      "chai",
+      "core-js",
+      "lodash",
+      "node",
+      "highlight.js"
+    ]
   },
+  "compileOnSave": false,
+  "buildOnSave": false,
   "exclude": [
-    "node_modules"
-  ],
-  "filesGlob": [
-    "./src/**/*.ts",
-    "./test/**/*.ts",
-    "!./node_modules/**/*.ts",
-    "src/custom-typings.d.ts",
-    "./node_modules/@types/**/*.d.ts"
+    "node_modules",
+    "dist"
   ],
   "awesomeTypescriptLoaderOptions": {
-    "resolveGlobs": true,
+    "useWebpackText": true,
     "forkChecker": true
   }
 }

@@ -1,33 +1,33 @@
 
-import {ElementRef,EventEmitter,AfterViewInit} from '@angular/core';
+import {ElementRef, EventEmitter, AfterViewInit} from '@angular/core';
 
 export abstract class MaterializeSelect implements AfterViewInit {
-    name:string;
-    label:string;
-    model:any;
+    name: string;
+    label: string;
+    model: any;
     selectValueChange: EventEmitter<any>;
-    protected selectInput:any;
-    private multiple:boolean;
-    constructor(public el: ElementRef,multiple:boolean = false) {
+    protected selectInput: any;
+    private multiple: boolean;
+    constructor(public el: ElementRef, multiple = false) {
         this.multiple = multiple;
     }
-    ngAfterViewInit():void {
+    ngAfterViewInit(): void {
         this.selectInput = $(this.el.nativeElement).find('select');
 
-        let divParent:any = $(this.el.nativeElement).find('.input-field');
+        let divParent: any = $(this.el.nativeElement).find('.input-field');
         divParent.on('change', 'select', () => {
             this.onChangeValue();
             this.updateValue(this.selectInput.val());
         });
     }
-    updateValue(value:string|Array<string>):void {
+    updateValue(value: string|Array<string>): void {
         this.model.selected = value;
         this.selectValueChange.emit(this.model);
     }
-    abstract isSelected(option:any);
-    abstract isDisabled(option:any);
-    refresh():void {
+    abstract isSelected(option: any): boolean;
+    abstract isDisabled(option: any): boolean;
+    refresh(): void {
         this.selectInput.material_select();
     }
-    abstract onChangeValue():void;
+    abstract onChangeValue(): void;
 }
