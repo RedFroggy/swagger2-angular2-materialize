@@ -25,12 +25,12 @@ import 'typescript/lib/typescript';
 // Lodash
 import 'lodash/lodash';
 
+// Twitter Bootstrap
+import 'bootstrap/dist/js/bootstrap.js';
+
 // Materialize css
 import 'materialize-css/dist/css/materialize.css';
 import 'materialize-css/dist/js/materialize.js';
-
-// Twitter Bootstrap
-import 'bootstrap/dist/js/bootstrap.js';
 
 // Font awesome
 import 'font-awesome/css/font-awesome.css';
