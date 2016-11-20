@@ -13,7 +13,7 @@ import * as _ from 'lodash';
 const HEADER_CONTENT_TYPE = 'Content-Type';
 const HEADER_ACCEPT = 'Accept';
 
-const DEFAULT_API = 'http: //petstore.swagger.io/v2/swagger.json';
+const DEFAULT_API = 'http://petstore.swagger.io/v2/swagger.json';
 
 
 @Injectable()

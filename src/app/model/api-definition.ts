@@ -39,7 +39,7 @@ export class ApiDefinition {
         this.tags = [];
 
         if (_apiDoc) {
-            Object.assign(this,  _apiDoc);
+            Object.assign(this, _apiDoc);
 
             // TODO config
             this.baseUrl = 'http: //' + this.host;
@@ -52,7 +52,7 @@ export class ApiDefinition {
             }
             if (_apiDoc.paths) {
                 this.paths = [];
-                Object.keys(_apiDoc.paths).forEach((key: string)=> {
+                Object.keys(_apiDoc.paths).forEach((key: string) => {
                     this.paths.push(new PathsObject(key, _apiDoc.paths[key]));
                 });
             }

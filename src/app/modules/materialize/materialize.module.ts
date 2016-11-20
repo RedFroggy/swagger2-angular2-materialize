@@ -9,17 +9,17 @@ import {SharedModule} from '../shared.module';
 import {CommonModule} from '@angular/common';
 import {MaterializeCollapsibleDirective} from './directives/materialize-collapsible';
 import {MaterializeCollectionDirective} from './directives/materialize-collection';
-import {MaterializeHeader, MaterializeCollapseButton} from './directives/materialize-header';
+import {MaterializeHeaderDirective, MaterializeCollapseButtonDirective} from './directives/materialize-header';
 
 @NgModule ({
     imports: [CommonModule, SharedModule],
     declarations:   [MaterializeInputFileComponent, BodyModalComponent, ChartModalComponent,
         TypeModalComponent, SimpleMaterializeSelectComponent,
         MultipleMaterializeSelectComponent, MaterializeCollapsibleDirective,
-        MaterializeCollectionDirective, MaterializeHeader, MaterializeCollapseButton],
+        MaterializeCollectionDirective, MaterializeHeaderDirective, MaterializeCollapseButtonDirective],
     exports:        [MaterializeInputFileComponent, BodyModalComponent, ChartModalComponent,
         TypeModalComponent, SimpleMaterializeSelectComponent, MultipleMaterializeSelectComponent,
-        MaterializeCollapsibleDirective, MaterializeCollectionDirective, MaterializeHeader, MaterializeCollapseButton],
+        MaterializeCollapsibleDirective, MaterializeCollectionDirective, MaterializeHeaderDirective, MaterializeCollapseButtonDirective],
 })
 export class MaterializeModule {
 

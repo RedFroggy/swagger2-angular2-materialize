@@ -37,7 +37,7 @@ Tested on the following browsers:
 - Internet Explorer 11
 
 # Stack
-- [Angular 2.1.1](https://angular.io)
+- [Angular 2.2.0](https://angular.io)
 - [MaterializeCSS](http://materializecss.com)
 - [ChartJS](http://www.chartjs.org/)
 - Webpack
@@ -102,3 +102,5 @@ $ npm run build
 
 * Maximilian Hengelein ([@mhengelein](https://github.com/mhengelein))
 * Francesco Soncina ([@phra](https://github.com/phra))
+* Sahlikhouloud ([@Sahlikhouloud](https://github.com/Sahlikhouloud))
+* Wiem Zine El Abidine ([@wi101](https://github.com/wi101))
