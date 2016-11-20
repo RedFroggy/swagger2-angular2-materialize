@@ -1,11 +1,11 @@
 language: node_js
+sudo: required
 node_js:
   - "4"
 script: npm test
 before_install:
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
-    - npm install -g typings
     - npm install -g karma
     - npm install -g typescript
 before_script:
