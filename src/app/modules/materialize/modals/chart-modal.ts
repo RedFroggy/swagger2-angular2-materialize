@@ -1,80 +1,80 @@
 import {MaterializeModal} from './materialize-modal';
-import {Component,ElementRef,NgZone,ViewChild} from '@angular/core';
+import {Component, ElementRef, NgZone, ViewChild} from '@angular/core';
 import {PathsObject} from '../../../model/apidoc';
 import {OperationObject} from '../../../model/api-operation';
 import {ApiDefinition} from '../../../model/api-definition';
 import {ApiDocService} from '../../../services/apidoc.service';
-import {MultipleMaterializeSelect} from '../select/multiple-materialize-select';
+import {MultipleMaterializeSelectComponent} from '../select/multiple-materialize-select';
 import * as Config from '../../../utils/env.config';
 
 import * as _ from 'lodash';
 
 @Component({
-    selector:'chart-modal',
-    template:require('./chart-modal.html'),
+    selector: 'chart-modal',
+    template: require('./chart-modal.html'),
 })
-export class ChartModal extends MaterializeModal {
-    @ViewChild('operationSelect') operationSelect:MultipleMaterializeSelect;
-    private chart:LinearInstance;
-    private chartData:any;
-    private operations:Array<OperationObject>;
-    private chartOperations:Array<OperationObject>;
-    private currentOperation:OperationObject;
-    private selectedOperation:any;
-    constructor(public el: ElementRef,private zone:NgZone,private apiDocService:ApiDocService) {
+export class ChartModalComponent extends MaterializeModal {
+    @ViewChild('operationSelect') operationSelect: MultipleMaterializeSelectComponent;
+    private chart: any;
+    private chartData: any;
+    private operations: Array<OperationObject>;
+    private chartOperations: Array<OperationObject>;
+    private currentOperation: OperationObject;
+    private selectedOperation: any;
+    constructor(public el:  ElementRef, private zone: NgZone, private apiDocService: ApiDocService) {
         super(el);
         this.operations = [];
         this.chartOperations = [];
         this.resetData();
         this.selectedOperation = {};
         this.currentOperation = new OperationObject();
-        this.apiDocService.getApi().subscribe((apiDoc:ApiDefinition) => this.apiDoc = apiDoc);
+        this.apiDocService.getApi().subscribe((apiDoc: ApiDefinition) => this.apiDoc = apiDoc);
     }
-    resetData():void {
+    resetData(): void {
         this.chartData = {
-            labels: [],
-            datasets: [],
-            options:{
-                animation: false,
-                responsive: true,
-                tooltipTemplate: (tooltip) => {
-                    return tooltip.datasetLabel+' - '+tooltip.value+' ms';
+            labels:  [],
+            datasets:  [],
+            options: {
+                animation:  false,
+                responsive:  true,
+                tooltipTemplate:  (tooltip:  any) => {
+                    return tooltip.datasetLabel + ' - ' + tooltip.value + ' ms';
                 },
-                multiTooltipTemplate: (tooltip) => {
-                    return tooltip.datasetLabel+' - '+tooltip.value+' ms';
+                multiTooltipTemplate:  (tooltip:  any) => {
+                    return tooltip.datasetLabel + ' - ' + tooltip.value + ' ms';
                 }
             }
         };
-        if(this.chart) {
+        if (this.chart) {
             this.chart.destroy();
         }
     }
     getRandomColor() {
-        let r = () => { return Math.floor(Math.random()*256);};
+        let r = () => { return Math.floor(Math.random() * 256); };
         return 'rgba(' + r() + ',' + r() + ',' + r() + ',0.5)';
     }
-    getContext():any {
-        let canvas:any = $(this.el.nativeElement).find('canvas')[0];
+    getContext():  any {
+        let canvas:  any = $(this.el.nativeElement).find('canvas')[0];
         return canvas.getContext('2d');
     }
-    showGraph(operation:OperationObject):void {
+    showGraph(operation:  OperationObject):  void {
         this.currentOperation = operation;
         this.resetData();
         this.openModal(null);
-        setTimeout(() => this.operationSelect.refresh(),0);
-        this.zone.run(()=> {
+        setTimeout(() => this.operationSelect.refresh(), 0);
+        this.zone.run(() => {
             this.listOperations();
             this.createChart(this.operations);
         });
     }
-    getDataSetByType():any {
-        let chartType:string = this.getChartType();
-        let dataSet:any = {
-            label: '',
-            strokeColor: 'rgba(220,220,220,1)',
-            data: []
+    getDataSetByType(): any {
+        let chartType: string = this.getChartType();
+        let dataSet: any = {
+            label:  '',
+            strokeColor:  'rgba(220,220,220,1)',
+            data:  []
         };
-       if(chartType === Config.CHART_TYPE_LINE) {
+       if (chartType === Config.CHART_TYPE_LINE) {
            dataSet.pointColor = 'rgba(220,220,220,1)';
            dataSet.pointStrokeColor = '#fff';
            dataSet.pointHighlightFill = '#fff';
@@ -85,29 +85,29 @@ export class ChartModal extends MaterializeModal {
        }
         return dataSet;
     }
-    createChart(operations:Array<OperationObject>):void {
-        if(operations && !_.isEmpty(operations)) {
+    createChart(operations: Array<OperationObject>): void {
+        if (operations && !_.isEmpty(operations)) {
 
             this.resetData();
-            let max:number = 0;
+            let max = 0;
 
-            operations.forEach((operation:OperationObject) => {
+            operations.forEach((operation: OperationObject) => {
 
                 operation.chartColor = this.getRandomColor();
 
                 let dataSetData = this.getDataSetByType();
                 dataSetData['backgroundColor'] = operation.chartColor;
 
-                let requestTimes:{date:Date,time:number}[] = JSON.parse(localStorage.getItem(operation.slug));
-                if(requestTimes.length > max) {
+                let requestTimes: {date: Date, time: number}[] = JSON.parse(localStorage.getItem(operation.slug));
+                if (requestTimes.length > max) {
                     this.chartData.labels = [];
                     max = requestTimes.length;
-                    for(let i:number = 0;i<max;i++) {
+                    for (let i = 0; i < max; i++) {
                         this.chartData.labels.push(i + 1);
                     }
                 }
 
-                dataSetData.data = _.map(requestTimes,'time');
+                dataSetData.data = _.map(requestTimes, 'time');
                 dataSetData.label = operation.summary;
 
                 this.chartData.datasets.push(dataSetData);
@@ -115,34 +115,35 @@ export class ChartModal extends MaterializeModal {
 
             this.chartOperations = operations;
 
-            let ctx:any = this.getContext();
+            let ctx: any = this.getContext();
 
-            let chartType:string = this.getChartType();
-            if(chartType === Config.CHART_TYPE_LINE) {
+            let chartType: string = this.getChartType();
+            if (chartType === Config.CHART_TYPE_LINE) {
                 console.log(this.chartData);
-                this.chart = Chart.Line(ctx,{data:this.chartData, options:this.chartData.options});
+                this.chart = Chart.Line(ctx, {data: this.chartData, options: this.chartData.options});
             } else {
-                this.chart = Chart.Bar(ctx, {data:this.chartData, options:this.chartData.options});
+                this.chart = Chart.Bar(ctx, {data: this.chartData, options: this.chartData.options});
             }
         }
     }
-    getChartType():string {
-        return localStorage.getItem(Config.LOCAL_STORAGE_CHART_TYPE) ? localStorage.getItem(Config.LOCAL_STORAGE_CHART_TYPE) : Config.CHART_TYPE_BAR;
+    getChartType(): string {
+        return localStorage.getItem(Config.LOCAL_STORAGE_CHART_TYPE) ?
+            localStorage.getItem(Config.LOCAL_STORAGE_CHART_TYPE) :  Config.CHART_TYPE_BAR;
     }
-    listOperations():void {
+    listOperations(): void {
         this.operations = [];
-        this.apiDoc.paths.forEach((path:PathsObject) => {
-            let operations:Array<OperationObject> = path.path.operations.filter((operation:OperationObject) => {
+        this.apiDoc.paths.forEach((path: PathsObject) => {
+            let operations: Array<OperationObject> = path.path.operations.filter((operation: OperationObject) => {
                 return localStorage.getItem(operation.slug) !== null;
             });
-            if(!_.isEmpty(operations)) {
+            if (!_.isEmpty(operations)) {
                 this.operations = this.operations.concat(operations);
             }
         });
     }
-    getOperationsMap():{value:string,label:string}[] {
-        return this.operations.map((operation:OperationObject) => {
-            let data:any = {};
+    getOperationsMap(): {value: string, label: string}[] {
+        return this.operations.map((operation: OperationObject) => {
+            let data: any = {};
             data.value = operation.operationId;
             data.label = operation.operationId;
             data.disabled = operation.operationId === this.currentOperation.operationId;
@@ -150,13 +151,13 @@ export class ChartModal extends MaterializeModal {
             return data;
         });
     }
-    onSelectOperation(event:any):void {
+    onSelectOperation(event: any): void {
         if (event && event.hasOwnProperty('selected')) {
-            let operations:Array<OperationObject> = [];
-            if(!event.selected) {
+            let operations: Array<OperationObject> = [];
+            if (!event.selected) {
                 this.createChart([this.currentOperation]);
             } else {
-                operations = this.apiDoc.getOperationsByProperty(event.selected,'operationId');
+                operations = this.apiDoc.getOperationsByProperty(event.selected, 'operationId');
                 operations.push(this.currentOperation);
                 this.createChart(operations);
             }

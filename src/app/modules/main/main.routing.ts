@@ -1,17 +1,17 @@
 import {Routes, RouterModule} from '@angular/router';
-import {ApiDocList} from "./list/list";
-import {ApiDocDetail} from "./detail/detail";
-import {Main} from "./main";
-import {ModuleWithProviders} from "@angular/core";
+import {ApiDocListComponent} from './list/list';
+import {ApiDocDetailComponent} from './detail/detail';
+import {MainComponent} from './main';
+import {ModuleWithProviders} from '@angular/core';
 
 const mainRoutes: Routes = [
     {   path: 'apis',
-        component: Main,
+        component: MainComponent,
         children: [
-            {path: ':path/detail/:operation', component: ApiDocDetail},
-            {path: ':path', component: ApiDocList}
+            {path: ':path/detail/:operation', component: ApiDocDetailComponent},
+            {path: ':path', component: ApiDocListComponent}
         ]
     }
-]
+];
 
 export const mainRouting: ModuleWithProviders = RouterModule.forChild(mainRoutes);

@@ -37,7 +37,7 @@ Tested on the following browsers:
 - Internet Explorer 11
 
 # Stack
-- [Angular 2.1.1](https://angular.io)
+- [Angular 2.2.0](https://angular.io)
 - [MaterializeCSS](http://materializecss.com)
 - [ChartJS](http://www.chartjs.org/)
 - Webpack
@@ -68,7 +68,7 @@ Tested on the following browsers:
 - node_modules (not in git repository): NPM dependencies
 - karma.conf.js: Karma configuration file for unit tests (not yet)
 - webpack.test.config.js: Build configuration file used for unit tests (not yet)
-- webpack.config.js: Build configuration file
+- webpack.config.old.js: Build configuration file
 - tsconfig.json: TypeScript configuration file
 - tslint.json: TSLint configuration file
 - typings.json: Typings configuration file
@@ -102,3 +102,5 @@ $ npm run build
 
 * Maximilian Hengelein ([@mhengelein](https://github.com/mhengelein))
 * Francesco Soncina ([@phra](https://github.com/phra))
+* Sahlikhouloud ([@Sahlikhouloud](https://github.com/Sahlikhouloud))
+* Wiem Zine El Abidine ([@wi101](https://github.com/wi101))
