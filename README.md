@@ -95,9 +95,6 @@ To build the project:
 $ npm run build
 ```
 
-# Contributing
-* Unit tests need to be fixed with Angular 2.0.0 version. Your help is welcome.
-
 # Contributors
 
 * Maximilian Hengelein ([@mhengelein](https://github.com/mhengelein))
