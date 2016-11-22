@@ -78,9 +78,11 @@ export class ApiDocService {
         } else if (operation.produce.selected) {
             headers.set(HEADER_ACCEPT,  operation.produce.selected);
         }
-        
-        operation.parameters.forEach((param:ParameterObject) => {
-            if (param.isHeaderParam) headers.set(param.name, param.value.selected);
+
+        operation.parameters.forEach((param: ParameterObject) => {
+            if (param.isHeaderParam()) {
+                headers.set(param.name, param.value.selected);
+            }
         });
 
         if (operation.isWriteMethod()) {
@@ -128,9 +130,9 @@ export class ApiDocService {
         console.log('Calling api with options', reqOptions);
 
         // Angular 2 RC5 fix via setting body to '' (see https: //github.com/angular/angular/issues/10612)
-        reqOptions.body === null || typeof reqOptions.body === 'undefined'
-            ? reqOptions.body = ''
-            :  reqOptions.body = reqOptions.body;
+        if (reqOptions.body === null || typeof reqOptions.body === 'undefined') {
+            reqOptions.body = '';
+        }
 
         return this.http.request(new Request(reqOptions)).map((res: Response) => {
             apiResult.operation = operation;
