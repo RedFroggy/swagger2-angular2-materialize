@@ -1,3 +1,19 @@
+// Angular
+import '@angular/platform-browser';
+import '@angular/platform-browser-dynamic';
+import '@angular/platform-server';
+import '@angular/core';
+import '@angular/common';
+import '@angular/http';
+import '@angular/router';
+import '@angular/compiler';
+import '@angular/forms';
+import '@angular/upgrade';
+
+
+// RxJS
+import 'rxjs';
+
 // Polyfills
 import 'core-js/es6';
 import 'core-js/es7/reflect';
@@ -5,7 +21,7 @@ require('zone.js/dist/zone');
 
 require('zone.js/dist/long-stack-trace-zone');
 
-let $ = require('jquery/dist/jquery');
+let $ = jQuery = require('jquery/dist/jquery');
 window['jQuery'] = $;
 window['$'] = $;
 

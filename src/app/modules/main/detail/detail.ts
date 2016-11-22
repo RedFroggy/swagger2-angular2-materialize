@@ -55,7 +55,6 @@ export class ApiDocDetailComponent implements OnInit, OnDestroy {
     }
     generate(event: Event, parameter: ParameterObject): void {
         event.preventDefault();
-        console.log(parameter);
         this.operation.originalData = this.apiDoc.getBodyDescription(parameter.getParameterType(), this.operation.isConsumeXml());
         if (ApiModelUtils.isTypeArray(parameter)) {
             this.operation.originalData = [this.operation.originalData];

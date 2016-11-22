@@ -9,4 +9,4 @@ const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(routes);
+export const RoutesModule: ModuleWithProviders = RouterModule.forRoot(routes);

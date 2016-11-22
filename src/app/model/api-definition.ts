@@ -42,7 +42,7 @@ export class ApiDefinition {
             Object.assign(this, _apiDoc);
 
             // TODO config
-            this.baseUrl = 'http: //' + this.host;
+            this.baseUrl = 'http://' + this.host;
             if (this.basePath) {
                 this.baseUrl +=  this.basePath;
             }

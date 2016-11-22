@@ -16,7 +16,7 @@ export class HeaderComponent {
             ? [...route, 1]
             :  route;
 
-        console.log(this.router.navigate(route));
+        this.router.navigate(route);
     }
     onChangeApi(event: Event): void {
         event.preventDefault();

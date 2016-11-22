@@ -54,7 +54,6 @@ export class ApiDocService {
     }
     sendRequest(operation: OperationObject): Observable<ApiResult> {
         let apiResult: ApiResult = new ApiResult();
-        console.log(operation);
 
         let reqOptions: RequestOptions = new RequestOptions();
         reqOptions.method = operation.name;

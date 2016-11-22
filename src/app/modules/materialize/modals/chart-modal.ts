@@ -119,7 +119,6 @@ export class ChartModalComponent extends MaterializeModal {
 
             let chartType: string = this.getChartType();
             if (chartType === Config.CHART_TYPE_LINE) {
-                console.log(this.chartData);
                 this.chart = Chart.Line(ctx, {data: this.chartData, options: this.chartData.options});
             } else {
                 this.chart = Chart.Bar(ctx, {data: this.chartData, options: this.chartData.options});
