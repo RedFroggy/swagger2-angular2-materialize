@@ -39,7 +39,7 @@ import 'font-awesome/css/font-awesome.css';
 window.moment = require('moment/moment.js');
 
 // ChartJS
-window.Chart = require('chart.js/src/Chart.js');
+window.Chart = require('chart.js/src/chart.js');
 
 // x2js
 let X2JS = require('x2js/x2js.js');
