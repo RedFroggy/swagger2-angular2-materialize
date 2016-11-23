@@ -43,7 +43,7 @@ span.legend {
 }
 
 i.redfroggy-theme {
-    color:#D32F2F;
+    color:#ff5a92;
 }
 
 .breadcrumb:before {
@@ -54,3 +54,9 @@ i.redfroggy-theme {
 .breadcrumb:last-child {
     color: #039be5 !important;
 }
+
+span.footer-label {
+    color: white;
+    font-weight: bold;
+}
+

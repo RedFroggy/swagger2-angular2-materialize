@@ -2,5 +2,5 @@
     <h1>{{apiDoc.info.title}}</h1>
     <p>{{apiDoc.info.description}}</p>
     <p>Version: {{apiDoc.info.version}}</p>
-    <p><a href="{{apiDoc.info.termsOfService}}" target="_blank" class="waves-effect waves-light btn-large red darken-2"><i class="material-icons left">link</i> View site</a></p><br/>
+    <p><a href="{{apiDoc.info.termsOfService}}" target="_blank" [class]="'waves-effect waves-light btn-large ' + getThemeOption('buttonClass')"><i class="material-icons left">link</i> View site</a></p><br/>
 </div>

@@ -1,6 +1,6 @@
 <div class="col s9 api-detail">
     <div class="row">
-        <a href="" (click)="goToListPage($event)" class="btn red darken-2 mdi-navigation-arrow-back" title="Back">
+        <a href="" (click)="goToListPage($event)" [class]="'btn mdi-navigation-arrow-back ' + getThemeOption('buttonClass')" title="Back">
             <span aria-hidden="true"></span> <i class="material-icons left">arrow_back</i> Back
         </a>
     <div class="row">

@@ -7,12 +7,13 @@ import {OperationObject} from '../../../model/api-operation';
 import {ParameterObject} from '../../../model/api-parameter';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {ThemeableComponent} from '../../app/themeable.component';
 
 @Component({
     selector: 'doc-detail',
     template: require('./detail.html'),
 })
-export class ApiDocDetailComponent implements OnInit, OnDestroy {
+export class ApiDocDetailComponent extends ThemeableComponent implements OnInit, OnDestroy {
     operation: OperationObject;
     private pathId: number;
     private operationId: number;
@@ -20,6 +21,7 @@ export class ApiDocDetailComponent implements OnInit, OnDestroy {
     private routeSub:  Subscription;
 
     constructor(private apiDocService: ApiDocService, private router:  Router, private route:  ActivatedRoute) {
+        super();
         this.operation = new OperationObject();
         this.apiDoc = new ApiDefinition();
     }

@@ -22,8 +22,18 @@
             <div class="input-field col s3"></div>
         </div>
         <div class="row">
+            <div class="input-field col s3"></div>
+            <div class="input-field col s6">
+                <materialize-select-simple #themeSelect name="theme" label="Select a theme"
+                                           [options]="themes"
+                                           [selected]="selectedTheme"
+                                           [(model)]="currentTheme"></materialize-select-simple>
+            </div>
+            <div class="input-field col s3"></div>
+        </div>
+        <div class="row">
             <div class="input-field">
-                <button class="btn waves-effect waves-light red darken-2" (click)="validSettings()" type="button" name="action">Send
+                <button [class]="'btn waves-effect waves-light '+   getThemeOption('buttonClass')" (click)="validSettings()" type="button" name="action">Send
                     <i class="material-icons right">send</i>
                 </button>
             </div>

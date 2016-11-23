@@ -1,13 +1,17 @@
 import {Component} from '@angular/core';
 import {ApiDocService} from '../../../services/apidoc.service';
 import {Router} from '@angular/router';
+import {ThemeableComponent} from '../themeable.component';
 
 @Component({
     selector: 'header',
     template: require('./header.html'),
 })
-export class HeaderComponent {
-    constructor(private router: Router, private apiDocService: ApiDocService) {}
+export class HeaderComponent extends ThemeableComponent {
+    constructor(private router: Router, private apiDocService: ApiDocService) {
+        super();
+        $('#mobileHomeLink').addClass('active');
+    }
     goToPage($event: Event, ...route: Array<any>): void {
         $event.preventDefault();
 

@@ -21,6 +21,7 @@ You can try with your Swagger 2 api by setting the url under the "Settings" menu
 - Detailed model and sub models information: fields name, types, etc...
 - Charts displaying requests time
 - Possibility to compare statistics from one api to another
+- Possibility to switch between two css themes (settings page)
 
 # Screenshots
 ![image](http://i.imgur.com/2aXJ3TK.png?1)

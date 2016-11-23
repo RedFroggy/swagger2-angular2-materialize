@@ -1,22 +1,29 @@
 <header></header>
 <router-outlet></router-outlet>
-<footer class="page-footer grey darken-4">
-    <div class="footer-copyright">
+<footer [class]="'page-footer ' + getThemeOption('mainClass')">
+    <div class="footer-copyright" style="background-color: inherit">
         <div class="container">
-            <a href="http://www.redfroggy.fr" target="_blank"><img src="http://www.redfroggy.fr/wp-content/uploads/2014/02/red_froggy_150.png?b5b528" class="left" width="50" height="42"></a>&nbsp;
-             <strong>Made by RedFroggy with love</strong>
-            <a class="grey-text text-lighten-4 padding-right-15 right" target="_blank" href="https://fr-fr.facebook.com/Red-Froggy-697550470336210">
-                <i class="fa fa-facebook fa-2x redfroggy-theme"></i>
-            </a>
-            <a class="grey-text text-lighten-4 padding-right-15 right" target="_blank" href="https://twitter.com/RedFroggySAS">
-                <i class="fa fa-twitter fa-2x redfroggy-theme"></i>
-            </a>
-            <a class="grey-text text-lighten-4 padding-right-15 right" target="_blank" href="https://www.linkedin.com/company/5239141">
-                <i class="fa fa-linkedin fa-2x redfroggy-theme"></i>
-            </a>
-            <a class="grey-text text-lighten-4 padding-right-15 right" target="_blank" href="https://github.com/RedFroggy">
-                <i class="fa fa-github fa-2x redfroggy-theme"></i>
-            </a>
+            <div class="row">
+                <span class="left">
+                    <a href="http://www.redfroggy.fr" target="_blank"><img src="http://www.redfroggy.fr/wp-content/uploads/2014/02/red_froggy_150.png?b5b528" class="left" width="50" height="42"></a>&nbsp;
+                    <span class="footer-label">Made by RedFroggy with love</span>
+                </span>
+                <span class="right">
+                    <a class="grey-text text-lighten-4 padding-right-15" target="_blank" href="https://fr-fr.facebook.com/Red-Froggy-697550470336210">
+                        <i class="fa fa-facebook fa-2x redfroggy-theme"></i>
+                    </a>
+                    <a class="grey-text text-lighten-4 padding-right-15" target="_blank" href="https://twitter.com/RedFroggySAS">
+                        <i class="fa fa-twitter fa-2x redfroggy-theme"></i>
+                    </a>
+                    <a class="grey-text text-lighten-4 padding-right-15" target="_blank" href="https://www.linkedin.com/company/5239141">
+                        <i class="fa fa-linkedin fa-2x redfroggy-theme"></i>
+                    </a>
+                    <a class="grey-text text-lighten-4 padding-right-15 " target="_blank" href="https://github.com/RedFroggy">
+                        <i class="fa fa-github fa-2x redfroggy-theme"></i>
+                    </a>
+                </span>
+            </div>
         </div>
     </div>
 </footer>
+<span style="position:absolute; top:0; right:0; border:0;" [innerHTML]="getThemeOption('ribbon')"></span>

@@ -10,12 +10,12 @@
         </li>
         <ul class="collapsible" id="apiCollapsible" data-collapsible="expandable" materialize-collapsible>
             <li *ngFor="let tag of apiDoc.tags;let i=index">
-                <div class="collapsible-header grey darken-4 white-text truncate"><i class="material-icons">language</i>{{tag.description}}</div>
+                <div [class]="'collapsible-header white-text truncate ' + getThemeOption('mainClass')"><i class="material-icons">language</i>{{tag.description}}</div>
                 <div class="collapsible-body">
                     <ul class="collection" materialize-collection>
-                        <li [ngClass]="{active: apiPath.selected}" class="collection-item"  *ngFor="let apiPath of apiDoc.paths | searchFiler:{name:query} | tagFiler:tag.name;let j=index">
+                        <li [ngStyle]="getSelectedTheme(apiPath, 'itemSelected')" class="collection-item"  *ngFor="let apiPath of apiDoc.paths | searchFiler:{name:query} | tagFiler:tag.name;let j=index">
                             <a href="" (click)="onSelectApi($event,apiPath)">
-                                <div class="black-text">{{apiPath.name}} <div class="chip red darken-4 white-text">{{apiPath.path.operations | count}}</div></div>
+                                <div [class]="getTextColor(apiPath, 'itemTextColor')">{{apiPath.name}} <div [class]="'chip white-text '+ getThemeOption('fab-button')">{{apiPath.path.operations | count}}</div></div>
                             </a>
                         </li>
                     </ul>

@@ -3,15 +3,16 @@ import {ApiDocService} from '../../../services/apidoc.service';
 import {ApiDefinition} from '../../../model/api-definition';
 import {PathsObject} from '../../../model/apidoc';
 import {Router} from '@angular/router';
-
+import {ThemeableComponent} from '../../app/themeable.component';
 
 @Component({
     selector:  'left-menu',
     template:  require('./left-menu.html'),
 })
-export class LeftMenuComponent {
+export class LeftMenuComponent extends ThemeableComponent {
     private apiDoc: ApiDefinition;
     constructor(private apiDocService: ApiDocService, private router: Router) {
+        super();
         this.apiDoc = new ApiDefinition();
         apiDocService.getApi().subscribe((apiDoc: ApiDefinition) => {
             this.apiDoc = apiDoc;
@@ -34,5 +35,16 @@ export class LeftMenuComponent {
     markApiPathSelected (path:  PathsObject) {
         this.apiDoc.paths.forEach((docPath:  PathsObject) => docPath.selected = false);
         path.selected = true;
+    }
+    getSelectedTheme(apiPath: any, option: string): any|undefined {
+        if (apiPath.selected) {
+            return {'background-color': super.getThemeOption(option), 'color': '#FFFFFF'};
+        }
+    }
+    getTextColor(apiPath: any, option: string): any|undefined {
+        if (apiPath.selected) {
+            return super.getThemeOption(option);
+        }
+        return 'black-text';
     }
 }
