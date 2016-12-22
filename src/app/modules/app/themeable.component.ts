@@ -18,7 +18,6 @@ export abstract class ThemeableComponent {
     }
     getCurrentTheme(): any {
         let themeName = localStorage.getItem(Config.LOCAL_STORAGE_THEME);
-
         return _.find(Config.THEMES, {value: themeName});
     }
 }

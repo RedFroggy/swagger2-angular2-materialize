@@ -39,11 +39,20 @@ span.legend {
 }
 
 .padding-right-15 {
-    padding-right: 15px;
+    padding-right: 10px;
 }
 
 i.redfroggy-theme {
+    color:#D32F2F;
+}
+
+i.blue-theme {
     color:#ff5a92;
+}
+
+div.footer-api {
+    line-height: 42px !important;
+    background-color: inherit !important;
 }
 
 .breadcrumb:before {
@@ -58,5 +67,13 @@ i.redfroggy-theme {
 span.footer-label {
     color: white;
     font-weight: bold;
+}
+
+span.github-ribbon {
+    position:absolute;
+    top:0;
+    right:0;
+    border:0;
+    z-index: 998;
 }
 

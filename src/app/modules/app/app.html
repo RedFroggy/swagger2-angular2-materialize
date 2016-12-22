@@ -1,7 +1,7 @@
 <header></header>
 <router-outlet></router-outlet>
 <footer [class]="'page-footer ' + getThemeOption('mainClass')">
-    <div class="footer-copyright" style="background-color: inherit">
+    <div class="footer-copyright footer-api">
         <div class="container">
             <div class="row">
                 <span class="left">
@@ -10,20 +10,20 @@
                 </span>
                 <span class="right">
                     <a class="grey-text text-lighten-4 padding-right-15" target="_blank" href="https://fr-fr.facebook.com/Red-Froggy-697550470336210">
-                        <i class="fa fa-facebook fa-2x redfroggy-theme"></i>
+                        <i [class]="'fa fa-facebook fa-2x ' + getThemeOption('socialMediaClass')"></i>
                     </a>
                     <a class="grey-text text-lighten-4 padding-right-15" target="_blank" href="https://twitter.com/RedFroggySAS">
-                        <i class="fa fa-twitter fa-2x redfroggy-theme"></i>
+                        <i [class]="'fa fa-twitter fa-2x '+ getThemeOption('socialMediaClass')"></i>
                     </a>
                     <a class="grey-text text-lighten-4 padding-right-15" target="_blank" href="https://www.linkedin.com/company/5239141">
-                        <i class="fa fa-linkedin fa-2x redfroggy-theme"></i>
+                        <i [class]="'fa fa-linkedin fa-2x '+ getThemeOption('socialMediaClass')"></i>
                     </a>
                     <a class="grey-text text-lighten-4 padding-right-15 " target="_blank" href="https://github.com/RedFroggy">
-                        <i class="fa fa-github fa-2x redfroggy-theme"></i>
+                        <i [class]="'fa fa-github fa-2x '+ getThemeOption('socialMediaClass')"></i>
                     </a>
                 </span>
             </div>
         </div>
     </div>
 </footer>
-<span style="position:absolute; top:0; right:0; border:0;" [innerHTML]="getThemeOption('ribbon')"></span>
+<span class="github-ribbon" [innerHTML]="getThemeOption('ribbon')"></span>
