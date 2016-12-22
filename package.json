@@ -112,8 +112,8 @@
     "server": "npm run server:dev",
     "server:dev": "webpack-dev-server --config webpack.config.js --port=3000 --progress --inline  --content-base src/",
     "build": "npm run build:dev",
-    "build:dev": "rimraf dist && webpack --config config/webpack.dev.config.js --progress --profile --bail",
-    "build:prod": "rimraf dist && webpack --config config/webpack.prod.config.js --progress --profile --bail",
+    "build:dev": "webpack --config config/webpack.dev.config.js --progress --profile --bail",
+    "build:prod": "webpack --config config/webpack.prod.config.js --progress --profile --bail",
     "test": "karma start"
   }
 }
